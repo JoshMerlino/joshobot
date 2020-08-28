@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/JoshMerlino/josh-o-bot/issues"
   },
-  "homepage": "https://github.com/JoshMerlino/josh-o-bot#readme"
+  "homepage": "https://github.com/JoshMerlino/josh-o-bot#readme",
+  "dependencies": {
+    "discord.js": "^12.3.1"
+  }
 }
