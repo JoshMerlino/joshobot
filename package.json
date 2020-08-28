@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "The best Discord bot around",
   "main": "index.js",
-  "scripts": { },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JoshMerlino/josh-o-bot.git"
@@ -15,6 +15,7 @@
   },
   "homepage": "https://github.com/JoshMerlino/josh-o-bot#readme",
   "dependencies": {
-    "discord.js": "^12.3.1"
+    "discord.js": "^12.3.1",
+    "yaml": "^1.10.0"
   }
 }
