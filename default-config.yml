@@ -1,5 +1,30 @@
+# Prefix for commands
 prefix: '?'
 
+# Color theme configuration
+theme:
+  primary:  '#1976D4'
+  success:  '#00C853'
+  error:    '#d50000'
+  warn:     '#f57f17'
+
+# Command configuration
 commands:
+
+  # Help command configuration
   help:
+
+    # Should this command be used?
     enabled: true
+
+    # Which command should this bind to
+    command: 'help'
+
+  # Help command configuration
+  ban:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    command: 'ban'
