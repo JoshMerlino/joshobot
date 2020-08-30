@@ -1,23 +1,25 @@
 {
-  "name": "josh-o-bot",
-  "version": "0.1.0",
-  "description": "The best Discord bot around",
-  "main": "index.js",
-  "scripts": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JoshMerlino/josh-o-bot.git"
-  },
-  "author": "Josh Merlino",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/JoshMerlino/josh-o-bot/issues"
-  },
-  "homepage": "https://github.com/JoshMerlino/josh-o-bot#readme",
-  "dependencies": {
-    "discord.js": "^12.3.1",
-    "mkdirp": "^1.0.4",
-    "require-context": "^1.1.0",
-    "yaml": "^1.10.0"
-  }
+    "name": "josh-o-bot",
+    "version": "0.1.0",
+    "description": "The best Discord bot around",
+    "main": "index.js",
+    "scripts": {
+        "start": "node ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/JoshMerlino/josh-o-bot.git"
+    },
+    "author": "Josh Merlino",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/JoshMerlino/josh-o-bot/issues"
+    },
+    "homepage": "https://github.com/JoshMerlino/josh-o-bot#readme",
+    "dependencies": {
+        "discord.js": "^12.3.1",
+        "mkdirp": "^1.0.4",
+        "require-context": "^1.1.0",
+        "yaml": "^1.10.0"
+    }
 }
