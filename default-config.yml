@@ -3,10 +3,14 @@ prefix: '?'
 
 # Color theme configuration
 theme:
-  primary:  '#1976D4'
-  success:  '#00C853'
-  error:    '#d50000'
-  warn:     '#f57f17'
+  primary:  '#1976d4'
+  success:  '#00c853'
+  error:    '#d32f2f'
+  warn:     '#fbc02d'
+
+# Bot master roles, which role id's have administrative control over bot
+botmasters:
+- '742501135667036200'
 
 # Command configuration
 commands:
@@ -18,7 +22,10 @@ commands:
     enabled: true
 
     # Which command should this bind to
-    command: 'help'
+    alias:
+    - help
+    - halp
+    - h
 
   # Help command configuration
   ban:
@@ -27,4 +34,5 @@ commands:
     enabled: true
 
     # Which command should this bind to
-    command: 'ban'
+    alias:
+    - ban

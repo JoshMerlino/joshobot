@@ -1,26 +1,43 @@
-const { MessageEmbed } = require("discord.js");
+module.exports = class Command extends require("../Command.js") {
 
-// Define which config section this command uses
-const command = "ban";
+	constructor() {
+		super("ban", ...arguments);
+	}
 
-module.exports = function Command(client, config) {
-	client.on("message", async message => {
+	onCommand({ args, sender, guildConfig, root, channel, guild }) {
 
-		// Destructure data from message object
-		const { content, channel, member } = message;
-		const [ root, ...args ] = content.split(" ");
+		const [ user = "", deleteMessages = "false", reason = "" ] = args;
+		const userid = user.replace(/[\\<>@#&!]/g, "");
 
-		if (root.toLowerCase() === (config.prefix + config.commands[command].command).toLowerCase() && config.commands[command].enabled) {
-
-			// If no arguments were specified
-			if (args.length === 0) {
-				const embed = new MessageEmbed()
-				.setColor(config.theme.warn)
-				.setDescription(`Incorrect usage!\n\`${config.prefix}${config.commands[command].command} <@user>\``)
-				return channel.send(embed);
+		// Make sure sender is a bot master
+		if(sender._roles.some(role => guildConfig.botmasters.includes(role))) {
+			if(user !== "") {
+				try {
+					guild.member(userid).ban({ days: deleteMessages == true ? 7:0, reason }).then(function() {
+						channel.send(new MessageEmbed()
+						.setColor(guildConfig.theme.success)
+						.setDescription(`User <@!${userid}> was banned${reason === "" ? ".":" for " + reason + "."}`));
+					}).catch(function() {
+						channel.send(new MessageEmbed()
+						.setColor(guildConfig.theme.error)
+						.setDescription(`I do not have permission to ban <@!${userid}>.`));
+					})
+				} catch (e) {
+					channel.send(new MessageEmbed()
+					.setColor(guildConfig.theme.error)
+					.setDescription(`<@!${userid}> has already been banned or left on their own.`));
+				}
+			} else {
+				return channel.send(new MessageEmbed()
+				.setColor(guildConfig.theme.warn)
+				.setDescription(`Usage:\n\`${root} <@user> [deleteMessages = false] [reason]\``));
 			}
-
+		} else {
+			return channel.send(new MessageEmbed()
+			.setColor(guildConfig.theme.error)
+			.setDescription(`You my friend, are not a bot master.`));
 		}
 
-	});
+	}
+
 }
