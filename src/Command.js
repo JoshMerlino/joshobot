@@ -9,7 +9,14 @@ module.exports = class Command {
 			const { content, channel, member, guild } = message;
 			const [ root, ...args ] = content.split(" ");
 			aliases.map(alias => {
-				if(config[guild_id].prefix + alias === root.toLowerCase() && config[guild_id].commands[key].enabled) this.onCommand({ root, args, sender: member, channel, guildConfig: config[guild_id], guild });
+				if(config[guild_id].prefix + alias === root.toLowerCase() && config[guild_id].commands[key].enabled) this.onCommand({
+					root,
+					args,
+					guild,
+					channel,
+					sender: member,
+					guildConfig: config[guild_id],
+				});
 			})
 		})
 	}
