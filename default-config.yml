@@ -9,8 +9,7 @@ theme:
   warn:     '#fbc02d'
 
 # Bot master roles, which role id's have administrative control over bot
-botmasters:
-- '742501135667036200'
+botmasters: []
 
 # Command configuration
 commands:
