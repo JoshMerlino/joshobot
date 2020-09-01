@@ -23,5 +23,8 @@
         "pretty-ms": "^7.0.0",
         "require-context": "^1.1.0",
         "yaml": "^1.10.0"
-    }
+    },
+	"engines": {
+    	"node": "14.x"
+  	}
 }
