@@ -1,6 +1,9 @@
 // Import some modules into the global scope
 global.Discord = require("discord.js");
+global.YAML = require("yaml");
 global.path = require("path");
+global.ms = require("ms");
+global.cms = require("pretty-ms");
 global.fs = require("fs").promises;
 
 // Initialize client instance

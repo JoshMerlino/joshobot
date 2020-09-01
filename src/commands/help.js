@@ -19,6 +19,7 @@ module.exports = class Command extends require("../Command.js") {
 			const embed = new MessageEmbed()
 			.setColor(guildConfig.theme.primary)
 			guildConfig.commands["ban"].enabled && embed.addField("Ban user", `\`${guildConfig.prefix}${guildConfig.commands["ban"].alias[0]} <@user> [deleteMessages = true] [reason]\``, true)
+			guildConfig.commands["mute"].enabled && embed.addField("Mute user", `\`${guildConfig.prefix}${guildConfig.commands["mute"].alias[0]} <@user> [duration = Infinity] [reason]\``, true)
 			return channel.send(embed);
 		}
 

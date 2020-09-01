@@ -16,7 +16,7 @@ module.exports = class Command extends require("../Command.js") {
 					guild.member(userid).ban({ days: deleteMessages == true ? 7:0, reason }).then(function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.success)
-						.setDescription(`User <@!${userid}> was banned${reason === "" ? ".":" for " + reason + "."}`));
+						.setDescription(`User <@!${userid}> was banned. ${reason === "" ? "":"Reason: __" + reason + "__."}`));
 					}).catch(function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.error)

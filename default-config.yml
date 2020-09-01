@@ -26,7 +26,7 @@ commands:
     - halp
     - h
 
-  # Help command configuration
+  # Ban command configuration
   ban:
 
     # Should this command be used?
@@ -35,3 +35,26 @@ commands:
     # Which command should this bind to
     alias:
     - ban
+    - b
+
+  # Mute command configuration
+  mute:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - mute
+    - m
+
+  # Unmute command configuration
+  unmute:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - unmute
+    - um
