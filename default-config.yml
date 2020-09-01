@@ -58,3 +58,14 @@ commands:
     alias:
     - unmute
     - um
+
+  # Purge command configuration
+  purge:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - purge
+    - clear
