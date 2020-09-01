@@ -1,6 +1,4 @@
 module.exports = class Command {
-	key = null;
-	aliases = null;
 	constructor(key, guild_id) {
 		this.key = key;
 		const aliases = config[guild_id].commands[key].alias;
