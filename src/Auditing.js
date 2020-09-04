@@ -15,11 +15,13 @@ module.exports = async function(client, guild) {
 				// Event specific auditing stuff here
 
 				if(eventType === "channelCreate") {
-					message.setDescription(`Channel <#${event.id}>`);
-					message.addField("Channel Properties", `
-						NSFW: ${event.nsfw ? "yes":"no"}
-						Private: ${Array.from(event.permissionOverwrites).length > 0 ? "yes":"no"}
-					`, true);
+					message.setDescription(`Channel: <#${event.id}> (#${event.name})`);
+					message.addField("Channel Properties", `NSFW: ${event.nsfw ? "yes":"no"}\nPrivate: ${Array.from(event.permissionOverwrites).length > 0 ? "yes":"no"}\nSlow Mode: ${event.rateLimitPerUser ? event.rateLimitPerUser : "none"}`, true);
+				}
+
+				if(eventType === "channelDelete") {
+					message.setDescription(`Channel: #${event.name}`);
+					message.addField("Channel Properties", `NSFW: ${event.nsfw ? "yes":"no"}\nPrivate: ${Array.from(event.permissionOverwrites).length > 0 ? "yes":"no"}\nSlow Mode: ${event.rateLimitPerUser ? event.rateLimitPerUser : "none"}`, true);
 				}
 
 				console.log(event);

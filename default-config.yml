@@ -27,7 +27,7 @@ audit:
       title: "Channel Created"
     channelDelete:
       enabled: true
-      color: SEVERE
+      color: ERROR
       title: "Channel Deleted"
 
 # Bot master roles, which role id's have administrative control over bot
