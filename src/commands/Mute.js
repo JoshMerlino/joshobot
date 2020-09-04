@@ -26,11 +26,12 @@ module.exports = class Command extends require("../Command.js") {
 				await role.setHoist(true);
 				await role.setPosition(1);
 				await role.setPermissions(103875585);
-				guild.channels.cache.map(channel => channel.updateOverwrite(role, { SEND_MESSAGES: false }))
 				muterole = role.id;
 				config[guild.id].commands.mute.muterole = muterole;
 				await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
 			}
+
+			guild.channels.cache.map(channel => channel.updateOverwrite(muterole, { SEND_MESSAGES: false }));
 
 			if(user !== "") {
 				try {

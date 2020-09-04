@@ -7,6 +7,8 @@ module.exports = async function() {
 		const config = await (require("./ConfigurationAPI.js")(guild.id));
 		global.config[guild.id] = config;
 
+		if(config.audit.enabled) require("./Auditing.js")(client, guild);
+
 		const commands = await fs.readdir(path.join(APP_ROOT, "src", "commands"));
 		commands.map(command => {
 			const Command = require(path.join(APP_ROOT, "src", "commands", command));

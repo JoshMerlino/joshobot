@@ -24,9 +24,11 @@ audit:
     channelCreate:
       enabled: true
       color: SUCCESS
+      title: "Channel Created"
     channelDelete:
       enabled: true
       color: SEVERE
+      title: "Channel Deleted"
 
 # Bot master roles, which role id's have administrative control over bot
 botmasters: []
