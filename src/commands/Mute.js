@@ -6,7 +6,7 @@ module.exports = class Command extends require("../Command.js") {
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild }) {
 
-		const [ user = "", duration = null, reason = "" ] = args;
+		const [ user = "", duration = null, ...reason = "" ] = args;
 		const userid = user.replace(/[\\<>@#&!]/g, "");
 
 		let mutetime = 0;

@@ -29,6 +29,14 @@ audit:
       enabled: true
       color: ERROR
       title: "Channel Deleted"
+    guildMemberAdd:
+      enabled: true
+      color: SUCCESS
+      title: "Member Joined"
+    guildMemberRemove:
+      enabled: true
+      color: ERROR
+      title: "Member Left"
 
 # Bot master roles, which role id's have administrative control over bot
 botmasters: []
@@ -58,6 +66,17 @@ commands:
     alias:
     - ban
     - b
+
+  # Kick command configuration
+  kick:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - kick
+    - k
 
   # Mute command configuration
   mute:

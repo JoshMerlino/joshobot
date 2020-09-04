@@ -24,6 +24,18 @@ module.exports = async function(client, guild) {
 					message.addField("Channel Properties", `NSFW: ${event.nsfw ? "yes":"no"}\nPrivate: ${Array.from(event.permissionOverwrites).length > 0 ? "yes":"no"}\nSlow Mode: ${event.rateLimitPerUser ? event.rateLimitPerUser : "none"}`, true);
 				}
 
+				if(eventType === "guildMemberAdd") {
+					message.setDescription(`Member: <@!${event.user.id}>`);
+					message.addField("Member Properties", `Username: \`${event.user.tag}\``, true);
+					message.setThumbnail(event.user.displayAvatarURL());
+				}
+
+				if(eventType === "guildMemberRemove") {
+					message.setDescription(`Member: <@!${event.user.id}>`);
+					message.addField("Member Properties", `Username: \`${event.user.tag}\``, true);
+					message.setThumbnail(event.user.displayAvatarURL());
+				}
+
 				console.log(event);
 				audit.send(message);
 
