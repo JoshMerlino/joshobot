@@ -9,6 +9,25 @@ theme:
   severe:   0xf4511e
   warn:     0xfbc02d
 
+# Audit log configuration
+audit:
+
+  # Is auditing enabled?
+  enabled: false
+
+  # Which channel to audit too
+  channel: null
+
+  # Events to log
+  events:
+
+    channelCreate:
+      enabled: true
+      color: SUCCESS
+    channelDelete:
+      enabled: true
+      color: SEVERE
+
 # Bot master roles, which role id's have administrative control over bot
 botmasters: []
 
@@ -70,3 +89,13 @@ commands:
     alias:
     - purge
     - clear
+
+  # Audit command configuration
+  audit:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - audit

@@ -1,6 +1,7 @@
 module.exports = function(guildId) {
 	function merge(current, updates) {
-	    for (key of Object.keys(updates)) {
+		if(current === null) return;
+	    for (const key of Object.keys(updates)) {
 	        if (!current.hasOwnProperty(key) || typeof updates[key] !== 'object') current[key] = updates[key];
 	        else merge(current[key], updates[key]);
 	    }

@@ -18,6 +18,7 @@ module.exports = class Command extends require("../Command.js") {
 		if(args[0].toLowerCase() === "moderator") {
 			const embed = new MessageEmbed()
 			.setColor(guildConfig.theme.primary)
+			guildConfig.commands["audit"].enabled && embed.addField("Auditing", `\`${guildConfig.prefix}${guildConfig.commands["audit"].alias[0]} <channel|enable|disable> [#channel (channel)]\``)
 			guildConfig.commands["ban"].enabled && embed.addField("Ban user", `\`${guildConfig.prefix}${guildConfig.commands["ban"].alias[0]} <@user> [deleteMessages = true] [reason]\``)
 			guildConfig.commands["mute"].enabled && embed.addField("Mute user", `\`${guildConfig.prefix}${guildConfig.commands["mute"].alias[0]} <@user> [duration = Infinity] [reason]\``)
 			guildConfig.commands["unmute"].enabled && embed.addField("Unute user", `\`${guildConfig.prefix}${guildConfig.commands["unmute"].alias[0]} <@user>\``)

@@ -6,12 +6,18 @@ module.exports = class Command extends require("../Command.js") {
 
 	async onCommand({ args, sender, guildConfig, root, channel }) {
 
-		const [ messages ] = args;
+		let [ messages ] = args;
 
 		// Make sure sender is a bot master
 		if(sender._roles.some(role => guildConfig.botmasters.includes(role)) || sender.permissions.has("MANAGE_MESSAGES")) {
 			if (messages || parseInt(messages) <= 0) {
-				await channel.bulkDelete(messages +1);
+				if(messages > 99) {
+					channel.send(new MessageEmbed()
+					.setColor(guildConfig.theme.warn)
+					.setDescription(`Amount of messages to clear can be at most __100__, clearing the 100 most recient messages`));
+					messages = 99;
+				}
+				await channel.bulkDelete(messages);
 			} else {
 				return channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.warn)

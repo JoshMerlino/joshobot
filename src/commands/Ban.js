@@ -4,7 +4,7 @@ module.exports = class Command extends require("../Command.js") {
 		super("ban", ...arguments);
 	}
 
-	onCommand({ args, sender, guildConfig, root, channel, guild }) {
+	async onCommand({ args, sender, guildConfig, root, channel, guild }) {
 
 		const [ user = "", deleteMessages = "false", reason = "" ] = args;
 		const userid = user.replace(/[\\<>@#&!]/g, "");
