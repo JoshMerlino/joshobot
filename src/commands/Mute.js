@@ -6,7 +6,7 @@ module.exports = class Command extends require("../Command.js") {
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild }) {
 
-		const [ user = "", duration = null, ...reason = "" ] = args;
+		const [ user = "", duration = null, ...reason ] = args;
 		const userid = user.replace(/[\\<>@#&!]/g, "");
 
 		let mutetime = 0;
@@ -38,7 +38,7 @@ module.exports = class Command extends require("../Command.js") {
 					guild.member(userid).roles.add(muterole).then(function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.warn)
-						.setDescription(`User <@!${userid}> was muted for ${duration === null ? "for an eternity": cms(mutetime)}. ${reason === "" ? "":"Reason: __" + reason + "__."}`));
+						.setDescription(`User <@!${userid}> was muted for ${duration === null ? "for an eternity": cms(mutetime)}. ${reason.length > 0 ? "":"Reason: __" + reason.join(" ") + "__."}`));
 					}).catch(function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.error)

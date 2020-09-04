@@ -29,6 +29,10 @@ audit:
       enabled: true
       color: ERROR
       title: "Channel Deleted"
+    channelUpdate:
+      enabled: true
+      color: WARN
+      title: "Channel Updated"
     guildMemberAdd:
       enabled: true
       color: SUCCESS
@@ -37,6 +41,10 @@ audit:
       enabled: true
       color: ERROR
       title: "Member Left"
+    guildMemberUpdate:
+      enabled: true
+      color: WARN
+      title: "User Profile Updated"
 
 # Bot master roles, which role id's have administrative control over bot
 botmasters: []

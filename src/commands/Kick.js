@@ -6,17 +6,17 @@ module.exports = class Command extends require("../Command.js") {
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild }) {
 
-		const [ user = "", ...reason = "" ] = args;
+		const [ user = "", ...reason ] = args;
 		const userid = user.replace(/[\\<>@#&!]/g, "");
 
 		// Make sure sender is a bot master
 		if(sender._roles.some(role => guildConfig.botmasters.includes(role)) || sender.permissions.has("KICK_MEMBERS")) {
 			if(user !== "") {
 				try {
-					guild.member(userid).kick(reason).then(function() {
+					guild.member(userid).kick(reason.join(" ")).then(function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.success)
-						.setDescription(`User <@!${userid}> was kicked. ${reason === "" ? "":"Reason: __" + reason + "__."}`));
+						.setDescription(`User <@!${userid}> was kicked. ${reason.length > 0 ? "":"Reason: __" + reason.join(" ") + "__."}`));
 					}).catch(function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.error)

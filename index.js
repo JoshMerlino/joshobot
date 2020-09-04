@@ -2,9 +2,13 @@
 global.Discord = require("discord.js");
 global.YAML = require("yaml");
 global.path = require("path");
+global.dayjs = require("dayjs");
 global.ms = require("ms");
 global.cms = require("pretty-ms");
 global.fs = require("fs").promises;
+
+// Load dayjs plugins
+dayjs.extend(require("dayjs/plugin/relativeTime"));
 
 // Initialize client instance
 const client = new Discord.Client();

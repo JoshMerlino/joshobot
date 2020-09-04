@@ -17,6 +17,7 @@
     },
     "homepage": "https://github.com/JoshMerlino/josh-o-bot#readme",
     "dependencies": {
+        "dayjs": "^1.8.35",
         "discord.js": "^12.3.1",
         "mkdirp": "^1.0.4",
         "ms": "^2.1.2",
@@ -24,7 +25,7 @@
         "require-context": "^1.1.0",
         "yaml": "^1.10.0"
     },
-	"engines": {
-    	"node": "14.x"
-  	}
+    "engines": {
+        "node": "14.x"
+    }
 }

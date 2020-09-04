@@ -4,7 +4,9 @@ module.exports = async function(client, guild) {
 	Object.keys(config[guild.id].audit.events).map(eventType => {
 		const eventConfig = config[guild.id].audit.events[eventType];
 		if (eventConfig.enabled) {
-			client.on(eventType, async function(event) {
+			client.on(eventType, async function() {
+
+				const event = arguments[1] || arguments[0];
 
 				const message = new MessageEmbed()
 				.setColor(config[guild.id].theme[eventConfig.color.toLowerCase()])
@@ -14,25 +16,14 @@ module.exports = async function(client, guild) {
 
 				// Event specific auditing stuff here
 
-				if(eventType === "channelCreate") {
-					message.setDescription(`Channel: <#${event.id}> (#${event.name})`);
-					message.addField("Channel Properties", `NSFW: ${event.nsfw ? "yes":"no"}\nPrivate: ${Array.from(event.permissionOverwrites).length > 0 ? "yes":"no"}\nSlow Mode: ${event.rateLimitPerUser ? event.rateLimitPerUser : "none"}`, true);
+				if(eventType === "channelCreate" || eventType === "channelDelete" || eventType === "channelUpdate") {
+					message.setDescription(`Channel: \`#${event.name}\` (<#${event.id}>)\nNSFW: ${event.nsfw ? "`yes`":"`no`"}\nPrivate: ${Array.from(event.permissionOverwrites).length > 0 ? "`yes`":"`no`"}\nSlow Mode: \`${event.rateLimitPerUser ? event.rateLimitPerUser : "none"}\`\nTopic: \`${event.topic ? event.topic : "none"}\``, true);
 				}
 
-				if(eventType === "channelDelete") {
-					message.setDescription(`Channel: #${event.name}`);
-					message.addField("Channel Properties", `NSFW: ${event.nsfw ? "yes":"no"}\nPrivate: ${Array.from(event.permissionOverwrites).length > 0 ? "yes":"no"}\nSlow Mode: ${event.rateLimitPerUser ? event.rateLimitPerUser : "none"}`, true);
-				}
-
-				if(eventType === "guildMemberAdd") {
-					message.setDescription(`Member: <@!${event.user.id}>`);
-					message.addField("Member Properties", `Username: \`${event.user.tag}\``, true);
-					message.setThumbnail(event.user.displayAvatarURL());
-				}
-
-				if(eventType === "guildMemberRemove") {
-					message.setDescription(`Member: <@!${event.user.id}>`);
-					message.addField("Member Properties", `Username: \`${event.user.tag}\``, true);
+				if(eventType === "guildMemberAdd" || eventType === "guildMemberRemove" || eventType === "guildMemberUpdate") {
+					let roles = [];
+					Array.from(event.guild.members.cache).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {})[event.id]._roles.map(role => roles.push(role));
+					message.setDescription(`Member: ${event.user.toString()}\nUsername: \`${event.user.username}\`\nDiscriminator : \`${event.user.discriminator}\`\nNickname: \`${event.nickname ? event.nickname : "none"}\`\nHuman: \`${event.user.bot ? "no":"yes"}\`\nMember Since: \`${dayjs().from(event.joinedTimestamp, true)}\`\nRoles: <@&${roles.join(">, <@&")}>`, true);
 					message.setThumbnail(event.user.displayAvatarURL());
 				}
 
