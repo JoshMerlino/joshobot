@@ -10,9 +10,7 @@ module.exports = class Command extends require("../Command.js") {
 		const userid = user.replace(/[\\<>@#&!]/g, "");
 
 		let mutetime = 0;
-		if(duration !== null) {
-			mutetime = ms(duration);
-		}
+		if(duration !== null) mutetime = ms(duration);
 
 		// Make sure sender is a bot master
 		if(sender._roles.some(role => guildConfig.botmasters.includes(role)) || sender.permissions.has("MANAGE_ROLES")) {
@@ -22,15 +20,13 @@ module.exports = class Command extends require("../Command.js") {
 				muterole = config[guild.id].commands["mute"].muterole;
 			} else {
 				const role = await guild.roles.create({
-					data: {
-	    				name: "Muted",
-	    				color: 0x607d8b,
-	  				},
+					data: { name: "Muted", color: 0x607d8b },
 	  				reason: "Create muted role",
 				});
 				await role.setHoist(true);
 				await role.setPosition(1);
 				await role.setPermissions(103875585);
+				guild.channels.cache.map(channel => channel.updateOverwrite(role, { SEND_MESSAGES: false }))
 				muterole = role.id;
 				config[guild.id].commands.mute.muterole = muterole;
 				await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
@@ -45,7 +41,7 @@ module.exports = class Command extends require("../Command.js") {
 					}).catch(function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.error)
-						.setDescription(`I do not have permission to mute <@!${userid}>.`));
+						.setDescription(`User <@!${userid}> can not be muted.`));
 					});
 					function unmute() {
 						guild.member(userid).roles.remove(muterole);
