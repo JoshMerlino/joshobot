@@ -20,15 +20,11 @@ module.exports = class Command extends require("../Command.js") {
 				config[guild.id].audit.enabled = true;
 				await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
 
-				if(guildConfig.audit.enabled) {
-					channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.warn)
-					.setDescription(`Audit logging is already enabled.\nDid you mean to set the audit channel with \`${root} channel <#channel>\``));
-				} else {
-					channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.success)
-					.setDescription(`Audit logging enabled.\nSet the audit channel with \`${root} channel #channel\``));
-				}
+				channel.send(new MessageEmbed()
+				.setColor(guildConfig.theme.success)
+				.setDescription(`Audit logging enabled.\nSet the audit channel with \`${root} channel <#channel>\``));
+
+				require("../Auditing.js")(client, guild);
 
 			} else if (subcommand.toLowerCase() === "disable") {
 

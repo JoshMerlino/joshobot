@@ -14,19 +14,21 @@ module.exports = async function() {
 			new Command(guild.id);
 		});
 
+		const audit = global.config[guild.id].audit.enabled ? guild.channels.cache.get(global.config[guild.id].audit.channel) : false
+
 		setInterval(function() {
 
-			function unmute({ moderator, specimen }) {
+			function unmute({ moderator, specimen, channel }) {
 
-				guild.member(specimen).roles.remove(config[guild.id].commands["mute"].muterole);
-				channel.send(new MessageEmbed()
-				.setColor(config[guild.id].theme.success)
+				guild.member(specimen).roles.remove(global.config[guild.id].commands["mute"].muterole);
+				guild.channels.resolve(channel).send(new MessageEmbed()
+				.setColor(global.config[guild.id].theme.success)
 				.setDescription(`<@!${specimen}> is no longer muted.`));
 
 				if(audit) {
-					const User = Array.from(guild.members.cache).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {})[userid].user;
+					const User = Array.from(guild.members.cache).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {})[specimen].user;
 					const message = new MessageEmbed()
-					.setColor(config[guild.id].theme.severe)
+					.setColor(global.config[guild.id].theme.severe)
 					.setTitle("User Unmuted")
 					.setFooter(`ID: ${specimen}`)
 					.setTimestamp()
@@ -37,11 +39,11 @@ module.exports = async function() {
 
 			}
 
-			config[guild.id].commands["mute"].persistance.map(async (entry, key) => {
+			global.config[guild.id].commands["mute"].persistance.map(async (entry, key) => {
 				const { expires } = entry;
 				if(expires < Date.now()) {
-					config[guild.id].commands["mute"].persistance.splice(key, 1);
-					await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
+					global.config[guild.id].commands["mute"].persistance.splice(key, 1);
+					await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(global.config[guild.id]), "utf8");
 					unmute(entry)
 				}
 			})

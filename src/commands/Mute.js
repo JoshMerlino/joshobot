@@ -33,7 +33,7 @@ module.exports = class Command extends require("../Command.js") {
 
 			if(user !== "") {
 				try {
-					guild.member(userid).roles.add(muterole).then(function() {
+					guild.member(userid).roles.add(muterole).then(async function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.warn)
 						.setDescription(`User <@!${userid}> was muted for ${duration === null ? "for an eternity": cms(mutetime)}. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}`));
@@ -50,7 +50,7 @@ module.exports = class Command extends require("../Command.js") {
 							audit.send(message);
 						}
 
-						config[guild.id].commands.mute.persistance.push({ moderator: sender.id, specimen: userid, expires: Date.now() + mutetime });
+						config[guild.id].commands.mute.persistance.push({ moderator: sender.id, specimen: userid, expires: Date.now() + mutetime, channel: channel.id });
 						await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
 
 					}).catch(function() {
@@ -58,7 +58,7 @@ module.exports = class Command extends require("../Command.js") {
 						.setColor(guildConfig.theme.error)
 						.setDescription(`User <@!${userid}> can not be muted.`));
 					});
-					
+
 				} catch (e) {
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.error)
