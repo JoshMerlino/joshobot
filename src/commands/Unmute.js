@@ -30,7 +30,7 @@ module.exports = class Command extends require("../Command.js") {
 						.setFooter(`ID: ${userid}`)
 						.setTimestamp()
 						.setThumbnail(User.displayAvatarURL())
-						.setDescription(`Moderator: <@!${sender.id}>`)
+						.setDescription(`Moderator: <@!${sender.id}>\nUser: <@!${userid}>`)
 						audit.send(message);
 					}
 

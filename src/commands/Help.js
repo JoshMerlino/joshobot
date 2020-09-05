@@ -10,7 +10,7 @@ module.exports = class Command extends require("../Command.js") {
 		if (args.length === 0) {
 			const embed = new MessageEmbed()
 			.setColor(guildConfig.theme.primary)
-			.setFooter(`Created by JoshM#0001`)
+			.setFooter(`Created by JoshM#0001 & Jeremy#2000`)
 			.addField("Moderator commands", `\`${root} moderator\``, true)
 			return channel.send(embed);
 		}
@@ -29,7 +29,7 @@ module.exports = class Command extends require("../Command.js") {
 		// If the subcommand dosnt exist
 		return channel.send(new MessageEmbed()
 		.setColor(guildConfig.theme.warn)
-		.setDescription(`Invalid SubCommand**${args.join(" ")}**.\nUse \`${config.prefix}${config.commands[command].command}\` for a list of commands.`));
+		.setDescription(`Invalid subcommand **${args[0]}**.\nUse \`${config.prefix}${config.commands[command].command}\` for a list of commands.`));
 
 	}
 

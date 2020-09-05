@@ -27,7 +27,7 @@ module.exports = class Command extends require("../Command.js") {
 							.setFooter(`ID: ${userid}`)
 							.setTimestamp()
 							.setThumbnail(User.displayAvatarURL())
-							.setDescription(`Moderator: <@!${sender.id}>\nReason: \`${reason.length === 0 ? "no reason" : reason.join(" ")}\``)
+							.setDescription(`Moderator: <@!${sender.id}>\nUser: <@!${userid}>\n\nReason: \`${reason.length === 0 ? "no reason" : reason.join(" ")}\``)
 							audit.send(message);
 						}
 
