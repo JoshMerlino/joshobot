@@ -165,6 +165,18 @@ commands:
     - botmaster
     - bm
 
+  # Bot Master command configuration
+  lockdown:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - lockdown
+    - lock
+    - ld
+
   # Addemoji command configuration
   addemoji:
 
