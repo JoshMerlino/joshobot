@@ -21,13 +21,12 @@ module.exports = async function(client, guild) {
 				}
 
 				if(eventType === "guildMemberAdd" || eventType === "guildMemberRemove" || eventType === "guildMemberUpdate") {
-					let roles = [];
-					Array.from(event.guild.members.cache).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {})[event.id]._roles.map(role => roles.push(role));
-					message.setDescription(`Member: ${event.user.toString()}\nUsername: \`${event.user.username}\`\nDiscriminator : \`${event.user.discriminator}\`\nNickname: \`${event.nickname ? event.nickname : "none"}\`\nHuman: \`${event.user.bot ? "no":"yes"}\`\nMember Since: \`${dayjs().from(event.joinedTimestamp, true)}\`\nRoles: <@&${roles.join(">, <@&")}>`, true);
+					const roles = Array.from(event.guild.members.cache).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {})[event.id]._roles
+					message.setDescription(`Member: ${event.user.toString()}\nUsername: \`${event.user.username}\`\nDiscriminator : \`#${event.user.discriminator}\`\nNickname: \`${event.nickname ? event.nickname : "none"}\`\nHuman: \`${event.user.bot ? "no":"yes"}\`\nMember For: \`${dayjs().from(event.joinedTimestamp, true)}\`\nRoles: ${roles.length > 0 ? `<@&${roles.join(">, <@&")}>` : "`none`"}`, true);
 					message.setThumbnail(event.user.displayAvatarURL());
 				}
 
-				console.log(event);
+				// console.log(event);
 				audit.send(message);
 
 			});

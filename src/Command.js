@@ -18,7 +18,7 @@ module.exports = class Command {
 			if(guild.id !== guild_id) return;
 
 			aliases.map(alias => {
-				if(config[guild_id].prefix + alias === root.toLowerCase() && config[guild_id].commands[key].enabled) this.onCommand({ root, args, sender: member, channel, guildConfig: config[guild_id], guild });
+				if(config[guild_id].prefix + alias === root.toLowerCase() && config[guild_id].commands[key].enabled) this.onCommand({ root, args, sender: member, channel, guildConfig: config[guild_id], guild, audit: config[guild.id].audit.enabled ? guild.channels.cache.get(config[guild.id].audit.channel) : false });
 			})
 
 		});

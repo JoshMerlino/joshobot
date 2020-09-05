@@ -4,7 +4,7 @@ module.exports = class Command extends require("../Command.js") {
 		super("mute", ...arguments);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild }) {
+	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
 
 		const [ user = "", duration = null, ...reason ] = args;
 		const userid = user.replace(/[\\<>@#&!]/g, "");
@@ -31,15 +31,28 @@ module.exports = class Command extends require("../Command.js") {
 				await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
 			}
 
-			guild.channels.cache.map(channel => channel.updateOverwrite(muterole, { SEND_MESSAGES: false }));
+			guild.channels.cache.map(channel => channel.permissionsFor(muterole).has("SEND_MESSAGES") && channel.updateOverwrite(muterole, { SEND_MESSAGES: false }));
 
 			if(user !== "") {
 				try {
 					guild.member(userid).roles.add(muterole).then(function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.warn)
-						.setDescription(`User <@!${userid}> was muted for ${duration === null ? "for an eternity": cms(mutetime)}. ${reason.length > 0 ? "":"Reason: __" + reason.join(" ") + "__."}`));
-					}).catch(function() {
+						.setDescription(`User <@!${userid}> was muted for ${duration === null ? "for an eternity": cms(mutetime)}. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}`));
+
+						if(audit) {
+							const User = Array.from(guild.members.cache).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {})[userid].user;
+							const message = new MessageEmbed()
+							.setColor(config[guild.id].theme.severe)
+							.setTitle("User Muted")
+							.setFooter(`ID: ${userid}`)
+							.setTimestamp()
+							.setThumbnail(User.displayAvatarURL())
+							.setDescription(`Moderator: <@!${sender.id}>\nReason: \`${reason.length === 0 ? "no reason" : reason.join(" ")}\`\nDuration: \`${duration === null ? "Indeterminatly" : cms(mutetime)}\``)
+							audit.send(message);
+						}
+
+					}).catch(function(e) {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.error)
 						.setDescription(`User <@!${userid}> can not be muted.`));

@@ -119,6 +119,17 @@ commands:
     - purge
     - clear
 
+  # Warn command configuration
+  warn:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - warn
+    - w
+
   # Audit command configuration
   audit:
 
