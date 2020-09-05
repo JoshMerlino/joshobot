@@ -2,9 +2,9 @@ module.exports = async function(client, guild) {
 
 	Object.keys(config[guild.id].audit.events).map(eventType => {
 		client.on(eventType, async function() {
+			const eventConfig = config[guild.id].audit.events[eventType];
 			if (eventConfig.enabled) {
 
-				const eventConfig = config[guild.id].audit.events[eventType];
 				const audit = guild.channels.cache.get(config[guild.id].audit.channel);
 
 				const event = arguments[1] || arguments[0];
@@ -30,7 +30,7 @@ module.exports = async function(client, guild) {
 				}
 
 				if(eventType === "inviteCreate" || eventType === "inviteDelete") {
-					message.setDescription(`User: <@!${event.inviter}>\nChannel: \`#${event.channel.name}\` (<#${event.channel.id}>)\nInvite Code: \`${event.code}\`\nExpires: \`${event.maxAge === 0 ? "never" : dayjs().from(event.maxAge, true)}\``);
+					message.setDescription(`User: <@!${event.inviter}>\nChannel: \`#${event.channel.name}\` (<#${event.channel.id}>)\nInvite Code: \`${event.code}\`\nExpires: \`${event.maxAge === 0 ? "never" : dayjs().from(event.maxAge * 1000, true)}\`\nMaximum Uses: \`${event.maxUses ? event.maxUses:"Unlimited"}\``);
 				}
 
 				// console.log(event);
