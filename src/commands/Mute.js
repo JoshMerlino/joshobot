@@ -20,7 +20,7 @@ module.exports = class Command extends require("../Command.js") {
 				muterole = config[guild.id].commands["mute"].muterole;
 			} else {
 				const role = await guild.roles.create({
-					data: { name: "Muted (via Josh O' Bot)", color: 0x3b464b },
+					data: { name: "Muted (via Josh O' Bot)", color: 0x546e7a },
 	  				reason: "Create muted role",
 				});
 				await role.setPermissions(103875585);
