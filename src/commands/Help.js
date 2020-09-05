@@ -18,11 +18,12 @@ module.exports = class Command extends require("../Command.js") {
 		if(args[0].toLowerCase() === "moderator") {
 			const embed = new MessageEmbed()
 			.setColor(guildConfig.theme.primary)
-			guildConfig.commands["audit"].enabled && embed.addField("Auditing", `\`${guildConfig.prefix}${guildConfig.commands["audit"].alias[0]} <channel|enable|disable> [#channel (channel)]\``)
-			guildConfig.commands["ban"].enabled && embed.addField("Banning", `\`${guildConfig.prefix}${guildConfig.commands["ban"].alias[0]} <@user> (reason)\``)
-			guildConfig.commands["mute"].enabled && embed.addField("Muting", `\`${guildConfig.prefix}${guildConfig.commands["mute"].alias[0]} <@user> (reason)\``)
-			guildConfig.commands["unmute"].enabled && embed.addField("Unmuting", `\`${guildConfig.prefix}${guildConfig.commands["unmute"].alias[0]} <@user>\``)
-			guildConfig.commands["purge"].enabled && embed.addField("Purge messages", `\`${guildConfig.prefix}${guildConfig.commands["purge"].alias[0]} <length>\``)
+			guildConfig.commands["addemoji"].enabled && embed.addField("Add Emoji", `\`${guildConfig.prefix}${guildConfig.commands["addemoji"].alias[0]} <name> <link>\``)
+			guildConfig.commands["audit"].enabled && embed.addField("Manage Audit Log", `\`${guildConfig.prefix}${guildConfig.commands["audit"].alias[0]} <channel|enable|disable> [#channel (channel)]\``)
+			guildConfig.commands["ban"].enabled && embed.addField("Ban Members", `\`${guildConfig.prefix}${guildConfig.commands["ban"].alias[0]} <@user> (reason)\``)
+			guildConfig.commands["mute"].enabled && embed.addField("Mute Members", `\`${guildConfig.prefix}${guildConfig.commands["mute"].alias[0]} <@user> (reason)\``)
+			guildConfig.commands["purge"].enabled && embed.addField("Purge Messages", `\`${guildConfig.prefix}${guildConfig.commands["purge"].alias[0]} <length>\``)
+			guildConfig.commands["unmute"].enabled && embed.addField("Unmute Members", `\`${guildConfig.prefix}${guildConfig.commands["unmute"].alias[0]} <@user>\``)
 			return channel.send(embed);
 		}
 

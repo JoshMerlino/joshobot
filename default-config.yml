@@ -164,3 +164,14 @@ commands:
     alias:
     - botmaster
     - bm
+
+  # Addemoji command configuration
+  addemoji:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - addemoji
+    - ae
