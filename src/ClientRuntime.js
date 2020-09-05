@@ -1,7 +1,6 @@
 module.exports = async function() {
 
-	// Iterate through each guild the bot is connected to
-	client.guilds.cache.map(async guild => {
+	async function activateGuild(guild) {
 
 		// Get configuration for this specific guild
 		const config = await (require("./ConfigurationAPI.js")(guild.id));
@@ -15,6 +14,12 @@ module.exports = async function() {
 			new Command(guild.id);
 		});
 
-	})
+	}
+
+	// Iterate through each guild the bot is connected to
+	client.guilds.cache.map(async guild => await activateGuild(guild));
+
+	// On new guild, activate
+	client.on("guildCreate", async guild => await activateGuild(guild));
 
 };

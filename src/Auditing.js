@@ -1,13 +1,14 @@
 module.exports = async function(client, guild) {
 
-	const audit = guild.channels.cache.get(config[guild.id].audit.channel);
 	Object.keys(config[guild.id].audit.events).map(eventType => {
-		const eventConfig = config[guild.id].audit.events[eventType];
-		if (eventConfig.enabled) {
-			client.on(eventType, async function() {
+		client.on(eventType, async function() {
+			if (eventConfig.enabled) {
+
+				const eventConfig = config[guild.id].audit.events[eventType];
+				const audit = guild.channels.cache.get(config[guild.id].audit.channel);
 
 				const event = arguments[1] || arguments[0];
-				
+
 				if(event.guild.id !== guild.id) return;
 
 				const message = new MessageEmbed()
@@ -31,8 +32,8 @@ module.exports = async function(client, guild) {
 				// console.log(event);
 				audit.send(message);
 
-			});
-		}
+			}
+		});
 	});
 
 }
