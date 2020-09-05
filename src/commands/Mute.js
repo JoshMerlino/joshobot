@@ -20,7 +20,7 @@ module.exports = class Command extends require("../Command.js") {
 				muterole = config[guild.id].commands["mute"].muterole;
 			} else {
 				const role = await guild.roles.create({
-					data: { name: "Muted (via Josh O' Bot)", color: 0x607d8b },
+					data: { name: "Muted (via Josh O' Bot)", color: 0x3b464b },
 	  				reason: "Create muted role",
 				});
 				await role.setPermissions(103875585);
@@ -67,7 +67,7 @@ module.exports = class Command extends require("../Command.js") {
 			} else {
 				return channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <@user> (reason)\``));
+				.setDescription(`Usage:\n\`${root} <@user> [reason]\``));
 			}
 		} else {
 			return channel.send(new MessageEmbed()
