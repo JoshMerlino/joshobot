@@ -7,6 +7,8 @@ module.exports = async function(client, guild) {
 			client.on(eventType, async function() {
 
 				const event = arguments[1] || arguments[0];
+				
+				if(event.guild.id !== guild.id) return;
 
 				const message = new MessageEmbed()
 				.setColor(config[guild.id].theme[eventConfig.color.toLowerCase()])
