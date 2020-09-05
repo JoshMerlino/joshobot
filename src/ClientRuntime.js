@@ -14,6 +14,40 @@ module.exports = async function() {
 			new Command(guild.id);
 		});
 
+		setInterval(function() {
+
+			function unmute({ moderator, specimen }) {
+
+				guild.member(specimen).roles.remove(config[guild.id].commands["mute"].muterole);
+				channel.send(new MessageEmbed()
+				.setColor(config[guild.id].theme.success)
+				.setDescription(`<@!${specimen}> is no longer muted.`));
+
+				if(audit) {
+					const User = Array.from(guild.members.cache).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {})[userid].user;
+					const message = new MessageEmbed()
+					.setColor(config[guild.id].theme.severe)
+					.setTitle("User Unmuted")
+					.setFooter(`ID: ${specimen}`)
+					.setTimestamp()
+					.setThumbnail(User.displayAvatarURL())
+					.setDescription(`Moderator: <@!${moderator}>\nUser: <@!${specimen}>`)
+					audit.send(message);
+				}
+
+			}
+
+			config[guild.id].commands["mute"].persistance.map(async (entry, key) => {
+				const { expires } = entry;
+				if(expires < Date.now()) {
+					config[guild.id].commands["mute"].persistance.splice(key, 1);
+					await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
+					unmute(entry)
+				}
+			})
+
+		}, 1000)
+
 	}
 
 	// Iterate through each guild the bot is connected to

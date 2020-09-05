@@ -22,6 +22,7 @@ module.exports = class Command extends require("../Command.js") {
 					.setColor(guildConfig.theme.success)
 					.setDescription(`<@!${userid}> is no longer muted.`));
 
+					const audit = guild.channels.cache.get(config[guild.id].audit.channel);
 					if(audit) {
 						const User = Array.from(guild.members.cache).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {})[userid].user;
 						const message = new MessageEmbed()

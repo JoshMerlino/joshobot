@@ -105,6 +105,12 @@ commands:
     - mute
     - m
 
+    # Role assigned to muted people
+    muterole: null
+
+    # Persistance so members are unmuted in time
+    persistance: []
+
   # Unmute command configuration
   unmute:
 

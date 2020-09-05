@@ -20,11 +20,9 @@ module.exports = class Command extends require("../Command.js") {
 				muterole = config[guild.id].commands["mute"].muterole;
 			} else {
 				const role = await guild.roles.create({
-					data: { name: "Dumbass Who Got Muted", color: 0x607d8b },
+					data: { name: "Muted (via Josh O' Bot)", color: 0x607d8b },
 	  				reason: "Create muted role",
 				});
-				await role.setHoist(true);
-				await role.setPosition(1);
 				await role.setPermissions(103875585);
 				muterole = role.id;
 				config[guild.id].commands.mute.muterole = muterole;
@@ -52,18 +50,15 @@ module.exports = class Command extends require("../Command.js") {
 							audit.send(message);
 						}
 
-					}).catch(function(e) {
+						config[guild.id].commands.mute.persistance.push({ moderator: sender.id, specimen: userid, expires: Date.now() + mutetime });
+						await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
+
+					}).catch(function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.error)
 						.setDescription(`User <@!${userid}> can not be muted.`));
 					});
-					function unmute() {
-						guild.member(userid).roles.remove(muterole);
-						channel.send(new MessageEmbed()
-						.setColor(guildConfig.theme.success)
-						.setDescription(`<@!${userid}> is no longer muted.`));
-					}
-					duration !== null && setTimeout(unmute, mutetime);
+					
 				} catch (e) {
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.error)
