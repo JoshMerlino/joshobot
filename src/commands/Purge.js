@@ -4,7 +4,7 @@ module.exports = class Command extends require("../Command.js") {
 		super("purge", ...arguments);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, audit }) {
+	async onCommand({ args, sender, guildConfig, root, channel, audit, guild }) {
 
 		let [ messages ] = args;
 
@@ -19,13 +19,11 @@ module.exports = class Command extends require("../Command.js") {
 				}
 
 				if(audit) {
-					const User = Array.from(guild.members.cache).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {})[userid].user;
 					const message = new MessageEmbed()
 					.setColor(config[guild.id].theme.severe)
 					.setTitle("Messages Purged")
 					.setFooter(`ID: ${userid}`)
 					.setTimestamp()
-					.setThumbnail(User.displayAvatarURL())
 					.setDescription(`Moderator: <@!${sender.id}>\nChannel: \`#${channel.name}\` (<#${channel.id}>)\nAmount: \`${messages}\``)
 					audit.send(message);
 				}
