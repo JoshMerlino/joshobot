@@ -23,7 +23,7 @@ module.exports = class Command extends require("../Command.js") {
 				if(guildConfig.audit.enabled) {
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.warn)
-					.setDescription(`Audit logging is already enabled.\nDid you mean to set the audit channel with \`${root} channel #channel\``));
+					.setDescription(`Audit logging is already enabled.\nDid you mean to set the audit channel with \`${root} channel <#channel>\``));
 				} else {
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.success)

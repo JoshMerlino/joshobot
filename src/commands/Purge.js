@@ -4,7 +4,7 @@ module.exports = class Command extends require("../Command.js") {
 		super("purge", ...arguments);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel }) {
+	async onCommand({ args, sender, guildConfig, root, channel, audit }) {
 
 		let [ messages ] = args;
 
