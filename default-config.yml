@@ -52,7 +52,7 @@ audit:
     inviteDelete:
       enabled: true
       color: ERROR
-      title: "Invite Created"
+      title: "Invite Removed"
 
 # Bot master roles, which role id's have administrative control over bot
 botmasters: []

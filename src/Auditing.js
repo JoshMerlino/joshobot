@@ -14,7 +14,7 @@ module.exports = async function(client, guild) {
 				const message = new MessageEmbed()
 				.setColor(config[guild.id].theme[eventConfig.color.toLowerCase()])
 				.setTitle(eventConfig.title)
-				.setFooter(`ID: ${event.id}`)
+				.setFooter(`ID: ${event.id || event.user.id || event.channel.id}`)
 				.setTimestamp()
 
 				// Event specific auditing stuff here
@@ -30,7 +30,7 @@ module.exports = async function(client, guild) {
 				}
 
 				if(eventType === "inviteCreate" || eventType === "inviteDelete") {
-					message.setDescription(`User: <@!${event.inviter}>\nChannel: \`#${event.channel.name}\` (<#${event.channel.id}>)\nInvite Code: \`${event.code}\`\nExpires: \`${event.maxAge === 0 ? "never" : dayjs().from(event.maxAge * 1000, true)}\`\nMaximum Uses: \`${event.maxUses ? event.maxUses:"Unlimited"}\``);
+					message.setDescription(`User: ${event.inviter}\nChannel: \`#${event.channel.name}\` (<#${event.channel.id}>)\nInvite Code: \`${event.code}\`\nExpires: \`${event.expiresTimestamp ? dayjs(event.expiresTimestamp).fromNow() : "Never"}\`\nMaximum Uses: \`${event.maxUses ? event.maxUses:"Unlimited"}\``);
 				}
 
 				// console.log(event);
