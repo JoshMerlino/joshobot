@@ -22,5 +22,8 @@ global.MessageEmbed = Discord.MessageEmbed;
 // Log in with the token in the enviroment file
 client.login(process.env.CLIENT_SECRET);
 
+// Configure client
+client.setMaxListeners(0);
+
 // When the client logs in, initialize the client runtime.
 client.on("ready", require("./src/ClientRuntime.js"));
