@@ -139,3 +139,14 @@ commands:
     # Which command should this bind to
     alias:
     - audit
+
+  # Bot Master command configuration
+  botmaster:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - botmaster
+    - bm
