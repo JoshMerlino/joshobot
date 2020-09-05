@@ -45,6 +45,14 @@ audit:
       enabled: true
       color: WARN
       title: "User Profile Updated"
+    inviteCreate:
+      enabled: true
+      color: SUCCESS
+      title: "Invite Created"
+    inviteDelete:
+      enabled: true
+      color: ERROR
+      title: "Invite Created"
 
 # Bot master roles, which role id's have administrative control over bot
 botmasters: []

@@ -20,13 +20,17 @@ module.exports = async function(client, guild) {
 				// Event specific auditing stuff here
 
 				if(eventType === "channelCreate" || eventType === "channelDelete" || eventType === "channelUpdate") {
-					message.setDescription(`Channel: \`#${event.name}\` (<#${event.id}>)\nNSFW: ${event.nsfw ? "`yes`":"`no`"}\nPrivate: ${Array.from(event.permissionOverwrites).length > 0 ? "`yes`":"`no`"}\nSlow Mode: \`${event.rateLimitPerUser ? event.rateLimitPerUser : "none"}\`\nTopic: \`${event.topic ? event.topic : "none"}\``, true);
+					message.setDescription(`Channel: \`#${event.name}\` (<#${event.id}>)\nNSFW: ${event.nsfw ? "`yes`":"`no`"}\nPrivate: ${Array.from(event.permissionOverwrites).length > 0 ? "`yes`":"`no`"}\nSlow Mode: \`${event.rateLimitPerUser ? event.rateLimitPerUser : "none"}\`\nTopic: \`${event.topic ? event.topic : "none"}\``);
 				}
 
 				if(eventType === "guildMemberAdd" || eventType === "guildMemberRemove" || eventType === "guildMemberUpdate") {
 					const roles = Array.from(event.guild.members.cache).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {})[event.id]._roles
-					message.setDescription(`Member: ${event.user.toString()}\nUsername: \`${event.user.username}\`\nDiscriminator : \`#${event.user.discriminator}\`\nNickname: \`${event.nickname ? event.nickname : "none"}\`\nHuman: \`${event.user.bot ? "no":"yes"}\`\nMember For: \`${dayjs().from(event.joinedTimestamp, true)}\`\nRoles: ${roles.length > 0 ? `<@&${roles.join(">, <@&")}>` : "`none`"}`, true);
+					message.setDescription(`Member: ${event.user.toString()}\nUsername: \`${event.user.username}\`\nDiscriminator : \`#${event.user.discriminator}\`\nNickname: \`${event.nickname ? event.nickname : "none"}\`\nHuman: \`${event.user.bot ? "no":"yes"}\`\nMember For: \`${dayjs().from(event.joinedTimestamp, true)}\`\nRoles: ${roles.length > 0 ? `<@&${roles.join(">, <@&")}>` : "`none`"}`);
 					message.setThumbnail(event.user.displayAvatarURL());
+				}
+
+				if(eventType === "inviteCreate" || eventType === "inviteDelete") {
+					message.setDescription(`User: <@!${event.inviter}>\nChannel: \`#${event.channel.name}\` (<#${event.channel.id}>)\nInvite Code: \`${event.code}\`\nExpires: \`${event.maxAge === 0 ? "never" : dayjs().from(event.maxAge, true)}\``);
 				}
 
 				// console.log(event);
