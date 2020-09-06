@@ -187,3 +187,13 @@ commands:
     alias:
     - addemoji
     - ae
+
+  # Role command configuration
+  role:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - role
