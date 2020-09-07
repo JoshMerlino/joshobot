@@ -31,7 +31,7 @@ module.exports = class Command extends require("../Command.js") {
 						.setTitle("Bot Masters Updated")
 						.setFooter(`ID: ${sender.id}`)
 						.setTimestamp()
-						.setDescription(`Moderator: <@!${sender.id}>\nRoles: ${config[guild.id].botmasters.length > 0 ? `<@&${roles.join(">, <@&")}>` : "`none`"}`)
+						.setDescription(`Moderator: <@!${sender.id}>\nRoles: ${config[guild.id].botmasters.length > 0 ? `<@&${config[guild.id].botmasters.join(">, <@&")}>` : "`none`"}`)
 						audit.send(message);
 					}
 
