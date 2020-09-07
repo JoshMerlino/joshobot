@@ -53,6 +53,14 @@ audit:
       enabled: true
       color: ERROR
       title: "Invite Removed"
+    roleCreate:
+      enabled: true
+      color: SUCCESS
+      title: "Role Created"
+    roleDelete:
+      enabled: true
+      color: ERROR
+      title: "Role Removed"
 
 # Bot master roles, which role id's have administrative control over bot
 botmasters: []

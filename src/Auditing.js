@@ -1,3 +1,9 @@
+function serializePermissions(permissions) {
+	let result = [];
+	for (const key in permissions) result.push(`${permissions[key] ? "+":"-"}${key}`);
+	return result.join(" ");
+}
+
 module.exports = async function(client, guild) {
 
 	Object.keys(config[guild.id].audit.events).map(eventType => {
@@ -32,8 +38,8 @@ module.exports = async function(client, guild) {
 					else 																    lines.push(`NSFW: \`${newEvent.nsfw ? "`yes`":"`no`"}\``);
 					if(newEvent.permissionOverwrites.equals(event.permissionOverwrites)) 	lines.push(`**Private Channel: \`${Array.from(newEvent.permissionOverwrites).length > 0 ? "`yes`":"`no`"}\` Was: ${Array.from(event.permissionOverwrites).length > 0 ? "`yes`":"`no`"}**`)
 					else 																    lines.push(`Private Channel: \`${Array.from(newEvent.permissionOverwrites).length > 0 ? "`yes`":"`no`"}\``);
-					if(event.topic !== newEvent.topic) 										lines.push(`**Topic: \`${newEvent.topic || "*none*"}\` Was: \`${event.topic || "*none*"}\`**`)
-					else 																    lines.push(`Topic: \`${newEvent.topic || "*none*"}\``);
+					if(event.topic !== newEvent.topic) 										lines.push(`**Topic: \`${newEvent.topic || "none"}\` Was: \`${event.topic || "none"}\`**`)
+					else 																    lines.push(`Topic: \`${newEvent.topic || "none"}\``);
 				}
 
 				if(eventType === "guildMemberAdd" || eventType === "guildMemberRemove") {
@@ -74,6 +80,15 @@ module.exports = async function(client, guild) {
 																							lines.push(`Invite Code: \`${event.code}\``);
 																							lines.push(`Expires: \`${event.expiresTimestamp ? dayjs(event.expiresTimestamp).fromNow() : "Never"}\``);
 																							lines.push(`Maximum Uses: \`${event.maxUses ? event.maxUses : "Unlimited"}\``);
+				}
+
+				if(eventType === "roleCreate" || eventType === "roleDelete") {
+																							lines.push(`Name: ${event.name}`);
+																							lines.push(`Color: \`${event.hexColor}\``);
+																							lines.push(`Position: \`${event.position}\``);
+																							lines.push(`Hoisted (Displays Separately): \`${event.hoisted ? "yes":"no"}\``);
+																							lines.push(`Mentionable: \`${event.mentionable ? "yes":"no"}\``);
+																							lines.push(`Permissions: \`${serializePermissions(event.permissions.serialize())}\``);
 				}
 
 				message.setDescription(lines.join("\n"));
