@@ -61,6 +61,10 @@ audit:
       enabled: true
       color: ERROR
       title: "Role Removed"
+    roleUpdate:
+      enabled: true
+      color: WARN
+      title: "Role Updated"
 
 # Bot master roles, which role id's have administrative control over bot
 botmasters: []

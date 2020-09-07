@@ -1,7 +1,13 @@
 function serializePermissions(permissions) {
 	let result = [];
 	for (const key in permissions) result.push(`${permissions[key] ? "+":"-"}${key}`);
-	return result.join(" ");
+	return result.length === 0 ? "DEFAULT" : result.join(" ");
+}
+
+function serializePermissionsDiffrences(perms1, perms2) {
+	let result = {};
+	for (const key in perms1) if(perms1[key] !== perms2[key]) result[key] = perms1[key];
+	return serializePermissions(result);
 }
 
 module.exports = async function(client, guild) {
@@ -86,9 +92,24 @@ module.exports = async function(client, guild) {
 																							lines.push(`Name: ${event.name}`);
 																							lines.push(`Color: \`${event.hexColor}\``);
 																							lines.push(`Position: \`${event.position}\``);
-																							lines.push(`Hoisted (Displays Separately): \`${event.hoisted ? "yes":"no"}\``);
+																							lines.push(`Hoisted (Displays Separately): \`${event.hoist ? "yes":"no"}\``);
 																							lines.push(`Mentionable: \`${event.mentionable ? "yes":"no"}\``);
-																							lines.push(`Permissions: \`${serializePermissions(event.permissions.serialize())}\``);
+																							lines.push(`Permissions: \`${serializePermissionsDiffrences(guild.roles.everyone.permissions.serialize(), event.permissions.serialize())}\``);
+				}
+
+				if(eventType === "roleUpdate") {
+					if(event.name !== newEvent.name)                     					lines.push(`**Name: \`${newEvent.name}\` Was: \`${event.name}\`**`);
+					else                                                                	lines.push(`Name: \`${event.name}\``);
+					if(event.hexColor !== newEvent.hexColor)                     			lines.push(`**Color: \`${newEvent.hexColor}\` Was: \`${event.hexColor}\`**`);
+					else                                                                	lines.push(`Color: \`${event.hexColor}\``);
+					if(event.position !== newEvent.position)                     			lines.push(`**Position: \`${newEvent.position}\` Was: \`${event.position}\`**`);
+					else                                                                	lines.push(`Position: \`${event.position}\``);
+					if(event.hoist !== newEvent.hoist)                     					lines.push(`**Hoisted (Displays Separately): \`${newEvent.hoist ? "yes":"no"}\` Was: \`${event.hoist ? "yes":"no"}\`**`);
+					else                                                                	lines.push(`Hoisted (Displays Separately): \`${event.hoist ? "yes":"no"}\``);
+					if(event.mentionable !== newEvent.mentionable)                     		lines.push(`**Mentionable: \`${newEvent.mentionable ? "yes":"no"}\` Was: \`${event.mentionable ? "yes":"no"}\`**`);
+					else                                                                	lines.push(`Mentionable: \`${event.mentionable ? "yes":"no"}\``);
+					if(serializePermissions(event.permissions.serialize()) === serializePermissions(newEvent.permissions.serialize())) lines.push(`Permissions: \`${serializePermissionsDiffrences(guild.roles.everyone.permissions.serialize(), event.permissions.serialize())}\``);
+					else                                                                	lines.push(`**Permissions: \`${serializePermissionsDiffrences(newEvent.permissions.serialize(), event.permissions.serialize())}\`**`);
 				}
 
 				message.setDescription(lines.join("\n"));
