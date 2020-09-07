@@ -37,7 +37,7 @@ module.exports = async function() {
 
 		}
 
-		setInterval(function() {
+		client.setInterval(function() {
 
 			global.config[guild.id].commands["mute"].persistance.map(async (entry, key) => {
 				const { expires } = entry;
@@ -57,5 +57,11 @@ module.exports = async function() {
 
 	// On new guild, activate
 	client.on("guildCreate", async guild => await activateGuild(guild));
+
+	// On client break, restart
+	client.on("shardDisconnect", async function() {
+		const { exec } = require("child_process");
+		if(process.env.MODE === "PRODUCTION") await exec("sudo service node@josh-o-bot restart");
+	});
 
 };
