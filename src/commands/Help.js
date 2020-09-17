@@ -13,6 +13,7 @@ module.exports = class Command extends require("../Command.js") {
 			const embed = new MessageEmbed()
 			.setColor(guildConfig.theme.primary)
 			.setFooter(`Built by Josh`)
+			.addField("Fun commands", `\`${root} fun\``, true)
 			.addField("Moderator commands", `\`${root} moderator\``, true)
 			return channel.send(embed);
 		}
