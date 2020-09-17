@@ -50,8 +50,10 @@ module.exports = class Command extends require("../Command.js") {
 							audit.send(message);
 						}
 
-						config[guild.id].commands.mute.persistance.push({ moderator: sender.id, specimen: userid, expires: Date.now() + mutetime, channel: channel.id });
-						await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
+						if (duration !== null) {
+							config[guild.id].commands.mute.persistance.push({ moderator: sender.id, specimen: userid, expires: Date.now() + mutetime, channel: channel.id });
+							await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
+						}
 
 					}).catch(function() {
 						channel.send(new MessageEmbed()
