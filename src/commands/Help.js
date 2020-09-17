@@ -17,7 +17,7 @@ module.exports = class Command extends require("../Command.js") {
 			return channel.send(embed);
 		}
 
-		if(subcommand.toLowerCase() === "moderator" || subcommand.toLowerCase() === "mod") {
+		if(subcommand.toLowerCase() === "moderator" || subcommand.toLowerCase() === "mod" || subcommand.toLowerCase() === "m") {
 			const embed = new MessageEmbed()
 			.setColor(guildConfig.theme.primary)
 			guildConfig.commands["addemoji"].enabled && embed.addField("Add Emoji", `\`${guildConfig.prefix}${guildConfig.commands["addemoji"].alias[0]} <name> <link>\``)
