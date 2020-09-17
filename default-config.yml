@@ -209,3 +209,15 @@ commands:
     # Which command should this bind to
     alias:
     - role
+
+  # Role command configuration
+  urban:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - urban
+    - urb
+    - define

@@ -17,7 +17,7 @@ module.exports = class Command extends require("../Command.js") {
 			return channel.send(embed);
 		}
 
-		if(subcommand.toLowerCase() === "moderator" || subcommand.toLowerCase() === "mod" || subcommand.toLowerCase() === "m") {
+		if(["moderator", "mod", "m"].includes(subcommand.toLowerCase())) {
 			const embed = new MessageEmbed()
 			.setColor(guildConfig.theme.primary)
 			guildConfig.commands["addemoji"].enabled && embed.addField("Add Emoji", `\`${guildConfig.prefix}${guildConfig.commands["addemoji"].alias[0]} <name> <link>\``)
@@ -28,8 +28,16 @@ module.exports = class Command extends require("../Command.js") {
 			guildConfig.commands["lockdown"].enabled && embed.addField("Lockdown Channel", `\`${guildConfig.prefix}${guildConfig.commands["lockdown"].alias[0]} [#channel = (current)]\``)
 			guildConfig.commands["mute"].enabled && embed.addField("Mute Members", `\`${guildConfig.prefix}${guildConfig.commands["mute"].alias[0]} <@user> (reason)\``)
 			guildConfig.commands["purge"].enabled && embed.addField("Purge Messages", `\`${guildConfig.prefix}${guildConfig.commands["purge"].alias[0]} <length>\``)
+			guildConfig.commands["role"].enabled && embed.addField("Manage Roles", `\`${guildConfig.prefix}${guildConfig.commands["role"].alias[0]} <add|remove> <@role> <@user>\``)
 			guildConfig.commands["unmute"].enabled && embed.addField("Unmute Members", `\`${guildConfig.prefix}${guildConfig.commands["unmute"].alias[0]} <@user>\``)
 			guildConfig.commands["warn"].enabled && embed.addField("Warn Members", `\`${guildConfig.prefix}${guildConfig.commands["warn"].alias[0]} <@user> [reason]\``)
+			return channel.send(embed);
+		}
+
+		if(["fun", "f"].includes(subcommand.toLowerCase())) {
+			const embed = new MessageEmbed()
+			.setColor(guildConfig.theme.primary)
+			guildConfig.commands["urban"].enabled && embed.addField("Urban", `\`${guildConfig.prefix}${guildConfig.commands["urban"].alias[0]} <term>\``)
 			return channel.send(embed);
 		}
 
