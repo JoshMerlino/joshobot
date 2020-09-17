@@ -24,7 +24,7 @@ module.exports = class Command extends require("../Command.js") {
 		}, function(error, response, body) {
 
 			const embed = new MessageEmbed();
-			embed.setTitle(list[0].word);
+			embed.setTitle(term);
 
 			if (!error) {
 
