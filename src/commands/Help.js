@@ -38,6 +38,7 @@ module.exports = class Command extends require("../Command.js") {
 		if(["fun", "f"].includes(subcommand.toLowerCase())) {
 			const embed = new MessageEmbed()
 			.setColor(guildConfig.theme.primary)
+			guildConfig.commands["image"].enabled && embed.addField("Image Search", `\`${guildConfig.prefix}${guildConfig.commands["image"].alias[0]} <term>\``)
 			guildConfig.commands["urban"].enabled && embed.addField("Urban", `\`${guildConfig.prefix}${guildConfig.commands["urban"].alias[0]} <term>\``)
 			return channel.send(embed);
 		}

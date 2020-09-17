@@ -221,3 +221,14 @@ commands:
     - urban
     - urb
     - define
+
+  # Role command configuration
+  image:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - image
+    - im
