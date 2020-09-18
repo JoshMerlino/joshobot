@@ -12,8 +12,6 @@ module.exports = class Command extends require("../Command.js") {
 		    method: "GET",
 		    url: "https://bing-image-search1.p.rapidapi.com/images/search",
 		    qs: {
-		        offset: "1",
-		        count: "1",
 		        q: term
 		    },
 		    headers: {
@@ -29,8 +27,8 @@ module.exports = class Command extends require("../Command.js") {
 			if (!error) {
 
 				const { value: images } = JSON.parse(body);
-				embed.setColor(`#${images[0].accentColor}`);
-				embed.setImage(images[0].contentUrl)
+				embed.setColor(`#${images[Math.floor(Math.random() * images.length)].accentColor}`);
+				embed.setImage(images[Math.floor(Math.random() * images.length)].contentUrl)
 
 			}
 
