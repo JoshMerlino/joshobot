@@ -8,6 +8,7 @@ theme:
   error:    0xd32f2f
   severe:   0xf4511e
   warn:     0xfbc02d
+  info:     0x4dd0e1
 
 # Audit log configuration
 audit:
@@ -232,3 +233,14 @@ commands:
     alias:
     - image
     - im
+
+  # Poll command configuration
+  poll:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - poll
+    - pl
