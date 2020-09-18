@@ -11,9 +11,7 @@ module.exports = class Command extends require("../Command.js") {
 		request({
 		    method: "GET",
 		    url: "https://bing-image-search1.p.rapidapi.com/images/search",
-		    qs: {
-		        q: term
-		    },
+		    qs: { q: term },
 		    headers: {
 		        "x-rapidapi-host": "bing-image-search1.p.rapidapi.com",
 		        "x-rapidapi-key": process.env.RAPID_API_KEY,
