@@ -4,7 +4,9 @@ The all in one Discord bot!
 Invite [Josh O' Bot](https://discord.com/api/oauth2/authorize?client_id=748971236276699247&permissions=8&scope=bot) to your Discord Server!
 
 # Running the bot
-To run the bot in development mode, use the following start script. ⚠ Be sure to replace `...` with the approperiate variables.
+ℹ To run the bot in development mode, use the following start script.
+
+⚠ Be sure to replace `...` with the approperiate variables.
 ```bash
 #!/bin/bash
 cd "$(dirname "$0")"
