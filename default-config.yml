@@ -210,7 +210,7 @@ commands:
     alias:
     - role
 
-  # Role command configuration
+  # Urban Dictionary command configuration
   urban:
 
     # Should this command be used?
@@ -222,7 +222,7 @@ commands:
     - urb
     - define
 
-  # Role command configuration
+  # Image Lookup command configuration
   image:
 
     # Should this command be used?
