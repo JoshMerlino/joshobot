@@ -25,8 +25,9 @@ module.exports = class Command extends require("../Command.js") {
 			if (!error) {
 
 				const { value: images } = JSON.parse(body);
-				embed.setColor(`#${images[Math.floor(Math.random() * images.length)].accentColor}`);
-				embed.setImage(images[Math.floor(Math.random() * images.length)].contentUrl)
+				const image = images[Math.floor(Math.random() * images.length)];
+				embed.setColor(`#${image.accentColor}`);
+				embed.setImage(image.contentUrl);
 
 			}
 
