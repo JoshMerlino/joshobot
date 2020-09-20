@@ -278,3 +278,13 @@ commands:
     alias:
     - advice
     - adv
+
+  # 8Ball command configuration
+  8ball:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - 8ball
