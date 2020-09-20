@@ -40,6 +40,7 @@ module.exports = class Command extends require("../Command.js") {
 			const embed = new MessageEmbed()
 			.setColor(guildConfig.theme.primary)
 			.setFooter(sender.displayName, sender.user.displayAvatarURL())
+			guildConfig.commands["avatar"].enabled && embed.addField("Avatar", `\`${guildConfig.prefix}${guildConfig.commands["avatar"].alias[0]} (@user = you)\``)
 			guildConfig.commands["color"].enabled && embed.addField("Color", `\`${guildConfig.prefix}${guildConfig.commands["color"].alias[0]} [hex code | @user]\``)
 			guildConfig.commands["image"].enabled && embed.addField("Image Search", `\`${guildConfig.prefix}${guildConfig.commands["image"].alias[0]} <term>\``)
 			guildConfig.commands["poll"].enabled && embed.addField("Create Poll", `\`${guildConfig.prefix}${guildConfig.commands["poll"].alias[0]} <message>\``)
