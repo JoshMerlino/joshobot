@@ -20,3 +20,29 @@ npm install --save
 
 ./node_modules/.bin/nodemon .
 ```
+
+# Adding Commands
+1. Make sure you add keys to the `commands` section in `default-config.yml`
+```yaml
+new-command:
+  enabled: true
+  alias:
+  - new-command
+  - newcommand
+  - nc
+  - ...
+```
+
+2. Make a new file in the `src/commands` (The name of the file does not matter as long is it is a `.js` file)
+3. Follow this format in the new command file
+```javascript
+module.exports = class Command extends require("../Command.js") {
+	constructor() {
+		super(<COMMAND CONFIGURATION SECTION>, ...arguments);
+	}
+
+	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
+    // TODO:
+	}
+}
+```
