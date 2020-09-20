@@ -256,3 +256,14 @@ commands:
     - color
     - col
     - c
+
+  # color command configuration
+  avatar:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - avatar
+    - av
