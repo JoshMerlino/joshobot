@@ -257,7 +257,7 @@ commands:
     - col
     - c
 
-  # color command configuration
+  # Avatar command configuration
   avatar:
 
     # Should this command be used?
@@ -267,3 +267,14 @@ commands:
     alias:
     - avatar
     - av
+
+  # Advice command configuration
+  advice:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - advice
+    - adv
