@@ -14,7 +14,8 @@ module.exports = class Command extends require("../Command.js") {
 			if (subcommand === null) {
 				channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <channel|enable|disable> [#channel (channel)]\``));
+				.setDescription(`Usage:\n\`${root} <channel|enable|disable> [#channel (channel)]\``)
+				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 			} else if (subcommand.toLowerCase() === "enable") {
 
 				config[guild.id].audit.enabled = true;
@@ -22,7 +23,8 @@ module.exports = class Command extends require("../Command.js") {
 
 				channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.success)
-				.setDescription(`Audit logging enabled.\nSet the audit channel with \`${root} channel <#channel>\``));
+				.setDescription(`Audit logging enabled.\nSet the audit channel with \`${root} channel <#channel>\``)
+				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 				require("../Auditing.js")(client, guild);
 
@@ -33,14 +35,16 @@ module.exports = class Command extends require("../Command.js") {
 
 				channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.success)
-				.setDescription(`Disabled auditing.`));
+				.setDescription(`Disabled auditing.`)
+				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 			} else if (subcommand.toLowerCase() === "channel") {
 
 				if(target === null) {
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.warn)
-					.setDescription(`Usage:\n\`${root} channel <#channel>\``));
+					.setDescription(`Usage:\n\`${root} channel <#channel>\``)
+					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 				} else {
 
 					config[guild.id].audit.enabled = true;
@@ -49,7 +53,8 @@ module.exports = class Command extends require("../Command.js") {
 
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.success)
-					.setDescription(`Audit logging enabled in the ${target} channel.`));
+					.setDescription(`Audit logging enabled in the ${target} channel.`)
+					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 				}
 
@@ -58,7 +63,8 @@ module.exports = class Command extends require("../Command.js") {
 		} else {
 			return channel.send(new MessageEmbed()
 			.setColor(guildConfig.theme.error)
-			.setDescription(`You my friend, are not a bot master.`));
+			.setDescription(`You my friend, are not a bot master.`)
+			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 		}
 
 	}

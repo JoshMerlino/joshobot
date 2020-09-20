@@ -28,6 +28,7 @@ module.exports = class Command extends require("../Command.js") {
 				const image = images[Math.floor(Math.random() * images.length)];
 				embed.setColor(`#${image.accentColor}`);
 				embed.setImage(image.contentUrl);
+				embed.setFooter(sender.displayName, sender.user.displayAvatarURL())
 
 			}
 

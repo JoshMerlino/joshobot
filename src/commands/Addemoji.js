@@ -32,19 +32,22 @@ module.exports = class Command extends require("../Command.js") {
 				}).catch(function() {
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.error)
-					.setDescription(`Emoji :\`${name}\`: could not be created!\nHave you used up all the emoji slots for this server?`));
+					.setDescription(`Emoji :\`${name}\`: could not be created!\nHave you used up all the emoji slots for this server?`)
+					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 				})
 
 			} else {
 				channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <name> <link>\``));
+				.setDescription(`Usage:\n\`${root} <name> <link>\``)
+				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 			}
 
 		} else {
 			channel.send(new MessageEmbed()
 			.setColor(guildConfig.theme.error)
-			.setDescription(`You my friend, are not a bot master.`));
+			.setDescription(`You my friend, are not a bot master.`)
+			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 		}
 
 	}

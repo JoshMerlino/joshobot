@@ -17,7 +17,8 @@ module.exports = class Command extends require("../Command.js") {
 
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.success)
-						.setDescription(`User <@!${userid}> was banned. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}`));
+						.setDescription(`User <@!${userid}> was banned. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}`)
+						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 						if(audit) {
 							const User = Array.from(guild.members.cache).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {})[userid].user;
@@ -34,22 +35,26 @@ module.exports = class Command extends require("../Command.js") {
 					}).catch(function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.error)
-						.setDescription(`I do not have permission to ban <@!${userid}>.`));
+						.setDescription(`I do not have permission to ban <@!${userid}>.`)
+						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 					})
 				} catch (e) {
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.error)
-					.setDescription(`<@!${userid}> has already been banned or left on their own.`));
+					.setDescription(`<@!${userid}> has already been banned or left on their own.`)
+					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 				}
 			} else {
 				return channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <@user> [deleteMessages = false] [reason]\``));
+				.setDescription(`Usage:\n\`${root} <@user> [deleteMessages = false] [reason]\``)
+				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 			}
 		} else {
 			return channel.send(new MessageEmbed()
 			.setColor(guildConfig.theme.error)
-			.setDescription(`You my friend, are not a bot master.`));
+			.setDescription(`You my friend, are not a bot master.`)
+			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 		}
 
 	}

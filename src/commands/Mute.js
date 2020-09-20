@@ -36,7 +36,8 @@ module.exports = class Command extends require("../Command.js") {
 					guild.member(userid).roles.add(muterole).then(async function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.warn)
-						.setDescription(`User <@!${userid}> was muted for ${duration === null ? "for an eternity": cms(mutetime)}. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}`));
+						.setDescription(`User <@!${userid}> was muted for ${duration === null ? "for an eternity": cms(mutetime)}. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}`)
+						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 						if(audit) {
 							const User = Array.from(guild.members.cache).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {})[userid].user;
@@ -58,23 +59,27 @@ module.exports = class Command extends require("../Command.js") {
 					}).catch(function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.error)
-						.setDescription(`User <@!${userid}> can not be muted.`));
+						.setDescription(`User <@!${userid}> can not be muted.`)
+						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 					});
 
 				} catch (e) {
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.error)
-					.setDescription(`<@!${userid}> can not be muted.`));
+					.setDescription(`<@!${userid}> can not be muted.`)
+					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 				}
 			} else {
 				return channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <@user> [reason]\``));
+				.setDescription(`Usage:\n\`${root} <@user> [reason]\``)
+				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 			}
 		} else {
 			return channel.send(new MessageEmbed()
 			.setColor(guildConfig.theme.error)
-			.setDescription(`You my friend, are not a bot master.`));
+			.setDescription(`You my friend, are not a bot master.`)
+			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 		}
 
 	}

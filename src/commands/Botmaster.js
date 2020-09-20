@@ -15,7 +15,8 @@ module.exports = class Command extends require("../Command.js") {
 			if(role === "" || subcommand === "") {
 				return channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <add|remove> <@role>\``));
+				.setDescription(`Usage:\n\`${root} <add|remove> <@role>\``)
+				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 			} else {
 				if(subcommand.toLowerCase() === "add") {
 
@@ -23,7 +24,8 @@ module.exports = class Command extends require("../Command.js") {
 					await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.success)
-					.setDescription(`<@&${roleid}> is now a bot master.`));
+					.setDescription(`<@&${roleid}> is now a bot master.`)
+					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 					if(audit) {
 						const message = new MessageEmbed()
@@ -42,7 +44,8 @@ module.exports = class Command extends require("../Command.js") {
 					await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.success)
-					.setDescription(`<@&${roleid}> is no longer a bot master.`));
+					.setDescription(`<@&${roleid}> is no longer a bot master.`)
+					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 					if(audit) {
 						const message = new MessageEmbed()
@@ -57,14 +60,16 @@ module.exports = class Command extends require("../Command.js") {
 				} else {
 					return channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.warn)
-					.setDescription(`Usage:\n\`${root} <add|remove> <@role>\``));
+					.setDescription(`Usage:\n\`${root} <add|remove> <@role>\``)
+					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 				}
 			}
 
 		} else {
 			return channel.send(new MessageEmbed()
 			.setColor(guildConfig.theme.error)
-			.setDescription(`You my friend, are not a bot master.`));
+			.setDescription(`You my friend, are not a bot master.`)
+			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 		}
 
 	}

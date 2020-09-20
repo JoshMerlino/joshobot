@@ -20,7 +20,8 @@ module.exports = class Command extends require("../Command.js") {
 					guild.member(userid).roles.remove(muterole);
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.success)
-					.setDescription(`<@!${userid}> is no longer muted.`));
+					.setDescription(`<@!${userid}> is no longer muted.`)
+					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 					const audit = guild.channels.cache.get(config[guild.id].audit.channel);
 					if(audit) {
@@ -38,17 +39,20 @@ module.exports = class Command extends require("../Command.js") {
 				} catch (e) {
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.error)
-					.setDescription(`<@!${userid}> can not be unmuted.`));
+					.setDescription(`<@!${userid}> can not be unmuted.`)
+					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 				}
 			} else {
 				return channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <@user>\``));
+				.setDescription(`Usage:\n\`${root} <@user>\``)
+				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 			}
 		} else {
 			return channel.send(new MessageEmbed()
 			.setColor(guildConfig.theme.error)
-			.setDescription(`You my friend, are not a bot master.`));
+			.setDescription(`You my friend, are not a bot master.`)
+			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 		}
 
 	}

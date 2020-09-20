@@ -16,18 +16,21 @@ module.exports = class Command extends require("../Command.js") {
 				target.overwritePermissions([{ id: guild.roles.everyone, deny: ["SEND_MESSAGES"] }])
 				channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.warn)
-				.setDescription(`Channel ${target.toString()} is now locked down (read only).`));
+				.setDescription(`Channel ${target.toString()} is now locked down`)
+				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 			} else {
 				target.overwritePermissions([{ id: guild.roles.everyone, allow: ["SEND_MESSAGES"] }])
 				channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.success)
-				.setDescription(`Channel ${target.toString()} is no longer locked down (read only).`));
+				.setDescription(`Channel ${target.toString()} is no longer locked down`)
+				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 			}
 
 		} else {
 			channel.send(new MessageEmbed()
 			.setColor(guildConfig.theme.error)
-			.setDescription(`You my friend, are not a bot master.`));
+			.setDescription(`You my friend, are not a bot master.`)
+			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 		}
 
 	}

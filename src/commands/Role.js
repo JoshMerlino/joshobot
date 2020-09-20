@@ -16,7 +16,8 @@ module.exports = class Command extends require("../Command.js") {
 			if(role === "" || subcommand === "" || user === null) {
 				return channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <add|remove> <@role> <@user>\``));
+				.setDescription(`Usage:\n\`${root} <add|remove> <@role> <@user>\``)
+				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 			} else {
 
 				if (subcommand.toLowerCase() === "add") {
@@ -24,11 +25,13 @@ module.exports = class Command extends require("../Command.js") {
 					guild.member(userid).roles.add(roleid).then(function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.success)
-						.setDescription(`Added <@&${roleid}> to <@!${userid}>`));
+						.setDescription(`Added <@&${roleid}> to <@!${userid}>`)
+						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 					}).catch(function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.error)
-						.setDescription(`Missing Permissions.\nIs the ${guild.member(client.user).roles.highest.toString()} role higher than <@&${roleid}> role?`));
+						.setDescription(`Missing Permissions.\nIs the ${guild.member(client.user).roles.highest.toString()} role higher than <@&${roleid}> role?`)
+						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 					})
 
 				} else if (subcommand.toLowerCase() === "remove") {
@@ -36,24 +39,28 @@ module.exports = class Command extends require("../Command.js") {
 					guild.member(userid).roles.remove(roleid).then(function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.success)
-						.setDescription(`Removed <@&${roleid}> from <@!${userid}>`));
+						.setDescription(`Removed <@&${roleid}> from <@!${userid}>`)
+						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 					}).catch(function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.error)
-						.setDescription(`Missing Permissions.\nIs the ${guild.member(client.user).roles.highest.toString()} role higher than <@&${roleid}> role?`));
+						.setDescription(`Missing Permissions.\nIs the ${guild.member(client.user).roles.highest.toString()} role higher than <@&${roleid}> role?`)
+						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 					})
 
 				} else {
 					return channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.warn)
-					.setDescription(`Usage:\n\`${root} <add|remove> <@role> <@user>\``));
+					.setDescription(`Usage:\n\`${root} <add|remove> <@role> <@user>\``)
+					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 				}
 			}
 
 		} else {
 			return channel.send(new MessageEmbed()
 			.setColor(guildConfig.theme.error)
-			.setDescription(`You my friend, are not a bot master.`));
+			.setDescription(`You my friend, are not a bot master.`)
+			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 		}
 
 	}

@@ -21,6 +21,7 @@ module.exports = class Command extends require("../Command.js") {
 		if(["moderator", "mod", "m"].includes(subcommand.toLowerCase())) {
 			const embed = new MessageEmbed()
 			.setColor(guildConfig.theme.primary)
+			.setFooter(sender.displayName, sender.user.displayAvatarURL())
 			guildConfig.commands["addemoji"].enabled && embed.addField("Add Emoji", `\`${guildConfig.prefix}${guildConfig.commands["addemoji"].alias[0]} <name> <message link>\``)
 			guildConfig.commands["audit"].enabled && embed.addField("Manage Audit Log", `\`${guildConfig.prefix}${guildConfig.commands["audit"].alias[0]} <channel|enable|disable> [#channel (channel)]\``)
 			guildConfig.commands["ban"].enabled && embed.addField("Ban Members", `\`${guildConfig.prefix}${guildConfig.commands["ban"].alias[0]} <@user> (reason)\``)
@@ -38,6 +39,7 @@ module.exports = class Command extends require("../Command.js") {
 		if(["fun", "f"].includes(subcommand.toLowerCase())) {
 			const embed = new MessageEmbed()
 			.setColor(guildConfig.theme.primary)
+			.setFooter(sender.displayName, sender.user.displayAvatarURL())
 			guildConfig.commands["color"].enabled && embed.addField("Color", `\`${guildConfig.prefix}${guildConfig.commands["color"].alias[0]} [hex code | @user]\``)
 			guildConfig.commands["image"].enabled && embed.addField("Image Search", `\`${guildConfig.prefix}${guildConfig.commands["image"].alias[0]} <term>\``)
 			guildConfig.commands["poll"].enabled && embed.addField("Create Poll", `\`${guildConfig.prefix}${guildConfig.commands["poll"].alias[0]} <message>\``)
@@ -48,6 +50,7 @@ module.exports = class Command extends require("../Command.js") {
 		// If the subcommand dosnt exist
 		return channel.send(new MessageEmbed()
 		.setColor(guildConfig.theme.warn)
+		.setFooter(sender.displayName, sender.user.displayAvatarURL())
 		.setDescription(`Invalid subcommand **${args[0]}**.\nUse \`${config.prefix}${config.commands[command].command}\` for a list of commands.`));
 
 	}

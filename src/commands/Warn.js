@@ -14,7 +14,8 @@ module.exports = class Command extends require("../Command.js") {
 			if(user !== "") {
 				channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.severe)
-				.setDescription(`User <@!${userid}> has been warned. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}`));
+				.setDescription(`User <@!${userid}> has been warned. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}`)
+				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 				if(audit) {
 					const User = Array.from(guild.members.cache).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {})[userid].user;
@@ -31,12 +32,14 @@ module.exports = class Command extends require("../Command.js") {
 			} else {
 				return channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <@user> [reason]\``));
+				.setDescription(`Usage:\n\`${root} <@user> [reason]\``)
+				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 			}
 		} else {
 			return channel.send(new MessageEmbed()
 			.setColor(guildConfig.theme.error)
-			.setDescription(`You my friend, are not a bot master.`));
+			.setDescription(`You my friend, are not a bot master.`)
+			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 		}
 
 	}
