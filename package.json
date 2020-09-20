@@ -19,6 +19,7 @@
     "dependencies": {
         "dayjs": "^1.8.35",
         "discord.js": "^12.3.1",
+        "is-image-url": "^1.1.8",
         "mkdirp": "^1.0.4",
         "ms": "^2.1.2",
         "node-fetch": "^2.6.1",

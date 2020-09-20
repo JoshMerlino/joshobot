@@ -300,3 +300,13 @@ commands:
     - user
     - userinfo
     - ui
+
+  # Reddit command configuration
+  reddit:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - reddit

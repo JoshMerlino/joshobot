@@ -25,6 +25,7 @@ module.exports = class Command {
 						args,
 						sender: member,
 						channel,
+						message,
 						guildConfig: config[guild_id],
 						guild,
 						audit: config[guild.id].audit.enabled ? guild.channels.cache.get(config[guild.id].audit.channel) : false
