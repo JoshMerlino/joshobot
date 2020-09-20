@@ -17,8 +17,9 @@ module.exports = class Command {
 
 			if(guild.id !== guild_id) return;
 
-			aliases.map(alias => {
+			aliases.map(async alias => {
 				if(config[guild_id].prefix + alias === root.toLowerCase() && config[guild_id].commands[key].enabled) {
+					await channel.bulkDelete(1);
 					this.onCommand({
 						root,
 						args,
