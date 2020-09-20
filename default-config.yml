@@ -244,3 +244,14 @@ commands:
     alias:
     - poll
     - pl
+
+  # color command configuration
+  color:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - col
+    - c
