@@ -6,7 +6,7 @@ module.exports = class Command extends require("../Command.js") {
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild }) {
 
-		const { slip } =await fetch(`https://api.adviceslip.com/advice`).then(resp => resp.json());
+		const { slip } = await fetch(`https://api.adviceslip.com/advice`).then(resp => resp.json());
 
 		const embed = new MessageEmbed();
 		embed.setColor(guildConfig.theme.info);
