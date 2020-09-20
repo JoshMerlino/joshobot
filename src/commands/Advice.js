@@ -6,7 +6,6 @@ module.exports = class Command extends require("../Command.js") {
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild }) {
 
-		const user = guild.member(args[0] ? args[0].replace(/[\\<>@#&!]/g, "") : sender.id);
 		const { slip } =await fetch(`https://api.adviceslip.com/advice`).then(resp => resp.json());
 
 		const embed = new MessageEmbed();
