@@ -253,5 +253,6 @@ commands:
 
     # Which command should this bind to
     alias:
+    - color
     - col
     - c
