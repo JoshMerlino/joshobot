@@ -12,7 +12,7 @@ module.exports = class Command extends require("../Command.js") {
 		if (args.length === 0) {
 			const embed = new MessageEmbed()
 			.setColor(guildConfig.theme.primary)
-			.setFooter(`Built by Josh`)
+			.setFooter(`Built by Josh and Jeremy`)
 			.addField("Fun commands", `\`${root} fun\``, true)
 			.addField("Moderator commands", `\`${root} moderator\``, true)
 			return channel.send(embed);
@@ -21,7 +21,7 @@ module.exports = class Command extends require("../Command.js") {
 		if(["moderator", "mod", "m"].includes(subcommand.toLowerCase())) {
 			const embed = new MessageEmbed()
 			.setColor(guildConfig.theme.primary)
-			guildConfig.commands["addemoji"].enabled && embed.addField("Add Emoji", `\`${guildConfig.prefix}${guildConfig.commands["addemoji"].alias[0]} <name> <link>\``)
+			guildConfig.commands["addemoji"].enabled && embed.addField("Add Emoji", `\`${guildConfig.prefix}${guildConfig.commands["addemoji"].alias[0]} <name> <message link>\``)
 			guildConfig.commands["audit"].enabled && embed.addField("Manage Audit Log", `\`${guildConfig.prefix}${guildConfig.commands["audit"].alias[0]} <channel|enable|disable> [#channel (channel)]\``)
 			guildConfig.commands["ban"].enabled && embed.addField("Ban Members", `\`${guildConfig.prefix}${guildConfig.commands["ban"].alias[0]} <@user> (reason)\``)
 			guildConfig.commands["botmaster"].enabled && embed.addField("Bot Masters", `\`${guildConfig.prefix}${guildConfig.commands["botmaster"].alias[0]} <@role>\``)
@@ -41,6 +41,7 @@ module.exports = class Command extends require("../Command.js") {
 			guildConfig.commands["image"].enabled && embed.addField("Image Search", `\`${guildConfig.prefix}${guildConfig.commands["image"].alias[0]} <term>\``)
 			guildConfig.commands["poll"].enabled && embed.addField("Create Poll", `\`${guildConfig.prefix}${guildConfig.commands["poll"].alias[0]} <message>\``)
 			guildConfig.commands["urban"].enabled && embed.addField("Urban Dictionary", `\`${guildConfig.prefix}${guildConfig.commands["urban"].alias[0]} <term>\``)
+			guildConfig.commands["color"].enabled && embed.addField("Color", `\`${guildConfig.prefix}${guildConfig.commands["color"].alias[0]} <hex code>\``)
 			return channel.send(embed);
 		}
 
