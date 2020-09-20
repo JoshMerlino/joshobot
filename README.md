@@ -38,7 +38,7 @@ new-command:
 ```javascript
 module.exports = class Command extends require("../Command.js") {
 	constructor() {
-		super(/** <COMMAND CONFIGURATION SECTION> EXAMPLE: "new-command" **/, ...arguments);
+		super("new-command" /** <COMMAND CONFIGURATION SECTION> **/, ...arguments);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
