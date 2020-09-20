@@ -288,3 +288,15 @@ commands:
     # Which command should this bind to
     alias:
     - 8ball
+
+  # User command configuration
+  user:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - user
+    - userinfo
+    - ui

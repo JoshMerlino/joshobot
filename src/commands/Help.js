@@ -47,6 +47,7 @@ module.exports = class Command extends require("../Command.js") {
 			guildConfig.commands["image"].enabled && embed.addField("Image Search", `\`${guildConfig.prefix}${guildConfig.commands["image"].alias[0]} <term>\``)
 			guildConfig.commands["poll"].enabled && embed.addField("Create Poll", `\`${guildConfig.prefix}${guildConfig.commands["poll"].alias[0]} <message>\``)
 			guildConfig.commands["urban"].enabled && embed.addField("Urban Dictionary", `\`${guildConfig.prefix}${guildConfig.commands["urban"].alias[0]} <term>\``)
+			guildConfig.commands["user"].enabled && embed.addField("User Information", `\`${guildConfig.prefix}${guildConfig.commands["user"].alias[0]} (@user = you)\``)
 			return channel.send(embed);
 		}
 
