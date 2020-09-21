@@ -50,6 +50,14 @@ module.exports = async function() {
 
 		}, 1000)
 
+		client.setInterval(async function() {
+
+			// Refresh configuration for this specific guild
+			const config = await (require("./ConfigurationAPI.js")(guild.id));
+			global.config[guild.id] = config;
+
+		}, 1000);
+
 	}
 
 	// Iterate through each guild the bot is connected to
@@ -67,8 +75,7 @@ module.exports = async function() {
 	(function setPresense() {
 		client.user.setPresence({
 		    activity: {
-		        name: `?help | ${Object.keys(global.config).length + 1} Servers`,
-		        application: "github.com",
+		        name: `?help | ${Object.keys(global.config).length + 1} Servers | josho.bot.nu`,
 				type: "PLAYING",
 		    },
 		    status: "online"
