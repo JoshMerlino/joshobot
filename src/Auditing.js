@@ -56,7 +56,7 @@ module.exports = async function(client, guild) {
 																							lines.push(`Discriminator : \`#${event.user.discriminator}\``);
 																							lines.push(`Nickname: \`${event.nickname ? event.nickname : "none"}\``);
 																							lines.push(`Human: \`${event.user.bot ? "no":"yes"}\``);
-																							lines.push(`Member For: \`${dayjs().from(event.joinedTimestamp, true)}\``);
+																							lines.push(`${eventType === "guildMemberAdd" ? "Discord" : "Server"} Member for: \`${dayjs().from(eventType === "guildMemberAdd" ? event.user.createdTimestamp : event.joinedTimestamp, true)}\``);
 																							lines.push(`Roles: ${roles.length > 0 ? `<@&${roles.join(">, <@&")}>` : "`none`"}`);
 				}
 
@@ -102,8 +102,6 @@ module.exports = async function(client, guild) {
 					else                                                                	lines.push(`Name: \`${event.name}\``);
 					if(event.hexColor !== newEvent.hexColor)                     			lines.push(`**Color: \`${newEvent.hexColor}\` Was: \`${event.hexColor}\`**`);
 					else                                                                	lines.push(`Color: \`${event.hexColor}\``);
-					if(event.position !== newEvent.position)                     			lines.push(`**Position: \`${newEvent.position}\` Was: \`${event.position}\`**`);
-					else                                                                	lines.push(`Position: \`${event.position}\``);
 					if(event.hoist !== newEvent.hoist)                     					lines.push(`**Hoisted (Displays Separately): \`${newEvent.hoist ? "yes":"no"}\` Was: \`${event.hoist ? "yes":"no"}\`**`);
 					else                                                                	lines.push(`Hoisted (Displays Separately): \`${event.hoist ? "yes":"no"}\``);
 					if(event.mentionable !== newEvent.mentionable)                     		lines.push(`**Mentionable: \`${newEvent.mentionable ? "yes":"no"}\` Was: \`${event.mentionable ? "yes":"no"}\`**`);
@@ -113,7 +111,7 @@ module.exports = async function(client, guild) {
 				}
 
 				// Hide audit if no visible information was changed.
-				if(lines.join("\n").indexOf("**") === -1) return;
+				if(eventType.toLowerCase().indexOf("update") > -1 && lines.join("\n").indexOf("**") === -1) return;
 
 				message.setDescription(lines.join("\n"));
 
