@@ -112,9 +112,11 @@ module.exports = async function(client, guild) {
 					else                                                                	lines.push(`**Permissions: \`${serializePermissionsDiffrences(newEvent.permissions.serialize(), event.permissions.serialize())}\`**`);
 				}
 
+				// Hide audit if no visible information was changed.
+				if(lines.join("\n").indexOf("**") === -1) return;
+
 				message.setDescription(lines.join("\n"));
 
-				// console.log(event);
 				audit.send(message);
 
 			}
