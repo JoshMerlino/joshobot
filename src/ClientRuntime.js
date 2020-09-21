@@ -61,16 +61,19 @@ module.exports = async function() {
 	// On client break, restart
 	client.on("shardDisconnect", async function() {
 		const { exec } = require("child_process");
-		if(process.env.MODE === "PRODUCTION") await exec("sudo service node@josh-o-bot restart");
+		if(process.env.MODE === "PRODUCTION") await exec("sudo service josh-o-bot restart");
 	});
 
-	client.user.setPresence({
-	    activity: {
-	        name: `?help | ${Object.keys(global.config).length + 1} Servers`,
-	        application: "github.com",
-			type: "PLAYING",
-	    },
-	    status: "online"
-	})
+	(function setPresense() {
+		client.user.setPresence({
+		    activity: {
+		        name: `?help | ${Object.keys(global.config).length + 1} Servers`,
+		        application: "github.com",
+				type: "PLAYING",
+		    },
+		    status: "online"
+		});
+		setTimeout(setPresense, 5000);
+	}())
 
 };
