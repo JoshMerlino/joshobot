@@ -67,7 +67,7 @@ module.exports = async function() {
 	setInterval(function() {
 		client.user.setPresence({
 		    activity: {
-		        name: `?help | ${Object.keys(global.config).length + 1} Servers`,
+		        name: `?help | ${Object.keys(global.config).length} Servers`,
 		        application: "github.com",
 				type: "PLAYING",
 		    },
