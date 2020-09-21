@@ -64,4 +64,13 @@ module.exports = async function() {
 		if(process.env.MODE === "PRODUCTION") await exec("sudo service node@josh-o-bot restart");
 	});
 
+	client.user.setPresence({
+	    activity: {
+	        name: `?help | ${Object.keys(global.config).length + 1} Servers`,
+	        application: "github.com",
+			type: "PLAYING",
+	    },
+	    status: "online"
+	})
+
 };
