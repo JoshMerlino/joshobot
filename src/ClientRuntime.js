@@ -50,7 +50,7 @@ module.exports = async function() {
 			})
 
 			// Refresh configuration for this specific guild
-			global.config[guild.id] = YAML.parse(await fs.readFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`)));
+			global.config[guild.id] = YAML.parse(await fs.readFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), "utf8"));
 
 		}, 1000);
 
