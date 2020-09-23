@@ -37,7 +37,7 @@ module.exports = async function() {
 
 		}
 
-		client.setInterval(function() {
+		client.setInterval(async function() {
 
 			// Manage timed operations
 			global.config[guild.id].commands["mute"].persistance.map(async (entry, key) => {
