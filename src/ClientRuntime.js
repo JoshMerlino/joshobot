@@ -39,6 +39,7 @@ module.exports = async function() {
 
 		client.setInterval(function() {
 
+			// Manage timed operations
 			global.config[guild.id].commands["mute"].persistance.map(async (entry, key) => {
 				const { expires } = entry;
 				if(expires < Date.now()) {
@@ -48,13 +49,8 @@ module.exports = async function() {
 				}
 			})
 
-		}, 1000)
-
-		client.setInterval(async function() {
-
 			// Refresh configuration for this specific guild
-			const config = await (require("./ConfigurationAPI.js")(guild.id));
-			global.config[guild.id] = config;
+			global.config[guild.id] = YAML.parse(await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`)));
 
 		}, 1000);
 
