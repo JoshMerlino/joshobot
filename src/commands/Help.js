@@ -15,6 +15,8 @@ module.exports = class Command extends require("../Command.js") {
 			.setFooter(`Built by Josh and Jeremy`)
 			.addField("Fun commands", `\`${root} fun\``, true)
 			.addField("Moderator commands", `\`${root} moderator\``, true)
+			.setURL("https://josho.bot.nu/")
+			.setTitle("Configure Online")
 			return channel.send(embed);
 		}
 

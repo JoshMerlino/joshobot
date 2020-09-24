@@ -300,6 +300,8 @@ commands:
     - user
     - userinfo
     - ui
+    - whois
+    - wi
 
   # Reddit command configuration
   reddit:
