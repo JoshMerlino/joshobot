@@ -199,6 +199,7 @@ commands:
     # Which command should this bind to
     alias:
     - addemoji
+    - addemote
     - ae
 
   # Role command configuration
