@@ -71,7 +71,7 @@ module.exports = async function() {
 	(function setPresense() {
 		client.user.setPresence({
 		    activity: {
-		        name: `?help | ${Object.keys(global.config).length + 1} Servers | josho.bot.nu`,
+		        name: `?help | ${client.guilds.cache.size} Servers | josho.bot.nu`,
 				type: "PLAYING",
 		    },
 		    status: "online"
