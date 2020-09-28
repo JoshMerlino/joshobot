@@ -313,3 +313,17 @@ commands:
     # Which command should this bind to
     alias:
     - reddit
+
+  # NameMC command configuration
+  namemc:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - namemc
+    - mc
+    - mcname
+    - minecraft
+    - mcuser
