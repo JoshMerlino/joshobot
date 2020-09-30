@@ -10,7 +10,6 @@ module.exports = class Command extends require("../Command.js") {
 
 		const [ mcname ] = args;
 
-
 		const embed = new MessageEmbed();
 		embed.setColor(guildConfig.theme.info);
 		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
@@ -30,7 +29,6 @@ module.exports = class Command extends require("../Command.js") {
 			.setDescription(`Minecraft user "${mcname}" was not found!`)
 			.setFooter(sender.displayName, sender.user.displayAvatarURL()))
 		}
-
 
 	}
 
