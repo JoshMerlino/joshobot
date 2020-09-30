@@ -10,7 +10,7 @@ module.exports = class Command extends require("../Command.js") {
 		const userid = user.replace(/[\\<>@#&!]/g, "");
 
 		// Make sure sender is a bot master
-		if(hasPermissions(sender, guildConfig, "MANAGE_ROLES")) {
+		if(util.hasPermissions(sender, guildConfig, "MANAGE_ROLES")) {
 
 			let muterole = config[guild.id].commands["mute"].muterole;
 
@@ -25,7 +25,7 @@ module.exports = class Command extends require("../Command.js") {
 
 					const audit = guild.channels.cache.get(config[guild.id].audit.channel);
 					if(audit) {
-						const User = Array.from(guild.members.cache).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {})[userid].user;
+						const User = util.parseCollection(guild.members.cache)[userid].user;
 						const message = new MessageEmbed()
 						.setColor(config[guild.id].theme.severe)
 						.setTitle("User Unmuted")

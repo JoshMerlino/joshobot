@@ -9,17 +9,17 @@ module.exports = class Command extends require("../Command.js") {
 		let [ name = null, link = null ] = args;
 
 		// Make sure sender is a bot master
-		if(hasPermissions(sender, guildConfig, "MANAGE_EMOJIS")) {
+		if(util.hasPermissions(sender, guildConfig, "MANAGE_EMOJIS")) {
 
 			if(name !== null) {
 
 				if(link === null) {
-					let messages = Object.values(Array.from(await channel.messages.fetch({ limit: 24 })).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {}))
+					let messages = Object.values(util.parseCollection(await channel.messages.fetch({ limit: 24 })))
 					messages = messages.filter(message => {
-						const attachments = Object.values(Array.from(message.attachments).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {}));
+						const attachments = Object.values(util.parseCollection(message.attachments));
 						return attachments.length > 0;
 					});
-					const { attachment } = Object.values(Array.from(messages[0].attachments).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {}))[0];
+					const { attachment } = Object.values(util.parseCollection(messages[0].attachments))[0];
 					link = attachment;
 				}
 

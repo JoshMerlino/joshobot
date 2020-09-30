@@ -49,7 +49,7 @@ module.exports = async function(client, guild) {
 				}
 
 				if(eventType === "guildMemberAdd" || eventType === "guildMemberRemove") {
-					const roles = Array.from(event.guild.members.cache).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {})[event.id]._roles
+					const roles = util.parseCollection(event.guild.members.cache)[event.id]._roles
 					message.setThumbnail(event.user.displayAvatarURL());
 																							lines.push(`Member: ${event.user.toString()}`)
 																							lines.push(`Username: \`${event.user.username}\``);
@@ -61,8 +61,8 @@ module.exports = async function(client, guild) {
 				}
 
 				if(eventType === "guildMemberUpdate") {
-					const roles = Array.from(event.guild.members.cache).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {})[event.id]._roles
-					const newRoles = Array.from(newEvent.guild.members.cache).reduce((obj, [key, value]) => (Object.assign(obj, { [key]: value })), {})[newEvent.id]._roles
+					const roles = util.parseCollection(event.guild.members.cache)[event.id]._roles
+					const newRoles = util.parseCollection(event.guild.members.cache)[newEvent.id]._roles
 					message.setThumbnail(event.user.displayAvatarURL());
 					if(event.user.id !== newEvent.user.id)                                  lines.push(`**Member: ${newEvent.user.toString()} Was: ${event.user.toString()}**`);
 					else                                                                	lines.push(`Member: ${event.user.toString()}`);

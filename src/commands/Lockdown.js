@@ -9,7 +9,7 @@ module.exports = class Command extends require("../Command.js") {
 		const [ targetChannel = channel.toString() ] = args;
 
 		// Make sure sender is a bot master
-		if(hasPermissions(sender, guildConfig, "MANAGE_CHANNELS")) {
+		if(util.hasPermissions(sender, guildConfig, "MANAGE_CHANNELS")) {
 
 			const target = guild.channels.resolve(targetChannel.replace(/[\\<>@#&!]/g, ""));
 			if(target.permissionsFor(guild.roles.everyone).has("SEND_MESSAGES")) {

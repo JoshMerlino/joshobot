@@ -9,7 +9,7 @@ module.exports = class Command extends require("../Command.js") {
 		let [ messages ] = args;
 
 		// Make sure sender is a bot master
-		if(hasPermissions(sender, guildConfig, "MANAGE_MESSAGES")) {
+		if(util.hasPermissions(sender, guildConfig, "MANAGE_MESSAGES")) {
 			if (messages || parseInt(messages) <= 0) {
 				if(messages > 99) {
 					channel.send(new MessageEmbed()

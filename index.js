@@ -24,6 +24,9 @@ global.client = client;
 global.config = {};
 global.MessageEmbed = Discord.MessageEmbed;
 
+// Import utilities
+global.util = require("./src/Util.js");
+
 // Log in with the token in the enviroment file
 client.login(process.env.CLIENT_SECRET);
 
