@@ -10,7 +10,7 @@ module.exports = class Command extends require("../Command.js") {
 		const roleid = role.replace(/[\\<>@#&!]/g, "");
 
 		// Make sure sender is a bot master
-		if(sender._roles.some(role => guildConfig.botmasters.includes(role)) || sender.permissions.has("MANAGE_ROLES")) {
+		if(hasPermissions(sender, guildConfig, "MANAGE_ROLES")) {
 
 			if(role === "" || subcommand === "") {
 				return channel.send(new MessageEmbed()

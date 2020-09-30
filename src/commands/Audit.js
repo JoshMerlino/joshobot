@@ -9,7 +9,7 @@ module.exports = class Command extends require("../Command.js") {
 		const [ subcommand = null, target = null ] = args;
 
 		// Make sure sender is a bot master
-		if(sender._roles.some(role => guildConfig.botmasters.includes(role)) || sender.permissions.has("VIEW_AUDIT_LOG")) {
+		if(hasPermissions(sender, guildConfig, "VIEW_AUDIT_LOG")) {
 
 			if (subcommand === null) {
 				channel.send(new MessageEmbed()

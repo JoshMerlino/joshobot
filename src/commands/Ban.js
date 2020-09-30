@@ -10,7 +10,7 @@ module.exports = class Command extends require("../Command.js") {
 		const userid = user.replace(/[\\<>@#&!]/g, "");
 
 		// Make sure sender is a bot master
-		if(sender._roles.some(role => guildConfig.botmasters.includes(role)) || sender.permissions.has("BAN_MEMBERS")) {
+		if(hasPermissions(sender, guildConfig, "BAN_MEMBERS")) {
 			if(user !== "") {
 				try {
 					guild.member(userid).ban({ days: deleteMessages == true ? 7:0, reason: reason.join(" ") }).then(function() {

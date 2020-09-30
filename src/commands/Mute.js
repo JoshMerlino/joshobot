@@ -13,7 +13,7 @@ module.exports = class Command extends require("../Command.js") {
 		if(duration !== null) mutetime = ms(duration);
 
 		// Make sure sender is a bot master
-		if(sender._roles.some(role => guildConfig.botmasters.includes(role)) || sender.permissions.has("MANAGE_ROLES")) {
+		if(hasPermissions(sender, guildConfig, "MANAGE_ROLES")) {
 
 			let muterole;
 			if(config[guild.id].commands["mute"].muterole) {

@@ -10,7 +10,7 @@ module.exports = class Command extends require("../Command.js") {
 		const userid = user.replace(/[\\<>@#&!]/g, "");
 
 		// Make sure sender is a bot master
-		if(sender._roles.some(role => guildConfig.botmasters.includes(role)) || sender.permissions.has("KICK_MEMBERS")) {
+		if(hasPermissions(sender, guildConfig, "KICK_MEMBERS")) {
 			if(user !== "") {
 				try {
 					guild.member(userid).kick(reason.join(" ")).then(function() {

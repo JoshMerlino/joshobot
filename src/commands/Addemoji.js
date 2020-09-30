@@ -9,7 +9,7 @@ module.exports = class Command extends require("../Command.js") {
 		let [ name = null, link = null ] = args;
 
 		// Make sure sender is a bot master
-		if(sender._roles.some(role => guildConfig.botmasters.includes(role)) || sender.permissions.has("MANAGE_EMOJIS")) {
+		if(hasPermissions(sender, guildConfig, "MANAGE_EMOJIS")) {
 
 			if(name !== null) {
 
