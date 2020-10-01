@@ -1,4 +1,5 @@
 module.exports = function(guildId) {
+
 	function merge(current, updates) {
 		if(current === null) return;
 	    for (const key of Object.keys(updates)) {
@@ -25,4 +26,5 @@ module.exports = function(guildId) {
 			}
 		})
 	});
+	
 };
