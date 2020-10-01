@@ -327,3 +327,14 @@ commands:
     - mcname
     - minecraft
     - mcuser
+
+  # Channel command configuration
+  channel:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - channel
+    - ch

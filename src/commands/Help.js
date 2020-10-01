@@ -28,6 +28,7 @@ module.exports = class Command extends require("../Command.js") {
 			guildConfig.commands["audit"].enabled && embed.addField("Manage Audit Log", `\`${guildConfig.prefix}${guildConfig.commands["audit"].alias[0]} <channel|enable|disable> [#channel (channel)]\``)
 			guildConfig.commands["ban"].enabled && embed.addField("Ban Members", `\`${guildConfig.prefix}${guildConfig.commands["ban"].alias[0]} <@user> (reason)\``)
 			guildConfig.commands["botmaster"].enabled && embed.addField("Bot Masters", `\`${guildConfig.prefix}${guildConfig.commands["botmaster"].alias[0]} <@role>\``)
+			guildConfig.commands["channel"].enabled && embed.addField("Manage Channels", `\`${guildConfig.prefix}${guildConfig.commands["channel"].alias[0]} <add|remove|rename|nsfw> <channel|#channel> [new name]\``)
 			guildConfig.commands["kick"].enabled && embed.addField("Kick Members", `\`${guildConfig.prefix}${guildConfig.commands["kick"].alias[0]} <@user> (reason)\``)
 			guildConfig.commands["lockdown"].enabled && embed.addField("Lockdown Channel", `\`${guildConfig.prefix}${guildConfig.commands["lockdown"].alias[0]} [#channel = (current)]\``)
 			guildConfig.commands["mute"].enabled && embed.addField("Mute Members", `\`${guildConfig.prefix}${guildConfig.commands["mute"].alias[0]} <@user> (reason)\``)
