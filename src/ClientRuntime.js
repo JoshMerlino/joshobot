@@ -49,11 +49,11 @@ module.exports = async function() {
 
 	// Display presence
 	let presenceCount = 0;
-	const presence = [ "?help", "josho.bot.nu", `${client.guilds.cache.size} Servers` ];
+	const presence = () => [ "?help", "josho.bot.nu", `${client.guilds.cache.size} Servers` ];
 	client.setInterval(async function() {
 		client.user.setPresence({
 		    activity: {
-		        name: presence[presenceCount],
+		        name: presence()[presenceCount],
 				type: "PLAYING",
 		    },
 		    status: "online"
