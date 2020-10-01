@@ -7,7 +7,14 @@ module.exports = class Command extends require("../Command.js") {
 	async onCommand({ args, sender, guildConfig, root, channel, guild }) {
 
 		const [ subcommand = "", role = "", user = null ] = args;
-		const roleid = role.replace(/[\\<>@#&!]/g, "");
+
+		let roleid;
+		if(role.match(/<@&([0-9]*)>/g)) {
+			roleid = role.replace(/[\\<>@#&!]/g, "");
+		} else {
+			roleid = Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name.toLowerCase() === role.toLowerCase())[0].id;
+		}
+		
 		const userid = user.replace(/[\\<>@#&!]/g, "");
 
 		// Make sure sender is a bot master
@@ -16,7 +23,7 @@ module.exports = class Command extends require("../Command.js") {
 			if(role === "" || subcommand === "" || user === null) {
 				return channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <add|remove> <@role> <@user>\``)
+				.setDescription(`Usage:\n\`${root} <add|remove> <role> <@user>\``)
 				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 			} else {
 
