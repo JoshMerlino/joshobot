@@ -12,9 +12,9 @@ module.exports = class Command extends require("../Command.js") {
 		if(role.match(/<@&([0-9]*)>/g)) {
 			roleid = role.replace(/[\\<>@#&!]/g, "");
 		} else {
-			roleid = Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name.toLowerCase() === role.toLowerCase())[0].id;
+			roleid = Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name.toLowerCase().replace(/\s/g, "-") === role.toLowerCase())[0].id;
 		}
-		
+
 		const userid = user.replace(/[\\<>@#&!]/g, "");
 
 		// Make sure sender is a bot master
