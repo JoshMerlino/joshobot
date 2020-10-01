@@ -4,7 +4,7 @@ module.exports = {
 		return Array.from(collection).reduce((obj, [ key, value ]) => Object.assign(obj, { [key]: value }), {})
 	},
 
-	hasPermission(sender, guildConfig, permission) {
+	hasPermissions(sender, guildConfig, permission) {
 		if(sender._roles.some(role => guildConfig.botmasters.includes(role))) return true;
 		if(guildConfig.botmasters.includes(sender.id)) return true;
 		if(sender.permissions.has("ADMINISTRATOR")) return true;

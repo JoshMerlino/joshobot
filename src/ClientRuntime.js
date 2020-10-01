@@ -49,7 +49,7 @@ module.exports = async function() {
 
 	// Display presence
 	let presenceCount = 0;
-	const presence = [ "?help", "josho.bot.nu", `${client.guilds.cache.length} Servers` ];
+	const presence = [ "?help", "josho.bot.nu", `${client.guilds.cache.size} Servers` ];
 	client.setInterval(async function() {
 		client.user.setPresence({
 		    activity: {
@@ -59,6 +59,6 @@ module.exports = async function() {
 		    status: "online"
 		});
 		presenceCount = presenceCount === presence.length - 1 ? 0 : presenceCount + 1;
-	}, 3000);
+	}, 5000);
 
 };

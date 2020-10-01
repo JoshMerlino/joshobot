@@ -19,13 +19,16 @@ module.exports = class Command {
 
 			aliases.map(async alias => {
 				if(config[guild_id].prefix + alias === root.toLowerCase() && config[guild_id].commands[key].enabled) {
+					
 					await this.onCommand({
 						root, args, channel, message, guild,
 						sender: member,
 						guildConfig: config[guild_id],
 						audit: config[guild.id].audit.enabled ? guild.channels.cache.get(config[guild.id].audit.channel) : false
 					});
-					await message.delete(1);
+
+					//await message.delete();
+
 				}
 			})
 

@@ -17,10 +17,11 @@ module.exports = async function(guild, audit) {
 	// Unmute function
 	function unmute({ moderator, specimen, channel }) {
 
+		const mod = util.parseCollection(guild.members.cache)[moderator].user
 		guild.member(specimen).roles.remove(global.config[guild.id].commands["mute"].muterole);
 		guild.channels.resolve(channel).send(new MessageEmbed()
 		.setColor(global.config[guild.id].theme.success)
-		.setFooter(sender.displayName, sender.user.displayAvatarURL())
+		.setFooter(guild.member(mod).displayName, guild.member(mod).user.displayAvatarURL())
 		.setDescription(`<@!${specimen}> is no longer muted.`));
 
 		if(audit) {
