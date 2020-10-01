@@ -58,7 +58,7 @@ module.exports = async function() {
 		    },
 		    status: "online"
 		});
-		presenceCount = presenceCount === presence.length - 1 ? 0 : presenceCount + 1;
+		presenceCount = presenceCount === presence().length - 1 ? 0 : presenceCount + 1;
 	}, 5000);
 
 };
