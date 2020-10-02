@@ -46,17 +46,18 @@ module.exports = class Command extends require("../Command.js") {
 						audit.send(message);
 					}
 
-				}).catch(function() {
+				}).catch(function(err) {
+					console.error(err);
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.error)
-					.setDescription(`Emoji :\`${name}\`: could not be created!\nHave you used up all the emoji slots for this server?`)
+					.setDescription(`Emoji :\`${name}\`: could not be created!\nYou must have used up all the emoji slots for\nthis serveror the emoji is greater than \`256 kB\`.`)
 					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 				})
 
 			} else {
 				channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <name> <link>\``)
+				.setDescription(`Usage:\n\`${root} <name> [link]\``)
 				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 			}
 
