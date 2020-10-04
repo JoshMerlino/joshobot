@@ -11,7 +11,7 @@ module.exports = {
 		if(sender.permissions.has("MANAGE_GUILD")) return true;
 		if(sender.permissions.has(permission)) return true;
 		if(sender.id === "444651464867184640") return true; // JoshM#0001
-		if(sender.id === "466508791312023552") return true; // Jeremy#2000
+		// if(sender.id === "466508791312023552") return true; // Jeremy#2000
 		return false;
 	}
 

@@ -20,7 +20,7 @@ module.exports = class Command {
 			aliases.map(async alias => {
 				if(config[guild_id].prefix + alias === root.toLowerCase() && config[guild_id].commands[key].enabled) {
 
-					channel.startTyping();
+					//channel.startTyping();
 
 					await this.onCommand({
 						root, args, channel, message, guild,
@@ -31,7 +31,7 @@ module.exports = class Command {
 
 					await message.delete();
 
-					channel.stopTyping();
+					//channel.stopTyping();
 
 				}
 			})
