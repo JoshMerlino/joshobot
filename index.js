@@ -23,6 +23,7 @@ const client = new Discord.Client();
 global.APP_ROOT = __dirname;
 global.client = client;
 global.config = {};
+global.streams = {};
 global.MessageEmbed = Discord.MessageEmbed;
 
 // Import utilities

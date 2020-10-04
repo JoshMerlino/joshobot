@@ -6,6 +6,23 @@ module.exports = class Command extends require("../Command.js") {
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
 
+		const runningStream = streams[guild.id];
+		if(runningStream !== undefined && args[0] === undefined) {
+
+			const { dispatcher, songInfo } = runningStream;
+			const song = { title: songInfo.videoDetails.title, url: songInfo.videoDetails.video_url };
+
+			dispatcher.pausedSince === null ? dispatcher.pause(true) : dispatcher.resume();
+
+			return channel.send(new MessageEmbed()
+			.setColor(guildConfig.theme.info)
+			.setTitle(`${dispatcher.pausedSince ? "Paused" : "Playing"}:`)
+			.setThumbnail(songInfo.videoDetails.thumbnail.thumbnails[0].url)
+			.setDescription(`${song.url}\n**${song.title}** By **${songInfo.videoDetails.author.name}**`)
+			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+
+		}
+
 		const [ url ] = args;
 
 		if(!sender.voice.channel) {
@@ -15,44 +32,47 @@ module.exports = class Command extends require("../Command.js") {
 			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 		}
 
+		if(!url) {
+			return channel.send(new MessageEmbed()
+			.setColor(guildConfig.theme.warn)
+			.setDescription(`Usage: \`${root} <YouTube url>\`.`)
+			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+		}
+
 		const songInfo = await ytdl.getInfo(url);
 		const song = { title: songInfo.videoDetails.title, url: songInfo.videoDetails.video_url };
 
-		const msg = await channel.send(new MessageEmbed()
+		await channel.send(new MessageEmbed()
 		.setColor(guildConfig.theme.info)
-		.setTitle(`Now playing: ${song.title}`)
-		.setFooter(sender.displayName, sender.user.displayAvatarURL())
 		.setThumbnail(songInfo.videoDetails.thumbnail.thumbnails[0].url)
-		.setDescription(`By **${songInfo.videoDetails.author.name}**`)
-		.setURL(song.url));
+		.setTitle(`Now Playing:`)
+		.setThumbnail(songInfo.videoDetails.thumbnail.thumbnails[0].url)
+		.setDescription(`${song.url}`)
+		.addField("Now Playing", `${song.title} ― **${songInfo.videoDetails.author.name}**`, true)
+		.addField("Up Next", `${songInfo.related_videos[0].title} ― **${songInfo.related_videos[0].author}**`, true)
+		.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
-		const actions = {
-			"⏪": "RESTART",
-			"⏯": "TOGGLE",
-			"⏩": "SKIP",
-			"🛑": "END"
-		}
-
-		Object.keys(actions).map(async emoji => await msg.react(emoji));
 		const connection = await sender.voice.channel.join();
-		//const stream = ytdl(song.url, { filter: "audioonly" });
-		//const dispatcher = connection.play(stream);
-		msg.awaitReactions(async reaction => {
+		const stream = ytdl(song.url, { filter: "audioonly" });
+		const dispatcher = connection.play(stream);
 
-			const emoji = reaction._emoji;
-			const action = actions[emoji.name];
+		const skip = setTimeout(function() {
+			streams[guild.id].skip();
+		}, parseInt(songInfo.videoDetails.lengthSeconds) * 1000);
 
-			console.log(util.parseCollection(emoji.reaction.users));
-			if(emoji.reaction.me) return;
-
-			console.log(action);
-
-			if(action === "END") {
-				await sender.voice.channel.leave();
-				await msg.delete();
+		streams[guild.id] = {
+			dispatcher,
+			stream,
+			songInfo,
+			channel,
+			voice: sender.voice.channel,
+			skip: () => {
+				clearTimeout(skip)
+				dispatcher.destroy();
+				streams[guild.id] = undefined;
+				this.onCommand({ args: [`https://www.youtube.com/watch?v=${songInfo.related_videos[0].id}`], sender, guildConfig, root, channel, guild, audit })
 			}
-
-		});
+		}
 
 	}
 

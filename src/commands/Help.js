@@ -14,8 +14,9 @@ module.exports = class Command extends require("../Command.js") {
 			.setColor(guildConfig.theme.primary)
 			.setFooter(`Built by Josh and Jeremy`)
 			.addField("Fun commands", `\`${root} fun\``, true)
-			.addField("Moderator commands", `\`${root} moderator\``, true)
 			.addField("Miscellaneous commands", `\`${root} misc\``, true)
+			.addField("Moderator commands", `\`${root} moderator\``, true)
+			.addField("Music commands", `\`${root} music\``, true)
 			.setURL("https://josho.bot.nu/")
 			.setTitle("Configure Online")
 			return channel.send(embed);
@@ -64,6 +65,17 @@ module.exports = class Command extends require("../Command.js") {
 			.setColor(guildConfig.theme.primary)
 			.setFooter(sender.displayName, sender.user.displayAvatarURL())
 			guildConfig.commands["invite"].enabled && embed.addField("Invite Josh O' Bot to Your Server", `\`${guildConfig.prefix}${guildConfig.commands["invite"].alias[0]}\``)
+			return channel.send(embed);
+		}
+
+		if(["music", "groovy", "rythem", "mu"].includes(subcommand.toLowerCase())) {
+			const embed = new MessageEmbed()
+			.setColor(guildConfig.theme.primary)
+			.setFooter(sender.displayName, sender.user.displayAvatarURL())
+			guildConfig.commands["play"].enabled && embed.addField("Play a Song or Playlist", `\`${guildConfig.prefix}${guildConfig.commands["play"].alias[0]} <Youtube Link>\``)
+			guildConfig.commands["skip"].enabled && embed.addField("Skips to the Next Song", `\`${guildConfig.prefix}${guildConfig.commands["skip"].alias[0]}\``)
+			guildConfig.commands["stop"].enabled && embed.addField("Stop Playing", `\`${guildConfig.prefix}${guildConfig.commands["stop"].alias[0]}\``)
+			guildConfig.commands["pause"].enabled && embed.addField("Pause/Play", `\`${guildConfig.prefix}${guildConfig.commands["pause"].alias[0]}\``)
 			return channel.send(embed);
 		}
 

@@ -382,4 +382,43 @@ commands:
     # Which command should this bind to
     alias:
     - play
-    - p
+    - pl
+
+  # Pause command configuration
+  pause:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - pause
+    - pa
+    - upa
+    - unpause
+    - resume
+    - re
+
+  # Skip command configuration
+  skip:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - skip
+    - next
+    - s
+
+  # Stop command configuration
+  stop:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - stop
+    - end
+    - st
