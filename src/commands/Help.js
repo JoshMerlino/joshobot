@@ -21,7 +21,7 @@ module.exports = class Command extends require("../Command.js") {
 			return channel.send(embed);
 		}
 
-		if(["moderator", "mod", "m"].includes(subcommand.toLowerCase())) {
+		if(["moderator", "mod"].includes(subcommand.toLowerCase())) {
 			const embed = new MessageEmbed()
 			.setColor(guildConfig.theme.primary)
 			.setFooter(sender.displayName, sender.user.displayAvatarURL())

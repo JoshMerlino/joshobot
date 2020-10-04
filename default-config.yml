@@ -372,3 +372,14 @@ commands:
     # Which command should this bind to
     alias:
     - roast
+
+  # Play command configuration
+  play:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - play
+    - p
