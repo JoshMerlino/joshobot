@@ -39,12 +39,12 @@ module.exports = class Command extends require("../Command.js") {
 		embed.addField("Member User Info",
 		`**Username**: \`${username}\`` +
 		`\n**ID**: \`${user.id}\`` +
-		`\n**Status**: \`${{ online: "🟢 Online", idle: "🌙 Idle", dnd: "⛔ Do not disturb", offline: "⚫ Offline" }[member.presence.status]}\``)
+		`\n**Status**: \`${{ online: "🟢 Online", idle: "🌙 Idle", dnd: "⛔ Do not disturb", offline: "⚫ Offline" }[member.presence.status]}\``, true)
 
 		embed.addField("Server User Info",
 			"**Created**: `" + created.toString().toLowerCase() + "`\n" +
 			"**Joined**: `" + joined.toString().toLowerCase() + "`\n" +
-			"**Roles**: `" + member._roles.length + "`")
+			"**Roles**: `" + member._roles.length + "`", true)
 
 		if (member.presence.activities.length > 0) {
             let hasStatus = false
