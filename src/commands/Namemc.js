@@ -20,8 +20,8 @@ module.exports = class Command extends require("../Command.js") {
 			embed.setTitle(mcuser.currentName);
 			embed.addField("UUID", `\`${mcuser.uuid}\``);
 			embed.addField("Previous Names", mcuser.pastNames.map(({ name }) => `\`${name}\``), true);
-			embed.addField("Changed At", mcuser.pastNames.map(({ changedAt }) => `${changedAt !== null ? "`" + dayjs(changedAt).fromNow() + "`" : ""}`), true);
-			embed.setThumbnail(mcuser.imageUrls.body);
+			embed.addField("Changed At", mcuser.pastNames.map(({ changedAt }) => `${changedAt !== null ? "`" + dayjs(changedAt).fromNow() + "`" : "__Never__"}`), true);
+			embed.setThumbnail(mcuser.imageUrls.head);
 			return channel.send(embed)
 		} catch(e) {
 			return channel.send(new MessageEmbed()
