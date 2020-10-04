@@ -17,7 +17,7 @@ module.exports = class Command extends require("../Command.js") {
 		embed.setColor(guildConfig.theme.info);
 		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
 		embed.setTitle(`${user.displayName}'s PP Size`);
-		embed.setDescription(`Estimated Size: **${Math.floor(size*10)/10}in**\n${ppbottom}${ new Array(Math.floor(size - 2)).fill(ppmiddle).join("") }${pphead}`);
+		embed.setDescription(`Estimated Size: **${Math.floor(size*10)/10}in**\n${ppbottom}${ new Array(Math.max(Math.floor(size - 2), 0)).fill(ppmiddle).join("") }${pphead}`);
 		channel.send(embed);
 
 	}
