@@ -349,3 +349,16 @@ commands:
     alias:
     - invite
     - inv
+
+  # PP command configuration
+  pp:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - pp
+    - ppsize
+    - peen
+    - penis
