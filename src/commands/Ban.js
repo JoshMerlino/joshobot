@@ -8,12 +8,21 @@ module.exports = class Command extends require("../Command.js") {
 
 		const [ user = "", deleteMessages = "false", ...reason ] = args;
 		const userid = user.replace(/[\\<>@#&!]/g, "");
+		const member = guild.member(userid);
 
 		// Make sure sender is a bot master
 		if(util.hasPermissions(sender, guildConfig, "BAN_MEMBERS")) {
 			if(user !== "") {
 				try {
-					guild.member(userid).ban({ days: deleteMessages == true ? 7:0, reason: reason.join(" ") }).then(function() {
+
+					if(util.hasPermissions(member, guildConfig, "BAN_MEMBERS")) {
+						return channel.send(new MessageEmbed()
+						.setColor(guildConfig.theme.error)
+						.setDescription(`I do not have permission to ban <@!${userid}>.`)
+						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+					}
+
+					member.ban({ days: deleteMessages == true ? 7:0, reason: reason.join(" ") }).then(function() {
 
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.success)
