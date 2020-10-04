@@ -15,6 +15,7 @@ module.exports = class Command extends require("../Command.js") {
 			.setFooter(`Built by Josh and Jeremy`)
 			.addField("Fun commands", `\`${root} fun\``, true)
 			.addField("Moderator commands", `\`${root} moderator\``, true)
+			.addField("Miscellaneous commands", `\`${root} misc\``, true)
 			.setURL("https://josho.bot.nu/")
 			.setTitle("Configure Online")
 			return channel.send(embed);
@@ -53,6 +54,14 @@ module.exports = class Command extends require("../Command.js") {
 			guildConfig.commands["reddit"].enabled && embed.addField("Reddit Search", `\`${guildConfig.prefix}${guildConfig.commands["reddit"].alias[0]} <term>\``)
 			guildConfig.commands["urban"].enabled && embed.addField("Urban Dictionary", `\`${guildConfig.prefix}${guildConfig.commands["urban"].alias[0]} <term>\``)
 			guildConfig.commands["user"].enabled && embed.addField("User Information", `\`${guildConfig.prefix}${guildConfig.commands["user"].alias[0]} [@user = you]\``)
+			return channel.send(embed);
+		}
+
+		if(["misc", "miscellaneous"].includes(subcommand.toLowerCase())) {
+			const embed = new MessageEmbed()
+			.setColor(guildConfig.theme.primary)
+			.setFooter(sender.displayName, sender.user.displayAvatarURL())
+			guildConfig.commands["invite"].enabled && embed.addField("Invite Josh O' Bot to Your Server", `\`${guildConfig.prefix}${guildConfig.commands["invite"].alias[0]}\``)
 			return channel.send(embed);
 		}
 

@@ -338,3 +338,14 @@ commands:
     alias:
     - channel
     - ch
+
+  # Invite command configuration
+  invite:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - invite
+    - inv
