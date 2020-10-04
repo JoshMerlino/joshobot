@@ -54,6 +54,7 @@ module.exports = class Command extends require("../Command.js") {
 			guildConfig.commands["pp"].enabled && embed.addField("Estimate PP size", `\`${guildConfig.prefix}${guildConfig.commands["pp"].alias[0]} <@user>\``)
 			guildConfig.commands["poll"].enabled && embed.addField("Create Poll", `\`${guildConfig.prefix}${guildConfig.commands["poll"].alias[0]} <message>\``)
 			guildConfig.commands["reddit"].enabled && embed.addField("Reddit Search", `\`${guildConfig.prefix}${guildConfig.commands["reddit"].alias[0]} <term>\``)
+			guildConfig.commands["roast"].enabled && embed.addField("Send a Roast", `\`${guildConfig.prefix}${guildConfig.commands["roast"].alias[0]}\``)
 			guildConfig.commands["urban"].enabled && embed.addField("Urban Dictionary", `\`${guildConfig.prefix}${guildConfig.commands["urban"].alias[0]} <term>\``)
 			return channel.send(embed);
 		}

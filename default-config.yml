@@ -362,3 +362,13 @@ commands:
     - ppsize
     - peen
     - penis
+
+  # Roast command configuration
+  roast:
+
+    # Should this command be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - roast
