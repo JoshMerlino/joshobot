@@ -1,3 +1,12 @@
+function search(str) {
+	return new Promise(function(resolve, reject) {
+		ytsearch(str, { maxResults: 1, key: process.env.GOOGLE_APIS }, function(error, results) {
+			if(error) return reject(error);
+			resolve(results);
+		})
+	});
+}
+
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
@@ -23,7 +32,22 @@ module.exports = class Command extends require("../Command.js") {
 
 		}
 
-		const [ url ] = args;
+		let url;
+		if(args[0].match(/^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/gm)) {
+			url = args[0];
+		} else {
+
+			try {
+				const resp = await search(args.join(" "));
+				url = resp[0].link;
+			} catch(err) {
+				return channel.send(new MessageEmbed()
+				.setColor(guildConfig.theme.error)
+				.setDescription(`No results for "${args.join(" ")}" were found 😮.`)
+				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+			}
+
+		}
 
 		if(!sender.voice.channel) {
 			return channel.send(new MessageEmbed()
@@ -39,7 +63,16 @@ module.exports = class Command extends require("../Command.js") {
 			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 		}
 
-		const songInfo = await ytdl.getInfo(url);
+		let songInfo;
+		try {
+			songInfo = await ytdl.getInfo(url);
+		} catch(e) {
+			return channel.send(new MessageEmbed()
+			.setColor(guildConfig.theme.error)
+			.setDescription(`Uh oh! This search yielded age-restricted content.`)
+			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+		}
+
 		const song = { title: songInfo.videoDetails.title, url: songInfo.videoDetails.video_url };
 
 		await channel.send(new MessageEmbed()
