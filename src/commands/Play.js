@@ -94,7 +94,7 @@ module.exports = class Command extends require("../Command.js") {
 		const stream = ytdl(song.url, { filter: "audioonly" });
 		const dispatcher = connection.play(stream);
 
-		clearTimeout(streams[guild.id].timeout);
+		streams[guild.id] !== undefined && clearTimeout(streams[guild.id].timeout);
 
 		const timeout = setTimeout(function() {
 			streams[guild.id].skip();
@@ -110,7 +110,6 @@ module.exports = class Command extends require("../Command.js") {
 			skip: () => {
 				clearTimeout(timeout)
 				dispatcher.destroy();
-				streams[guild.id] = undefined;
 				this.onCommand({ args: [`https://www.youtube.com/watch?v=${songInfo.related_videos[0].id}`], sender, guildConfig, root, channel, guild, audit })
 			}
 		}
