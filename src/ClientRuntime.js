@@ -61,19 +61,20 @@ module.exports = async function() {
 		presenceCount = presenceCount === presence().length - 1 ? 0 : presenceCount + 1;
 	}, 5000);
 
-	// ################
-	// # Uptime Alert #
-	// ################
+	// ########################
+	// # Status Change Notice #
+	// ########################
 
 	// Ping me when bot restarts
 	;(function() {
 		if(process.env.MODE !== "PRODUCTION") return;
 		const ping = new Discord.MessageEmbed()
-		  .setColor(0x00c853)
-		  .setTitle("Bot Restarted")
-		  .setDescription("I was either updated or restart for you to recieve this message")
+		  .setColor(0xfbc02d)
+		  .setTitle("Status Change Notice")
+		  .setDescription("It appears I've successfully restarted. This is most likley due to an update.")
 		  .setTimestamp()
 		client.users.cache.get("444651464867184640").send(ping);
+		client.users.cache.get("466508791312023552").send(ping);
 	}())
 
 };

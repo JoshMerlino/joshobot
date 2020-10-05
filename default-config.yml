@@ -67,6 +67,9 @@ audit:
       color: WARN
       title: "Role Updated"
 
+# Auto delete commands after successful execution
+autoremove-successful-commands: false
+
 # Bot master roles, which role id's have administrative control over bot
 botmasters: []
 
