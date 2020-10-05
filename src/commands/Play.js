@@ -30,6 +30,7 @@ module.exports = class Command extends require("../Command.js") {
 			.setDescription(`${song.url}`)
 			.addField("Now Playing", `${song.title} ― **${songInfo.videoDetails.author.name}**`, true)
 			.addField("Up Next", `${songInfo.related_videos[0].title} ― **${songInfo.related_videos[0].author}**`, true)
+			.addField("Up Next", `${songInfo.related_videos[1].title} ― **${songInfo.related_videos[1].author}**`, true)
 			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 		}
@@ -85,6 +86,7 @@ module.exports = class Command extends require("../Command.js") {
 		.setDescription(`${song.url}`)
 		.addField("Now Playing", `${song.title} ― **${songInfo.videoDetails.author.name}**`, true)
 		.addField("Up Next", `${songInfo.related_videos[0].title} ― **${songInfo.related_videos[0].author}**`, true)
+		.addField("Up Next", `${songInfo.related_videos[1].title} ― **${songInfo.related_videos[1].author}**`, true)
 		.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 		const connection = await sender.voice.channel.join();
