@@ -1,6 +1,12 @@
 function search(str) {
 	return new Promise(function(resolve, reject) {
-		ytsearch(str, { maxResults: 1, key: process.env.GOOGLE_APIS }, function(error, results) {
+		ytsearch(str, {
+				maxResults: 1,
+				key: process.env.GOOGLE_APIS,
+				safeSearch: "none",
+				topicId: "/music",
+				type: "video",
+			}, function(error, results) {
 			if(error) return reject(error);
 			resolve(results);
 		})
@@ -30,7 +36,7 @@ module.exports = class Command extends require("../Command.js") {
 			.setDescription(`${song.url}`)
 			.addField("Now Playing", `${song.title} ― **${songInfo.videoDetails.author.name}**`, true)
 			.addField("Up Next", `${songInfo.related_videos[0].title} ― **${songInfo.related_videos[0].author}**`, true)
-			.addField("Up Next", `${songInfo.related_videos[1].title} ― **${songInfo.related_videos[1].author}**`, true)
+			//.addField("Up Next", `${songInfo.related_videos[1].title} ― **${songInfo.related_videos[1].author}**`, true)
 			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 		}
@@ -52,7 +58,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		}
 
-		if(!sender.voice.channel) {
+		if(!(sender.voice.channel || )) {
 			return channel.send(new MessageEmbed()
 			.setColor(guildConfig.theme.error)
 			.setDescription(`You must be in a voice channel to use this command.`)
@@ -86,7 +92,7 @@ module.exports = class Command extends require("../Command.js") {
 		.setDescription(`${song.url}`)
 		.addField("Now Playing", `${song.title} ― **${songInfo.videoDetails.author.name}**`, true)
 		.addField("Up Next", `${songInfo.related_videos[0].title} ― **${songInfo.related_videos[0].author}**`, true)
-		.addField("Up Next", `${songInfo.related_videos[1].title} ― **${songInfo.related_videos[1].author}**`, true)
+		//.addField("Up Next", `${songInfo.related_videos[1].title} ― **${songInfo.related_videos[1].author}**`, true)
 		.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 		const connection = await sender.voice.channel.join();
@@ -110,7 +116,7 @@ module.exports = class Command extends require("../Command.js") {
 			skip: () => {
 				clearTimeout(timeout)
 				dispatcher.destroy();
-				this.onCommand({ args: [`https://www.youtube.com/watch?v=${songInfo.related_videos[0].id}`], sender, guildConfig, root, channel, guild, audit })
+				this.onCommand({ args: [`https://www.youtube.com/watch?v=${songInfo.related_videos[0].id}`], sender, guildConfig, root, channel, guild, audit });
 			}
 		}
 
