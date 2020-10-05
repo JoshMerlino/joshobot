@@ -74,6 +74,6 @@ module.exports = async function() {
 		  .setDescription("I was either updated or restart for you to recieve this message")
 		  .setTimestamp()
 		client.users.cache.get("444651464867184640").send(ping);
-	})
+	}())
 
 };
