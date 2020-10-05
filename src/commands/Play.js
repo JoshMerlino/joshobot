@@ -69,7 +69,7 @@ module.exports = class Command extends require("../Command.js") {
 		} catch(e) {
 			return channel.send(new MessageEmbed()
 			.setColor(guildConfig.theme.error)
-			.setDescription(`Uh oh! This search yielded age-restricted content.`)
+			.setDescription(`Uh oh! This search yielded unavailable or age-restricted content.`)
 			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 		}
 
@@ -86,6 +86,7 @@ module.exports = class Command extends require("../Command.js") {
 		.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 		const connection = await sender.voice.channel.join();
+		connection.voice.setSelfDeaf(true);
 		const stream = ytdl(song.url, { filter: "audioonly" });
 		const dispatcher = connection.play(stream);
 
