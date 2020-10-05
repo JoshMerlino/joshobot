@@ -10,14 +10,11 @@ module.exports = class Command extends require("../Command.js") {
 
 		// Make sure sender is a bot master
 		if(util.hasPermissions(sender, guildConfig, "MANAGE_MESSAGES")) {
-			if (messages || parseInt(messages) <= 0) {
-				if(messages > 99) {
-					channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.warn)
-					.setDescription(`Amount of messages to clear can be at most __100__, clearing the 100 most recient messages`)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-					messages = 99;
-				}
+			if (!isNaN(parseInt(messages))) {
+
+				messages++;
+
+				console.log(messages);
 
 				if(audit) {
 					const message = new MessageEmbed()
@@ -29,7 +26,13 @@ module.exports = class Command extends require("../Command.js") {
 					audit.send(message);
 				}
 
-				await channel.bulkDelete(messages);
+				let numleft = messages;
+				while(numleft > 100) {
+					await channel.bulkDelete(100);
+					numleft -= 100;
+				}
+				await channel.bulkDelete(numleft % 100);
+
 			} else {
 				return channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.warn)
