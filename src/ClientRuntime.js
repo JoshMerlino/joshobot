@@ -61,4 +61,19 @@ module.exports = async function() {
 		presenceCount = presenceCount === presence().length - 1 ? 0 : presenceCount + 1;
 	}, 5000);
 
+	// ################
+	// # Uptime Alert #
+	// ################
+
+	// Ping me when bot restarts
+	;(function() {
+		if(process.env.MODE !== "PRODUCTION") return;
+		const ping = new Discord.MessageEmbed()
+		  .setColor(0x00c853)
+		  .setTitle("Bot Restarted")
+		  .setDescription("I was either updated or restart for you to recieve this message")
+		  .setTimestamp()
+		client.users.cache.get("444651464867184640").send(ping);
+	})
+
 };
