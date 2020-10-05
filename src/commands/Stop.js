@@ -11,7 +11,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		if(stream === undefined) return channel.send(new MessageEmbed()
 		.setColor(guildConfig.theme.info)
-		.setDescription(`Nothing to skip.`)
+		.setDescription(`Not playig.`)
 		.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 		dispatcher.destroy();
