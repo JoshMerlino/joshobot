@@ -58,7 +58,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		}
 
-		if(!(sender.voice.channel || )) {
+		if(!sender.voice.channel) {
 			return channel.send(new MessageEmbed()
 			.setColor(guildConfig.theme.error)
 			.setDescription(`You must be in a voice channel to use this command.`)
