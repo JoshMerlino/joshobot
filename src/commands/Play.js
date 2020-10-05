@@ -68,7 +68,7 @@ module.exports = class Command extends require("../Command.js") {
 		if(!url) {
 			return channel.send(new MessageEmbed()
 			.setColor(guildConfig.theme.warn)
-			.setDescription(`Usage: \`${root} <YouTube url>\`.`)
+			.setDescription(`Usage: \`${root} <YouTube url | YouTube search>\`.`)
 			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 		}
 
