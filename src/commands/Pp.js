@@ -9,9 +9,7 @@ module.exports = class Command extends require("../Command.js") {
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
 
 		const user = guild.member(args.length > 0 ? args[0].replace(/[\\<>@#&!]/g, "") : sender.id);
-
-		const id = parseInt(user.user.id.substr(2, 6));
-		const size = id * .0000135;
+		const size = Math.max(3, parseInt(user.user.id.substr(2, 2)) * 0.18 % 10);
 
 		const embed = new MessageEmbed();
 		embed.setColor(guildConfig.theme.info);
