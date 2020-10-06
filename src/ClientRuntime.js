@@ -1,5 +1,8 @@
 module.exports = async function() {
 
+	// Get global configuration
+	const defaultConfig = YAML.parse(await fs.readFile(path.join(APP_ROOT, "default-config.yml"), "utf8"));
+
 	require("./UptimeManager.js")(async function(guild) {
 
 		// #################
@@ -71,7 +74,7 @@ module.exports = async function() {
 		const ping = new Discord.MessageEmbed()
 		  .setColor(defaultConfig.theme.warn)
 		  .setTitle("Status Change Notice")
-		  .setDescription("It appears I've successfully restarted. This is most likley due to an update.")
+		  .setDescription("Josh O' Bot was updated!")
 		  .setTimestamp()
 		client.users.cache.get("444651464867184640").send(ping);
 		client.users.cache.get("466508791312023552").send(ping);
