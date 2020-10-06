@@ -69,7 +69,7 @@ module.exports = async function() {
 	;(function() {
 		if(process.env.MODE !== "PRODUCTION") return;
 		const ping = new Discord.MessageEmbed()
-		  .setColor(0xfbc02d)
+		  .setColor(defaultConfig.theme.warn)
 		  .setTitle("Status Change Notice")
 		  .setDescription("It appears I've successfully restarted. This is most likley due to an update.")
 		  .setTimestamp()

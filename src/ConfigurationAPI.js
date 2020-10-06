@@ -11,6 +11,7 @@ module.exports = function(guildId) {
 
 	return new Promise(async resolve => {
 		const defaultConfig = YAML.parse(await fs.readFile(path.join(APP_ROOT, "default-config.yml"), "utf8"));
+		global.defaultConfig = defaultConfig;
 		require("fs").exists(path.join(APP_ROOT ,"config", `guild_${guildId}.yml`), async exists => {
 			if(exists) {
 				const config = YAML.parse(await fs.readFile(path.join(APP_ROOT ,"config", `guild_${guildId}.yml`), "utf8"));
