@@ -8,26 +8,26 @@ module.exports = class Command extends require("../Command.js") {
 
 		const [ subcommand = "", role = "", user = null ] = args;
 
-		let roleid;
-		if(role.match(/<@&([0-9]*)>/g)) {
-			roleid = role.replace(/[\\<>@#&!]/g, "");
-		} else {
-			roleid = Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name.toLowerCase().replace(/\s/g, "-") === role.toLowerCase())[0].id;
-		}
-
-		const userid = user.replace(/[\\<>@#&!]/g, "");
-
 		// Make sure sender is a bot master
 		if(util.hasPermissions(sender, guildConfig, "MANAGE_ROLES")) {
 
-			if(role === "" || subcommand === "" || user === null) {
+			if(role === "" || subcommand === "") {
 				return channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <add|remove> <role> <@user>\``)
+				.setDescription(`Usage:\n\`${root} <add|remove|create|delete> <role> <@user | #color>\``)
 				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 			} else {
 
 				if (subcommand.toLowerCase() === "add") {
+
+					let roleid;
+					if(role.match(/<@&([0-9]*)>/g)) {
+						roleid = role.replace(/[\\<>@#&!]/g, "");
+					} else {
+						roleid = Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name.toLowerCase().replace(/\s/g, "-") === role.toLowerCase())[0].id;
+					}
+
+					const userid = user.replace(/[\\<>@#&!]/g, "");
 
 					guild.member(userid).roles.add(roleid).then(function() {
 						channel.send(new MessageEmbed()
@@ -43,6 +43,15 @@ module.exports = class Command extends require("../Command.js") {
 
 				} else if (subcommand.toLowerCase() === "remove") {
 
+					let roleid;
+					if(role.match(/<@&([0-9]*)>/g)) {
+						roleid = role.replace(/[\\<>@#&!]/g, "");
+					} else {
+						roleid = Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name.toLowerCase().replace(/\s/g, "-") === role.toLowerCase())[0].id;
+					}
+
+					const userid = user.replace(/[\\<>@#&!]/g, "");
+
 					guild.member(userid).roles.remove(roleid).then(function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.success)
@@ -55,10 +64,42 @@ module.exports = class Command extends require("../Command.js") {
 						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 					})
 
+				} else if (subcommand.toLowerCase() === "create") {
+
+					await guild.roles.create({
+					  	data: {
+					    	name: args[1],
+					    	color: args[2] || "#000000",
+					  	}
+				  	})
+
+					channel.send(new MessageEmbed()
+					.setColor(guildConfig.theme.success)
+					.setDescription(`Created role \`${args[1]}\`.`)
+					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+
+				} else if (subcommand.toLowerCase() === "delete") {
+
+					let roleid;
+					if(role.match(/<@&([0-9]*)>/g)) {
+						roleid = role.replace(/[\\<>@#&!]/g, "");
+					} else {
+						roleid = Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name.toLowerCase().replace(/\s/g, "-") === role.toLowerCase())[0].id;
+					}
+
+					const specimin = await guild.roles.fetch(roleid);
+
+					channel.send(new MessageEmbed()
+					.setColor(guildConfig.theme.success)
+					.setDescription(`Deleted role \`${specimin.name}\`.`)
+					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+
+					await specimin.delete();
+
 				} else {
 					return channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.warn)
-					.setDescription(`Usage:\n\`${root} <add|remove> <@role> <@user>\``)
+					.setDescription(`Usage:\n\`${root} <add|remove|create|delete> <role> <@user | #color>\``)
 					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 				}
 			}
