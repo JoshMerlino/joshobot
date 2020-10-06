@@ -3,11 +3,11 @@ prefix: '?'
 
 # Color theme configuration
 theme:
-  primary:  0x1976d4
-  success:  0x00c853
-  error:    0xd32f2f
-  severe:   0xf4511e
-  warn:     0xfbc02d
+  primary:  0x75a7ff
+  success:  0x66ffa5
+  error:    0xff867f
+  severe:   0xffa06d
+  warn:     0xffd740
   info:     0x4dd0e1
 
 # Audit log configuration
