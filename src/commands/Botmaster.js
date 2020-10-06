@@ -15,7 +15,7 @@ module.exports = class Command extends require("../Command.js") {
 			if(role === "" || subcommand === "") {
 				return channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <add|remove> <@role>\``)
+				.setDescription(`Usage:\n\`${root} <add|remove> <@role | @user>\``)
 				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 			} else {
 				if(subcommand.toLowerCase() === "add") {
@@ -24,7 +24,7 @@ module.exports = class Command extends require("../Command.js") {
 					await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.success)
-					.setDescription(`<@&${roleid}> is now a bot master.`)
+					.setDescription(`Updated bot masters.`)
 					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 					if(audit) {
@@ -33,7 +33,7 @@ module.exports = class Command extends require("../Command.js") {
 						.setTitle("Bot Masters Updated")
 						.setFooter(`ID: ${sender.id}`)
 						.setTimestamp()
-						.setDescription(`Moderator: <@!${sender.id}>\nRoles: ${config[guild.id].botmasters.length > 0 ? `<@&${config[guild.id].botmasters.join(">, <@&")}>` : "`none`"}`)
+						.setDescription(`Moderator: <@!${sender.id}>`)
 						audit.send(message);
 					}
 
@@ -44,7 +44,7 @@ module.exports = class Command extends require("../Command.js") {
 					await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.success)
-					.setDescription(`<@&${roleid}> is no longer a bot master.`)
+					.setDescription(`Updated bot masters.`)
 					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 					if(audit) {
@@ -53,14 +53,14 @@ module.exports = class Command extends require("../Command.js") {
 						.setTitle("Bot Masters Updated")
 						.setFooter(`ID: ${sender.id}`)
 						.setTimestamp()
-						.setDescription(`Moderator: <@!${sender.id}>\nRoles: ${config[guild.id].botmasters.length > 0 ? `<@&${roles.join(">, <@&")}>` : "`none`"}`)
+						.setDescription(`Moderator: <@!${sender.id}>}`)
 						audit.send(message);
 					}
 
 				} else {
 					return channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.warn)
-					.setDescription(`Usage:\n\`${root} <add|remove> <@role>\``)
+					.setDescription(`Usage:\n\`${root} <add|remove> <@role | @user>\``)
 					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 				}
 			}
