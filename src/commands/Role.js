@@ -30,13 +30,7 @@ module.exports = class Command extends require("../Command.js") {
 
 				if (subcommand.toLowerCase() === "add") {
 
-					let roleid;
-					if(role.match(/<@&([0-9]*)>/g)) {
-						roleid = role.replace(/[\\<>@#&!]/g, "");
-					} else {
-						roleid = Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name.toLowerCase().replace(/\s/g, "-") === role.toLowerCase())[0].id;
-					}
-
+					const roleid = (await util.role(role, guild)).id;
 					const userid = user.replace(/[\\<>@#&!]/g, "");
 
 					guild.member(userid).roles.add(roleid).then(function() {
@@ -53,13 +47,7 @@ module.exports = class Command extends require("../Command.js") {
 
 				} else if (subcommand.toLowerCase() === "remove") {
 
-					let roleid;
-					if(role.match(/<@&([0-9]*)>/g)) {
-						roleid = role.replace(/[\\<>@#&!]/g, "");
-					} else {
-						roleid = Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name.toLowerCase().replace(/\s/g, "-") === role.toLowerCase())[0].id;
-					}
-
+					const roleid = (await util.role(role, guild)).id;
 					const userid = user.replace(/[\\<>@#&!]/g, "");
 
 					guild.member(userid).roles.remove(roleid).then(function() {
@@ -90,13 +78,7 @@ module.exports = class Command extends require("../Command.js") {
 
 				} else if (subcommand.toLowerCase() === "delete") {
 
-					let roleid;
-					if(role.match(/<@&([0-9]*)>/g)) {
-						roleid = role.replace(/[\\<>@#&!]/g, "");
-					} else {
-						roleid = Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name.toLowerCase().replace(/\s/g, "-") === role.toLowerCase())[0].id;
-					}
-
+					const roleid = (await util.role(role, guild)).id;
 					const specimin = await guild.roles.fetch(roleid);
 
 					channel.send(new MessageEmbed()

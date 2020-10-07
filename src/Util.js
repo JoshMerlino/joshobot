@@ -22,8 +22,16 @@ module.exports = {
         return `Ex${s4()}${s4()}${s4()}`;
     },
 
-	user(user) {
+	user(user, guild) {
 		return guild.member(typeof user === "String" ? user.replace(/[\\<>@#&!]/g, "") : user.id);
-	}
+	},
+
+	role(role, guild) {
+		if(role.match(/<@&([0-9]*)>/g)) {
+			return guild.roles.fetch(role.replace(/[\\<>@#&!]/g, ""));
+		} else {
+			return guild.roles.fetch(Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name.toLowerCase().replace(/\s/g, "-") === role.toLowerCase())[0].id)
+		}
+	},
 
 }
