@@ -10,7 +10,7 @@ module.exports = class Command extends require("../Command.js") {
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild }) {
 
-		const user = util.user(args[0] || sender);
+		const user = util.user(args[0] || sender, guild);
 
 		const embed = new MessageEmbed();
 		embed.setColor(guildConfig.theme.info);
