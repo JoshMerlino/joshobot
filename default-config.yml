@@ -425,3 +425,16 @@ commands:
     - stop
     - end
     - st
+
+  # Suggest command configuration
+  suggest:
+
+    # Should this ommand be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - sug
+    - suggest
+    - suggestion
+    - su

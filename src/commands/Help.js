@@ -65,6 +65,7 @@ module.exports = class Command extends require("../Command.js") {
 			.setColor(guildConfig.theme.primary)
 			.setFooter(sender.displayName, sender.user.displayAvatarURL())
 			guildConfig.commands["invite"].enabled && embed.addField("Invite Josh O' Bot to Your Server", `\`${guildConfig.prefix}${guildConfig.commands["invite"].alias[0]}\``)
+			guildConfig.commands["suggest"].enabled && embed.addField("Make a suggestion", `\`${guildConfig.prefix}${guildConfig.commands["auggestion"].alias[0]}\``)
 			return channel.send(embed);
 		}
 
