@@ -37,7 +37,9 @@ module.exports = class Command {
 	}
 
 	register(description, category, args = []) {
-		global.help.push({ aliases: this.aliases, description, category, args })
+		const registration = { aliases: this.aliases, description, category, args }
+		if(global.help.includes(registration)) return
+		global.help.push(registration)
 	}
 
 }

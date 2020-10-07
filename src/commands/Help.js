@@ -54,7 +54,6 @@ module.exports = class Command extends require("../Command.js") {
 		embed.setColor(guildConfig.theme.info);
 		embed.setTitle(`Josh O' Bot's Help Menu`)
 		embed.setDescription(`${list.join("\n").replace(/\n\n/gm, "\n")}\n[Configure Online](https://josho.bot.nu) • [Support Server](https://discord.gg/5ha2Zk)`);
-		console.log(JSON.stringify(embed.toJSON()).length)
 		return channel.send(embed);
 
 	}
