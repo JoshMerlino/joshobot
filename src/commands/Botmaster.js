@@ -2,6 +2,10 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("botmaster", ...arguments);
+		this.register("Manages who has permission overrides for the bot. 🤖", HelpSection.MODERATION, [{
+			argument: "@User | Role",
+			required: true,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {

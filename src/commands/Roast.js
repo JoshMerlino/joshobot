@@ -81,6 +81,7 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("roast", ...arguments);
+		this.register("Sends a random insult. 😡", HelpSection.MISCELLANEOUS);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {

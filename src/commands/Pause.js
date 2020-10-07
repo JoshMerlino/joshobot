@@ -2,6 +2,7 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("pause", ...arguments);
+		this.register("Pauses or resumes the current song. ⏯", HelpSection.MUSIC);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {

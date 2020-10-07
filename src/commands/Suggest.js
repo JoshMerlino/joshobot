@@ -1,6 +1,10 @@
 module.exports = class Command extends require("../Command.js") {
 	constructor() {
 		super("suggest", ...arguments);
+		this.register("Makes a suggestion in our Josh O' Bot support server. 😍", HelpSection.GENERAL, [{
+			argument: "Suggestion",
+			required: true,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {

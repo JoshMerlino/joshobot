@@ -3,6 +3,9 @@ module.exports = async function() {
 	// Get global configuration
 	const defaultConfig = YAML.parse(await fs.readFile(path.join(APP_ROOT, "default-config.yml"), "utf8"));
 
+	// Register all enums
+	(await fs.readdir(path.join(APP_ROOT, "src", "enum"))).map(e => global[e.split(".js")[0]] = require(path.join(APP_ROOT, "src", "enum", e)));
+
 	require("./UptimeManager.js")(async function(guild) {
 
 		// #################

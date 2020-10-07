@@ -2,6 +2,7 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("stop", ...arguments);
+		this.register("Stops playing and disconnects from the voice channel. ⏹", HelpSection.MUSIC);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {

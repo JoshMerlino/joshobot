@@ -2,6 +2,7 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("skip", ...arguments);
+		this.register("Skips to the next song in queue. ⏭", HelpSection.MUSIC);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {

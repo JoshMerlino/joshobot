@@ -2,6 +2,10 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("user", ...arguments);
+		this.register("Gets basic information about a Discord account. ℹ", HelpSection.GENERAL, [{
+			argument: "@User",
+			required: false,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild }) {

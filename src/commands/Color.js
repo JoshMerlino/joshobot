@@ -2,6 +2,10 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("color", ...arguments);
+		this.register("Preview a color. 🎨", HelpSection.MISCELLANEOUS, [{
+			argument: "@User | #HexValue",
+			required: false,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild }) {

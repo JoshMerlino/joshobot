@@ -2,6 +2,7 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("advice", ...arguments);
+		this.register("Gives random life advice. 👨‍🦳", HelpSection.MISCELLANEOUS);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild }) {

@@ -2,6 +2,13 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("addemoji", ...arguments);
+		this.register("Creates a new server emoji. 💩", HelpSection.MODERATION, [{
+			argument: "Emoji name",
+			required: true,
+		}, {
+			argument: "Emoji link",
+			required: false,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {

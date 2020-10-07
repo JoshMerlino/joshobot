@@ -2,6 +2,10 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("avatar", ...arguments);
+		this.register("Displays the profile picture of a user.", HelpSection.GENERAL, [{
+			argument: "@User",
+			required: true,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild }) {

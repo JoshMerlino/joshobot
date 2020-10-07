@@ -4,6 +4,7 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("invite", ...arguments);
+		this.register("Invite Josh O' Bot to your server. 😻", HelpSection.GENERAL);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {

@@ -2,6 +2,10 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("lockdown", ...arguments);
+		this.register("Make a channel read only. 🔒", HelpSection.MODERATION, [{
+			argument: "#Channel",
+			required: false,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {

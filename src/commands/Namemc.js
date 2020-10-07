@@ -4,6 +4,10 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("namemc", ...arguments);
+		this.register("Look up a Minecraft player. 🎮", HelpSection.MISCELLANEOUS, [{
+			argument: "Username",
+			required: true,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {

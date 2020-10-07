@@ -25,6 +25,7 @@ global.APP_ROOT = __dirname;
 global.client = client;
 global.config = {};
 global.streams = {};
+global.help = [];
 global.MessageEmbed = Discord.MessageEmbed;
 
 // Import utilities

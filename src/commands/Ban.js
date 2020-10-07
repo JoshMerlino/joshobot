@@ -2,6 +2,13 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("ban", ...arguments);
+		this.register("Bans a member from the server. 🔨", HelpSection.MODERATION, [{
+			argument: "@User",
+			required: true,
+		}, {
+			argument: "Reason",
+			required: false,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {

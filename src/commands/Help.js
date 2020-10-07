@@ -2,89 +2,59 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("help", ...arguments);
+		this.register("Shows this message 😎.", HelpSection.GENERAL, [{
+			argument: "Help section",
+			required: false,
+		}]);
 	}
 
-	onCommand({ root, args, sender, channel, guildConfig }) {
+	async onCommand({ root, args, sender, channel, guildConfig }) {
 
-		const [ subcommand ] = args;
-
-		// If no arguments were specified
-		if (args.length === 0) {
-			const embed = new MessageEmbed()
-			.setColor(guildConfig.theme.primary)
-			.setFooter(`Built by Josh and Jeremy`)
-			.addField("Fun commands", `\`${root} fun\``, true)
-			.addField("Miscellaneous commands", `\`${root} misc\``, true)
-			.addField("Moderator commands", `\`${root} moderator\``, true)
-			.addField("Music commands", `\`${root} music\``, true)
-			.setURL("https://josho.bot.nu/")
-			.setTitle("Configure Online")
-			return channel.send(embed);
+		const list = [];
+		const { prefix } = guildConfig;
+		const categorys = {
+			[HelpSection.GENERAL]: "General",
+			[HelpSection.MISCELLANEOUS]: "Miscellaneous",
+			[HelpSection.MODERATION]: "Moderation",
+			[HelpSection.MUSIC]: "Music",
 		}
 
-		if(["moderator", "mod"].includes(subcommand.toLowerCase())) {
-			const embed = new MessageEmbed()
-			.setColor(guildConfig.theme.primary)
-			.setFooter(sender.displayName, sender.user.displayAvatarURL())
-			guildConfig.commands["addemoji"].enabled && embed.addField("Add Emoji", `\`${guildConfig.prefix}${guildConfig.commands["addemoji"].alias[0]} <name> [link = link from previous image]\``)
-			guildConfig.commands["audit"].enabled && embed.addField("Manage Audit Log", `\`${guildConfig.prefix}${guildConfig.commands["audit"].alias[0]} <channel|enable|disable> [#channel (channel)]\``)
-			guildConfig.commands["ban"].enabled && embed.addField("Ban Members", `\`${guildConfig.prefix}${guildConfig.commands["ban"].alias[0]} <@user> (reason)\``)
-			guildConfig.commands["botmaster"].enabled && embed.addField("Bot Masters", `\`${guildConfig.prefix}${guildConfig.commands["botmaster"].alias[0]} <@role>\``)
-			guildConfig.commands["channel"].enabled && embed.addField("Manage Channels", `\`${guildConfig.prefix}${guildConfig.commands["channel"].alias[0]} <add|remove|rename|nsfw> <channel|#channel> [new name]\``)
-			guildConfig.commands["kick"].enabled && embed.addField("Kick Members", `\`${guildConfig.prefix}${guildConfig.commands["kick"].alias[0]} <@user> (reason)\``)
-			guildConfig.commands["lockdown"].enabled && embed.addField("Lockdown Channel", `\`${guildConfig.prefix}${guildConfig.commands["lockdown"].alias[0]} [#channel = (current)]\``)
-			guildConfig.commands["mute"].enabled && embed.addField("Mute Members", `\`${guildConfig.prefix}${guildConfig.commands["mute"].alias[0]} <@user> (reason)\``)
-			guildConfig.commands["purge"].enabled && embed.addField("Purge Messages", `\`${guildConfig.prefix}${guildConfig.commands["purge"].alias[0]} <length>\``)
-			guildConfig.commands["role"].enabled && embed.addField("Manage Roles", `\`${guildConfig.prefix}${guildConfig.commands["role"].alias[0]} <add|remove> <role> <@user>\``)
-			guildConfig.commands["unmute"].enabled && embed.addField("Unmute Members", `\`${guildConfig.prefix}${guildConfig.commands["unmute"].alias[0]} <@user>\``)
-			guildConfig.commands["user"].enabled && embed.addField("User Information", `\`${guildConfig.prefix}${guildConfig.commands["user"].alias[0]} [@user = you]\``)
-			guildConfig.commands["warn"].enabled && embed.addField("Warn Members", `\`${guildConfig.prefix}${guildConfig.commands["warn"].alias[0]} <@user> [reason]\``)
-			return channel.send(embed);
+		if(args.length === 0) {
+
+			list.push(`Heres a list of command sections. For more info, do \`${root} [section]\`\n `);
+
+			Object.keys(categorys).map(category => {
+				list.push(`**${categorys[category]} Commands**`);
+				list.push(`\`${root} ${categorys[category].toLowerCase()}\``);
+				list.push(`\n`);
+			})
+
 		}
 
-		if(["fun", "f"].includes(subcommand.toLowerCase())) {
-			const embed = new MessageEmbed()
-			.setColor(guildConfig.theme.primary)
-			.setFooter(sender.displayName, sender.user.displayAvatarURL())
-			guildConfig.commands["8ball"].enabled && embed.addField("8 Ball", `\`${guildConfig.prefix}${guildConfig.commands["8ball"].alias[0]} <question ...>\``)
-			guildConfig.commands["advice"].enabled && embed.addField("Advice", `\`${guildConfig.prefix}${guildConfig.commands["advice"].alias[0]}\``)
-			guildConfig.commands["avatar"].enabled && embed.addField("Avatar", `\`${guildConfig.prefix}${guildConfig.commands["avatar"].alias[0]} (@user = you)\``)
-			guildConfig.commands["color"].enabled && embed.addField("Color", `\`${guildConfig.prefix}${guildConfig.commands["color"].alias[0]} [hex code | @user]\``)
-			guildConfig.commands["image"].enabled && embed.addField("Image Search", `\`${guildConfig.prefix}${guildConfig.commands["image"].alias[0]} <term>\``)
-			guildConfig.commands["namemc"].enabled && embed.addField("Name MC Lookup", `\`${guildConfig.prefix}${guildConfig.commands["namemc"].alias[0]} <minecraft username>\``)
-			guildConfig.commands["pp"].enabled && embed.addField("Estimate PP size", `\`${guildConfig.prefix}${guildConfig.commands["pp"].alias[0]} <@user>\``)
-			guildConfig.commands["poll"].enabled && embed.addField("Create Poll", `\`${guildConfig.prefix}${guildConfig.commands["poll"].alias[0]} <message>\``)
-			guildConfig.commands["reddit"].enabled && embed.addField("Reddit Search", `\`${guildConfig.prefix}${guildConfig.commands["reddit"].alias[0]} <term>\``)
-			guildConfig.commands["roast"].enabled && embed.addField("Send a Roast", `\`${guildConfig.prefix}${guildConfig.commands["roast"].alias[0]}\``)
-			guildConfig.commands["urban"].enabled && embed.addField("Urban Dictionary", `\`${guildConfig.prefix}${guildConfig.commands["urban"].alias[0]} <term>\``)
-			return channel.send(embed);
+		if(args.length === 1) {
+
+			let cat;
+			for(const category in categorys) if(categorys[category].toLowerCase().includes(args[0].toLowerCase())) cat = category;
+
+			list.push(`**${categorys[cat]}** Commands:\n `);
+
+			global.help.map(({ aliases, category, description, args }) => {
+				if(category !== cat) return;
+
+				list.push(`**\`${prefix}${aliases[0]}\`**:`);
+				list.push(`${description}`);
+				list.push(`Usage: \`${prefix}${aliases[0]}${args.map(({ required, argument }) => ` ${required ? "<":"("}${argument}${required ? ">":")"}`).join("")}\``);
+				aliases.length > 1 && list.push(`Aliases: \`${prefix}${aliases.splice(1).join(`\`, \`${prefix}`)}\``);
+				list.push(`\n`);
+			})
+
 		}
 
-		if(["misc", "miscellaneous"].includes(subcommand.toLowerCase())) {
-			const embed = new MessageEmbed()
-			.setColor(guildConfig.theme.primary)
-			.setFooter(sender.displayName, sender.user.displayAvatarURL())
-			guildConfig.commands["invite"].enabled && embed.addField("Invite Josh O' Bot to Your Server", `\`${guildConfig.prefix}${guildConfig.commands["invite"].alias[0]}\``)
-			guildConfig.commands["suggest"].enabled && embed.addField("Make a suggestion", `\`${guildConfig.prefix}${guildConfig.commands["auggestion"].alias[0]}\``)
-			return channel.send(embed);
-		}
-
-		if(["music", "groovy", "rythem", "mu"].includes(subcommand.toLowerCase())) {
-			const embed = new MessageEmbed()
-			.setColor(guildConfig.theme.primary)
-			.setFooter(sender.displayName, sender.user.displayAvatarURL())
-			guildConfig.commands["play"].enabled && embed.addField("Play a Song or Playlist", `\`${guildConfig.prefix}${guildConfig.commands["play"].alias[0]} <Youtube Link | Youtube Search>\``)
-			guildConfig.commands["skip"].enabled && embed.addField("Skips to the Next Song", `\`${guildConfig.prefix}${guildConfig.commands["skip"].alias[0]}\``)
-			guildConfig.commands["stop"].enabled && embed.addField("Stop Playing", `\`${guildConfig.prefix}${guildConfig.commands["stop"].alias[0]}\``)
-			guildConfig.commands["pause"].enabled && embed.addField("Pause/Play", `\`${guildConfig.prefix}${guildConfig.commands["pause"].alias[0]}\``)
-			return channel.send(embed);
-		}
-
-		// If the subcommand dosnt exist
-		return channel.send(new MessageEmbed()
-		.setColor(guildConfig.theme.warn)
-		.setFooter(sender.displayName, sender.user.displayAvatarURL())
-		.setDescription(`Invalid subcommand **${args[0]}**.\nUse \`${config.prefix}${config.commands[command].command}\` for a list of commands.`));
+		const embed = new MessageEmbed();
+		embed.setColor(guildConfig.theme.info);
+		embed.setTitle(`Josh O' Bot's Help Menu`)
+		embed.setDescription(`${list.join("\n").replace(/\n\n/gm, "\n")}\n[Configure Online](https://josho.bot.nu) • [Support Server](https://discord.gg/5ha2Zk)`)
+		return channel.send(embed);
 
 	}
 

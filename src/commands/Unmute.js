@@ -2,6 +2,10 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("unmute", ...arguments);
+		this.register("Unmute a member in this server. 🔊", HelpSection.MODERATION, [{
+			argument: "@User",
+			required: true,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {

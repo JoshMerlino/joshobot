@@ -70,6 +70,10 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("reddit", ...arguments);
+		this.register("Gets a random picture off of Reddit. 🖼", HelpSection.GENERAL, [{
+			argument: "Subreddit",
+			required: true,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit, message }) {

@@ -2,6 +2,13 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("audit", ...arguments);
+		this.register("Manage server audit logging. ℹ", HelpSection.MODERATION, [{
+			argument: "enable | disable | channel",
+			required: true,
+		}, {
+			argument: "#Channel",
+			required: false,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild }) {

@@ -2,6 +2,13 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("warn", ...arguments);
+		this.register("Warns a user about an action they may have done. ⚠", HelpSection.MODERATION, [{
+			argument: "@User",
+			required: true,
+		}, {
+			argument: "Reason",
+			required: false,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {

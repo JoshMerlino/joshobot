@@ -2,6 +2,16 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("channel", ...arguments);
+		this.register("Manages server channels. #️⃣", HelpSection.MODERATION, [{
+			argument: "add | remove | rename | nsfw",
+			required: true,
+		}, {
+			argument: "Channel | #Channel",
+			required: true,
+		}, {
+			argument: "New channel name",
+			required: false,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, message }) {

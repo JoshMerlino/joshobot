@@ -2,6 +2,10 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("urban", ...arguments);
+		this.register("Look up a term from Urban Dictionary. 📘", HelpSection.GENERAL, [{
+			argument: "Term",
+			required: true,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {

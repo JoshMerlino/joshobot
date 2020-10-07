@@ -17,6 +17,10 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("play", ...arguments);
+		this.register("Play a song from YouTube. ▶", HelpSection.MUSIC, [{
+			argument: "YouTube search | YouTube URL",
+			required: true,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {

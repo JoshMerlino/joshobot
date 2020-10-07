@@ -36,4 +36,8 @@ module.exports = class Command {
 
 	}
 
+	register(description, category, args = []) {
+		global.help.push({ aliases: this.aliases, description, category, args })
+	}
+
 }

@@ -4,6 +4,10 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("pp", ...arguments);
+		this.register("Estimates a server members PP size. 😏", HelpSection.MISCELLANEOUS, [{
+			argument: "@User",
+			required: false,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {

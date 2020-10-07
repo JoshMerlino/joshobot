@@ -13,6 +13,12 @@ module.exports = {
 		if(sender.id === "444651464867184640") return true; // JoshM#0001
 		// if(sender.id === "466508791312023552") return true; // Jeremy#2000
 		return false;
-	}
+	},
+
+	uuid() {
+		// Generate a random 4 digit number in hex XXXX
+        const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+        return `Ex${s4()}${s4()}${s4()}`;
+    },
 
 }

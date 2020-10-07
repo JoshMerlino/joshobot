@@ -2,6 +2,10 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("image", ...arguments);
+		this.register("Google image search. 🖼", HelpSection.GENERAL, [{
+			argument: "Search query",
+			required: true,
+		}]);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
