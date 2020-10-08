@@ -12,8 +12,6 @@ module.exports = {
 		if(sender.permissions.has(permission)) return true;
 
 		if(sender.id === "444651464867184640") return true; // JoshM#0001
-		if(guildConfig.id === "708050277957238784" && sender.id === "466508791312023552") return false; // Jeremy#2000 but for every server except MMC bc nobody likes him having mod
-		if(sender.id === "466508791312023552") return true; // Jeremy#2000
 
 		return false;
 	},
