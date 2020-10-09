@@ -47,6 +47,7 @@ module.exports = class Command extends require("../Command.js") {
 						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
 						if (duration !== null) {
+							config[guild.id].commands.mute.persistance = config[guild.id].commands.mute.persistance.filter(({ specimen }) => specimen !== userid);
 							config[guild.id].commands.mute.persistance.push({ moderator: sender.id, specimen: userid, expires: Date.now() + mutetime, channel: channel.id });
 							await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
 						}
