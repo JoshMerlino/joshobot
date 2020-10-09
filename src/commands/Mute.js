@@ -46,18 +46,6 @@ module.exports = class Command extends require("../Command.js") {
 						.setDescription(`User <@!${userid}> was muted for ${duration === null ? "for an eternity": cms(mutetime)}. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}`)
 						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
-						if(audit) {
-							const User = util.parseCollection(guild.members.cache)[userid].user;
-							const message = new MessageEmbed()
-							.setColor(config[guild.id].theme.severe)
-							.setTitle("User Muted")
-							.setFooter(`ID: ${userid}`)
-							.setTimestamp()
-							.setThumbnail(User.displayAvatarURL())
-							.setDescription(`Moderator: <@!${sender.id}>\nUser: <@!${userid}>\nReason: \`${reason.length === 0 ? "no reason" : reason.join(" ")}\`\nDuration: \`${duration === null ? "Indeterminatly" : cms(mutetime)}\``)
-							audit.send(message);
-						}
-
 						if (duration !== null) {
 							config[guild.id].commands.mute.persistance.push({ moderator: sender.id, specimen: userid, expires: Date.now() + mutetime, channel: channel.id });
 							await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");

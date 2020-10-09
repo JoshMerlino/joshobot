@@ -18,18 +18,6 @@ module.exports = class Command extends require("../Command.js") {
 
 				messages++;
 
-				console.log(messages);
-
-				if(audit) {
-					const message = new MessageEmbed()
-					.setColor(config[guild.id].theme.severe)
-					.setTitle("Messages Purged")
-					.setFooter(`ID: ${sender.id}`)
-					.setTimestamp()
-					.setDescription(`Moderator: <@!${sender.id}>\nChannel: \`#${channel.name}\` (<#${channel.id}>)\nAmount: \`${messages}\``)
-					audit.send(message);
-				}
-
 				let numleft = messages;
 				while(numleft > 100) {
 					await channel.bulkDelete(100);

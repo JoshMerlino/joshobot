@@ -24,18 +24,6 @@ module.exports = class Command extends require("../Command.js") {
 				.setDescription(`User <@!${userid}> has been warned. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}`)
 				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
-				if(audit) {
-					const User = util.parseCollection(guild.members.cache)[userid].user;
-					const message = new MessageEmbed()
-					.setColor(config[guild.id].theme.severe)
-					.setTitle("User Warned")
-					.setFooter(`ID: ${userid}`)
-					.setTimestamp()
-					.setThumbnail(User.displayAvatarURL())
-					.setDescription(`Moderator: <@!${sender.id}>\nUser: <@!${userid}>\nReason: \`${reason.length === 0 ? "no reason" : reason.join(" ")}\``)
-					audit.send(message);
-				}
-
 			} else {
 				return channel.send(new MessageEmbed()
 				.setColor(guildConfig.theme.warn)

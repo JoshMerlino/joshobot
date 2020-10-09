@@ -40,19 +40,7 @@ module.exports = class Command extends require("../Command.js") {
 				guild.emojis.create(link, name).then(emoji => {
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.success)
-					.setDescription(`Emoji :\`${name}\`: (${emoji.toString()}) created!`));
-
-					if(audit) {
-						const message = new MessageEmbed()
-						.setColor(config[guild.id].theme.success)
-						.setTitle("Emoji Added")
-						.setFooter(`ID: ${emoji.id}`)
-						.setTimestamp()
-						.setThumbnail(link)
-						.setDescription(`Moderator: <@!${sender.id}>\nName: :\`${name}\`:\nID: \`${emoji.id}\``)
-						audit.send(message);
-					}
-
+					.setDescription(`Emoji \\:${name}: ${emoji.toString()} created!`));
 				}).catch(function(err) {
 					console.error(err);
 					channel.send(new MessageEmbed()

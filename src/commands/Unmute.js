@@ -27,19 +27,6 @@ module.exports = class Command extends require("../Command.js") {
 					.setDescription(`<@!${userid}> is no longer muted.`)
 					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
-					const audit = guild.channels.cache.get(config[guild.id].audit.channel);
-					if(audit) {
-						const User = util.parseCollection(guild.members.cache)[userid].user;
-						const message = new MessageEmbed()
-						.setColor(config[guild.id].theme.severe)
-						.setTitle("User Unmuted")
-						.setFooter(`ID: ${userid}`)
-						.setTimestamp()
-						.setThumbnail(User.displayAvatarURL())
-						.setDescription(`Moderator: <@!${sender.id}>\nUser: <@!${userid}>`)
-						audit.send(message);
-					}
-
 				} catch (e) {
 					channel.send(new MessageEmbed()
 					.setColor(guildConfig.theme.error)

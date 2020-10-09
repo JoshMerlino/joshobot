@@ -31,17 +31,6 @@ module.exports = class Command extends require("../Command.js") {
 					.setDescription(`Updated bot masters.`)
 					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
-					if(audit) {
-						const message = new MessageEmbed()
-						.setColor(config[guild.id].theme.warn)
-						.setTitle("Bot Masters Updated")
-						.setFooter(`ID: ${sender.id}`)
-						.setTimestamp()
-						.setDescription(`Moderator: <@!${sender.id}>`)
-						audit.send(message);
-					}
-
-
 				} else if (subcommand.toLowerCase() === "remove") {
 
 					config[guild.id].botmasters.splice(config[guild.id].botmasters.indexOf(roleid));
@@ -50,16 +39,6 @@ module.exports = class Command extends require("../Command.js") {
 					.setColor(guildConfig.theme.success)
 					.setDescription(`Updated bot masters.`)
 					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-
-					if(audit) {
-						const message = new MessageEmbed()
-						.setColor(config[guild.id].theme.warn)
-						.setTitle("Bot Masters Updated")
-						.setFooter(`ID: ${sender.id}`)
-						.setTimestamp()
-						.setDescription(`Moderator: <@!${sender.id}>}`)
-						audit.send(message);
-					}
 
 				} else {
 					return channel.send(new MessageEmbed()

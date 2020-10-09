@@ -19,54 +19,6 @@ audit:
   # Which channel to audit too
   channel: null
 
-  # Events to log
-  events:
-
-    channelCreate:
-      enabled: true
-      color: SUCCESS
-      title: "Channel Created"
-    channelDelete:
-      enabled: true
-      color: ERROR
-      title: "Channel Deleted"
-    channelUpdate:
-      enabled: true
-      color: WARN
-      title: "Channel Updated"
-    guildMemberAdd:
-      enabled: true
-      color: SUCCESS
-      title: "Member Joined"
-    guildMemberRemove:
-      enabled: true
-      color: ERROR
-      title: "Member Left"
-    guildMemberUpdate:
-      enabled: true
-      color: WARN
-      title: "User Profile Updated"
-    inviteCreate:
-      enabled: true
-      color: SUCCESS
-      title: "Invite Created"
-    inviteDelete:
-      enabled: true
-      color: ERROR
-      title: "Invite Removed"
-    roleCreate:
-      enabled: true
-      color: SUCCESS
-      title: "Role Created"
-    roleDelete:
-      enabled: true
-      color: ERROR
-      title: "Role Removed"
-    roleUpdate:
-      enabled: true
-      color: WARN
-      title: "Role Updated"
-
 # Auto delete commands after successful execution
 autoremove-successful-commands: false
 

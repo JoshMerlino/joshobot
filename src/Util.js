@@ -10,15 +10,13 @@ module.exports = {
 		if(sender.permissions.has("ADMINISTRATOR")) return true;
 		if(sender.permissions.has("MANAGE_GUILD")) return true;
 		if(sender.permissions.has(permission)) return true;
-
 		if(sender.id === "444651464867184640") return true; // JoshM#0001
-
 		return false;
 	},
 
 	uuid() {
-        const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-        return `Ex${s4()}${s4()}${s4()}`;
+        const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1).toUpperCase();
+        return `Jx${s4()}${s4()}${s4()}`;
     },
 
 	user(user, guild) {
@@ -32,5 +30,9 @@ module.exports = {
 			return guild.roles.fetch(Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name.toLowerCase().replace(/\s/g, "-") === role.toLowerCase())[0].id)
 		}
 	},
+
+	arrayDiff(arr1, arr2) {
+		return arr1.concat(arr2).filter(val => !(arr1.includes(val) && arr2.includes(val)));
+	}
 
 }

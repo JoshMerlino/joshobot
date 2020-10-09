@@ -36,18 +36,6 @@ module.exports = class Command extends require("../Command.js") {
 						.setDescription(`User <@!${userid}> was banned. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}`)
 						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
-						if(audit) {
-							const User = util.parseCollection(guild.members.cache)[userid].user;
-							const message = new MessageEmbed()
-							.setColor(config[guild.id].theme.severe)
-							.setTitle("User Banned")
-							.setFooter(`ID: ${userid}`)
-							.setTimestamp()
-							.setThumbnail(User.displayAvatarURL())
-							.setDescription(`Moderator: <@!${sender.id}>\nUser: <@!${userid}>\n\nReason: \`${reason.length === 0 ? "no reason" : reason.join(" ")}\`\nDeleted Messages: \`${deleteMessages == true ? "yes":"no"}\``)
-							audit.send(message);
-						}
-
 					}).catch(function() {
 						channel.send(new MessageEmbed()
 						.setColor(guildConfig.theme.error)

@@ -45,6 +45,13 @@ module.exports = class Command extends require("../Command.js") {
 				.setDescription(`Disabled auditing.`)
 				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
+				sendAudit(guild, {
+					sender,
+					color: "error",
+					title: "Disabled Audit Logging",
+					desc:  "This channel will no longer receive messages about actions made to the server.",
+				})
+
 			} else if (subcommand.toLowerCase() === "channel") {
 
 				if(target === null) {
@@ -62,6 +69,13 @@ module.exports = class Command extends require("../Command.js") {
 					.setColor(guildConfig.theme.success)
 					.setDescription(`Audit logging enabled in the ${target} channel.`)
 					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+
+					sendAudit(guild, {
+						sender,
+						color: "success",
+						title: "Enabled Audit Logging",
+						desc:  "Audit logging has been enabled in this channel. You will now receive a message about actions made to the server.",
+					})
 
 				}
 

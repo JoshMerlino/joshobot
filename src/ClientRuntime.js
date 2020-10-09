@@ -41,8 +41,7 @@ module.exports = async function() {
 		// ############
 
 		// Register all commands
-		const commands = await fs.readdir(path.join(APP_ROOT, "src", "commands"));
-		commands.map(command => {
+		(await fs.readdir(path.join(APP_ROOT, "src", "commands"))).map(command => {
 			const Command = require(path.join(APP_ROOT, "src", "commands", command));
 			new Command(guild.id);
 		});
