@@ -4,25 +4,25 @@ module.exports = async function(guild, [ event, newEvent ]) {
 
 	if(event.name !== newEvent.name) fields.push({
 		name: "Name",
-		value: `${event.name}** → **${newEvent.name}`,
+		value: `\`${event.name}\` → \`${newEvent.name}\``,
 		inline: true
 	})
 
 	if(event.hexColor !== newEvent.hexColor) fields.push({
 		name: "Color",
-		value: `${event.hexColor}** → **${newEvent.hexColor}`,
+		value: `\`${event.hexColor}\` → \`${newEvent.hexColor}\``,
 		inline: true
 	})
 
 	if(event.hoist !== newEvent.hoist) fields.push({
 		name: "Display Seperatly",
-		value: `${event.hoist ? "YES":"NO"}** → **${newEvent.hoist ? "YES":"NO"}`,
+		value: `\`${event.hoist ? "`Yes`":"`No`"} → ${newEvent.hoist ? "`Yes`":"`No`"}`,
 		inline: true
 	})
 
 	if(event.mentionable !== newEvent.mentionable) fields.push({
 		name: "Mentionable",
-		value: `${event.mentionable ? "YES":"NO"}** → **${newEvent.mentionable ? "YES":"NO"}`,
+		value: `\`${event.mentionable ? "`Yes`":"`No`"} → ${newEvent.mentionable ? "`Yes`":"`No`"}`,
 		inline: true
 	})
 
@@ -38,7 +38,7 @@ module.exports = async function(guild, [ event, newEvent ]) {
 		fields,
 		color: "warn",
 		desc: newEvent.toString(),
-		title:  "Role Updated",
+		title: "Role Updated",
 	})
 
 }

@@ -5,7 +5,7 @@ module.exports = async function(guild, [ event ]) {
 
 	fields.push({
 		name: "Amount",
-		value: `${messages.length} Total Messages`,
+		value: `${messages.length -1} Total Messages`,
 		inline: true
 	})
 
@@ -14,7 +14,7 @@ module.exports = async function(guild, [ event ]) {
 
 	fields.push({
 		name: "By User",
-		value: Object.keys(users).map(user => `<@${user}>: ${users[user]} Messages`).join("\n"),
+		value: Object.keys(users).map(user => `<@${user}>: \`${users[user]} Messages\``).join("\n"),
 		inline: true
 	})
 
@@ -23,7 +23,7 @@ module.exports = async function(guild, [ event ]) {
 	await sendAudit(guild, {
 		fields,
 		color: "severe",
-		title:  "Messages Purged",
+		title: "Messages Purged",
 	})
 
 }

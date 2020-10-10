@@ -49,7 +49,7 @@ module.exports = class Command extends require("../Command.js") {
 					sender,
 					color: "error",
 					title: "Disabled Audit Logging",
-					desc:  "This channel will no longer receive messages about actions made to the server.",
+					desc: "This channel will no longer receive messages about actions made to the server.",
 				})
 
 			} else if (subcommand.toLowerCase() === "channel") {
@@ -74,7 +74,7 @@ module.exports = class Command extends require("../Command.js") {
 						sender,
 						color: "success",
 						title: "Enabled Audit Logging",
-						desc:  "Audit logging has been enabled in this channel. You will now receive a message about actions made to the server.",
+						desc: "Audit logging has been enabled in this channel. You will now receive a message about actions made to the server.",
 					})
 
 				}

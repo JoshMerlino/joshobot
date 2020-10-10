@@ -4,25 +4,25 @@ module.exports = async function(guild, [ event ]) {
 
 	fields.push({
 		name: "Name",
-		value: event.name,
+		value: `\`${event.name}\``,
 		inline: true
 	})
 
 	if(event.hexColor !== "#000000") fields.push({
 		name: "Color",
-		value: `${event.hexColor}`,
+		value: `\`${event.hexColor}\``,
 		inline: true
 	})
 
 	fields.push({
 		name: "Display Seperatly",
-		value: event.hoist ? "YES":"NO",
+		value: event.hoist ? "`Yes`":"`No`",
 		inline: true
 	})
 
 	fields.push({
 		name: "Mentionable",
-		value: event.mentionable ? "YES":"NO",
+		value: event.mentionable ? "`Yes`":"`No`",
 		inline: true
 	})
 
@@ -32,7 +32,7 @@ module.exports = async function(guild, [ event ]) {
 		fields,
 		color: "error",
 		desc: event.toString(),
-		title:  "Role Deleted",
+		title: "Role Deleted",
 	})
 
 }

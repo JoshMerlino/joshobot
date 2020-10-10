@@ -4,7 +4,7 @@ module.exports = async function(guild, [ event ]) {
 
 	fields.push({
 		name: "Name",
-		value: `\\:${event.name}:`,
+		value: `\`\\:${event.name}:\``,
 		inline: true
 	})
 
@@ -13,8 +13,9 @@ module.exports = async function(guild, [ event ]) {
 	await sendAudit(guild, {
 		fields,
 		color: "success",
-		title:  "Created an Emoji",
+		title: "Created an Emoji",
 		thumb: event.url,
+		desc: event.toString(),
 		sender: { user: event.author }
 	})
 

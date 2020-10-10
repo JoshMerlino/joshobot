@@ -22,7 +22,7 @@ module.exports = async function(guild, [ event ]) {
 
 	fields.push({
 		name: "Message",
-		value: event.content,
+		value: event.content.substr(0, 1000),
 		inline: true
 	})
 
@@ -31,7 +31,7 @@ module.exports = async function(guild, [ event ]) {
 	await sendAudit(guild, {
 		fields,
 		color: "severe",
-		title:  "Message Deleted",
+		title: "Message Deleted",
 	})
 
 }

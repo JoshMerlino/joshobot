@@ -4,7 +4,7 @@ module.exports = async function(guild, [ event, newEvent ]) {
 
 	if(event.name !== newEvent.name) fields.push({
 		name: "Name",
-		value: `\\:${event.name}: **→** \\:${newEvent.name}:`,
+		value: `\`\\:${event.name}:\` → \`\\:${newEvent.name}:\``,
 		inline: true
 	})
 
@@ -13,7 +13,7 @@ module.exports = async function(guild, [ event, newEvent ]) {
 	await sendAudit(guild, {
 		fields,
 		color: "warn",
-		title:  "Emoji Updated",
+		title: "Emoji Updated",
 		thumb: event.url,
 	})
 

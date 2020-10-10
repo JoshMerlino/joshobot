@@ -4,13 +4,13 @@ module.exports = async function(guild, [ event, newEvent ]) {
 
 	if(event.displayName !== newEvent.displayName) fields.push({
 		name: "Nickname",
-		value: `${event.displayName}** → **${newEvent.displayName}`,
+		value: `\`${event.displayName}\` → ${newEvent.displayName}\``,
 		inline: true
 	})
 
 	if(event.user.discriminator !== newEvent.user.discriminator) fields.push({
 		name: "Discriminator",
-		value: `#${event.user.discriminator}** → **#${newEvent.user.discriminator}`,
+		value: `\`#${event.user.discriminator}\` → #${newEvent.user.discriminator}\``,
 		inline: true
 	})
 
@@ -26,8 +26,8 @@ module.exports = async function(guild, [ event, newEvent ]) {
 		fields,
 		color: "warn",
 		sender: event,
-		title:  "Updated Their Profile",
-		thumb:  event.user.displayAvatarURL(),
+		title: "Updated Their Profile",
+		thumb: event.user.displayAvatarURL(),
 	})
 
 }

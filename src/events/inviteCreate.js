@@ -10,20 +10,20 @@ module.exports = async function(guild, [ event ]) {
 
 	if(event.expiresAt) fields.push({
 		name: "Expires",
-		value: `${dayjs(event.expiresAt).format()} • ${dayjs(event.expiresAt).fromNow(true)}`,
+		value: `\`${dayjs(event.expiresAt).format("MM/DD/YYYY HH:mm:ss")}\` • \`${dayjs(event.expiresAt).fromNow(true)}\``,
 		inline: true
 	})
 
 	if(event.maxUses) fields.push({
 		name: "Max Uses",
-		value: `${event.maxUses}`,
+		value: `\`${event.maxUses}\``,
 		inline: true
 	})
 
 	await sendAudit(guild, {
 		sender: { user: event.inviter },
 		color: "success",
-		title:  "Created an Invite to the Server",
+		title: "Created an Invite to the Server",
 		fields
 	})
 
