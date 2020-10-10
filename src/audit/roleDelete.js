@@ -10,7 +10,7 @@ module.exports = async function(guild, [ event ]) {
 
 	if(event.hexColor !== "#000000") fields.push({
 		name: "Color",
-		value: `#${event.hexColor}`,
+		value: `${event.hexColor}`,
 		inline: true
 	})
 
