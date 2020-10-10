@@ -112,6 +112,9 @@ commands:
     - warn
     - w
 
+    # Persistance so warns are counted and monitored
+    persistance: []
+
   # Audit command configuration
   audit:
 
