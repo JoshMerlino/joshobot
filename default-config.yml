@@ -9,6 +9,7 @@ theme:
   severe:   0xffa06d
   warn:     0xffd740
   info:     0x4dd0e1
+  dunce:    0x546e7a 
 
 # Audit log configuration
 audit:

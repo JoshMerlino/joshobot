@@ -22,27 +22,33 @@ module.exports = class Command extends require("../Command.js") {
 		// Make sure sender is a bot master
 		if(util.hasPermissions(sender, guildConfig, "MANAGE_ROLES")) {
 
-			let muterole;
-			if(config[guild.id].commands["mute"].muterole) {
-				muterole = config[guild.id].commands["mute"].muterole;
-			} else {
-				const role = await guild.roles.create({
-					data: { name: "Muted (via Josh O' Bot)", color: 0x546e7a },
-	  				reason: "Create muted role",
-				});
-				await role.setPermissions(103875585);
-				muterole = role.id;
-				config[guild.id].commands.mute.muterole = muterole;
-				await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
-			}
+			// Find a mute role or generate one if one wasnt found
+			let muterole = config[guild.id].commands["mute"].muterole;
+			if(!Object.keys(util.parseCollection(guild.roles.cache)).includes(muterole)) muterole = null
+			if(Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name === `Muted (Josh O' Bot)`).length > 0) muterole = Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name === `Muted (Josh O' Bot)`)[0].id
+			if(!muterole) muterole = (await guild.roles.create({ data: { color: guildConfig.theme.dunce, name: `Muted (Josh O' Bot)` }, reason: "Create a role for muted users - Josh O' Bot" })).id;
 
-			guild.channels.cache.map(channel => channel.permissionsFor(muterole).has("SEND_MESSAGES") && channel.updateOverwrite(muterole, { SEND_MESSAGES: false }));
+			// Ensure role is saved
+			config[guild.id].commands.mute.muterole = muterole;
+			await util.writeConfig(guild.id);
+
+			// Configure all channels to deny sending
+			const role = await guild.roles.fetch(muterole);
+			Object.values(util.parseCollection(guild.channels.cache)).map(async ch => {
+				if(channel.permissionsLocked !== true) {
+					await ch.updateOverwrite(role, {
+						SEND_MESSAGES: false,
+						EMBED_LINKS: false,
+						ATTACH_FILES: false,
+					})
+				}
+			})
 
 			if(user !== "") {
 				try {
 					guild.member(userid).roles.add(muterole).then(async function() {
 						channel.send(new MessageEmbed()
-						.setColor(guildConfig.theme.warn)
+						.setColor(guildConfig.theme.severe)
 						.setDescription(`User <@!${userid}> was muted for ${duration === null ? "for an eternity": cms(mutetime)}. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}`)
 						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
