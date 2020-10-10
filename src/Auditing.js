@@ -17,6 +17,7 @@ module.exports = async function(client, guild) {
 
 	(await fs.readdir(path.join(APP_ROOT, "src", "audit"))).map(e => e.split(".js")[0]).map(eventType => {
 		client.on(eventType, async function(...events) {
+			if(events[0].guild.id !== guild.id) return;
 			require(path.join(APP_ROOT, "src", "audit", `${eventType}.js`))(guild, events);
 		});
 	});
