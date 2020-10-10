@@ -24,18 +24,6 @@ module.exports = async function(guild, audit) {
 		.setFooter(guild.member(mod).displayName, guild.member(mod).user.displayAvatarURL())
 		.setDescription(`<@!${specimen}> is no longer muted.`));
 
-		if(audit) {
-			const User = util.parseCollection(guild.members.cache)[specimen].user;
-			const message = new MessageEmbed()
-			.setColor(global.config[guild.id].theme.severe)
-			.setTitle("User Unmuted")
-			.setFooter(`ID: ${specimen}`)
-			.setTimestamp()
-			.setThumbnail(User.displayAvatarURL())
-			.setDescription(`Moderator: <@!${moderator}>\nUser: <@!${specimen}>`)
-			audit.send(message);
-		}
-
 	}
 
 }

@@ -1,5 +1,13 @@
 module.exports = async function(guild, [ event ]) {
 
+	// Unmute members when their time expires
+	global.config[guild.id].commands["mute"].persistance.map(async (entry, key) => {
+		if(entry.specimen === event.user.id) {
+			const muterole = (await util.getMuteRole(guild)).id;
+			await guild.member(specimen).roles.add(muterole);
+		}
+	})
+
 	await sendAudit(guild, {
 		color: "success",
 		sender: event,

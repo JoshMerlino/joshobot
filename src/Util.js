@@ -37,6 +37,32 @@ module.exports = {
 
 	async writeConfig(guild_id) {
 		await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild_id}.yml`), YAML.stringify(config[guild_id]), "utf8");
+	},
+
+	async getMuteRole(guild) {
+		// Find a mute role or generate one if one wasnt found
+		let muterole = config[guild.id].commands["mute"].muterole;
+		if(!Object.keys(util.parseCollection(guild.roles.cache)).includes(muterole)) muterole = null
+		if(Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name === `Muted (Josh O' Bot)`).length > 0) muterole = Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name === `Muted (Josh O' Bot)`)[0].id
+		if(!muterole) muterole = (await guild.roles.create({ data: { color: guildConfig.theme.dunce, name: `Muted (Josh O' Bot)` }, reason: "Create a role for muted users - Josh O' Bot" })).id;
+
+		// Ensure role is saved
+		config[guild.id].commands.mute.muterole = muterole;
+		await util.writeConfig(guild.id);
+
+		// Configure all channels to deny sending
+		const role = await guild.roles.fetch(muterole);
+		Object.values(util.parseCollection(guild.channels.cache)).map(async ch => {
+			if(channel.permissionsLocked !== true) {
+				await ch.updateOverwrite(role, {
+					SEND_MESSAGES: false,
+					EMBED_LINKS: false,
+					ATTACH_FILES: false,
+				})
+			}
+		});
+
+		return role;
 	}
 
 }
