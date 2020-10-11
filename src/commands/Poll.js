@@ -8,14 +8,15 @@ module.exports = class Command extends require("../Command.js") {
 		}]);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
+	async onCommand({ args, sender, guildConfig, channel }) {
 
 		const msg = args.join(" ");
 
 		const embed = new MessageEmbed();
 		embed.setColor(guildConfig.theme.info);
-		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
-		embed.setTitle(msg);
+		embed.setAuthor(sender.displayName, sender.user.displayAvatarURL());
+		embed.setTitle(`${sender.displayName} Created a Poll`);
+		embed.addField("Poll", msg);
 
 		channel.send(embed).then(async m => {
             await m.react("✅");
