@@ -1,4 +1,4 @@
-module.exports = async function(guild, audit) {
+module.exports = async function(guild) {
 
 	// Schedule repeating tasks
 	client.setInterval(async function() {

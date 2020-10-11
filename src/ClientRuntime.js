@@ -27,14 +27,13 @@ module.exports = async function() {
 
 		// If the guild has autiting enabled, call all audit hooks
 		if(config.audit.enabled) require("./Auditing.js")(client, guild);
-		const audit = global.config[guild.id].audit.enabled ? guild.channels.cache.get(global.config[guild.id].audit.channel) : false
 
 		// ###################
 		// # Repeating Tasks #
 		// ###################
 
 		// Schedule async tasks
-		require("./AsyncActions.js")(guild, audit);
+		require("./AsyncActions.js")(guild);
 
 		// ############
 		// # Commands #

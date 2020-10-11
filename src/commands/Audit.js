@@ -3,7 +3,7 @@ module.exports = class Command extends require("../Command.js") {
 	constructor() {
 		super("audit", ...arguments);
 		this.register("Manage server audit logging. ℹ", HelpSection.MODERATION, [{
-			argument: "enable | disable | channel",
+			argument: "setup | disable",
 			required: true,
 		}, {
 			argument: "#Channel",
@@ -11,81 +11,66 @@ module.exports = class Command extends require("../Command.js") {
 		}]);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild }) {
-
-		const [ subcommand = null, target = null ] = args;
+	async onCommand({ args, sender, guildConfig, channel, guild }) {
 
 		// Make sure sender is a bot master
-		if(util.hasPermissions(sender, guildConfig, "VIEW_AUDIT_LOG")) {
+		if(!util.hasPermissions(sender, guildConfig, "VIEW_AUDIT_LOG")) return await util.noPermissions(channel, sender);
 
-			if (subcommand === null) {
-				channel.send(new MessageEmbed()
-				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <channel|enable|disable> [#channel (channel)]\``)
-				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-			} else if (subcommand.toLowerCase() === "enable") {
+		// Get params
+		const [ subcommand = null, target = null ] = args;
 
-				config[guild.id].audit.enabled = true;
-				await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
+		// Start formulating embed
+		const embed = new MessageEmbed();
+		embed.setTitle("Audit Log")
+		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
 
-				channel.send(new MessageEmbed()
-				.setColor(guildConfig.theme.success)
-				.setDescription(`Audit logging enabled.\nSet the audit channel with \`${root} channel <#channel>\``)
-				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+		// If not enough arguments, send default message
+		if (subcommand === null) {
+			embed.setColor(guildConfig.theme.warn);
+			embed.addField("Description", this.description, true)
+			embed.addField("Usage", this.usage, true)
+            return await channel.send(embed);
+		}
 
-				require("../Auditing.js")(client, guild);
+		if (subcommand.toLowerCase() === "setup") {
 
-			} else if (subcommand.toLowerCase() === "disable") {
+			config[guild.id].audit.enabled = true;
+			config[guild.id].audit.channel = util.channel(target, guild);
+			await util.writeConfig(guild.id);
 
-				config[guild.id].audit.enabled = false;
-				await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
+			embed.setColor(guildConfig.theme.success)
+			embed.addField("Status", "Audit logging enabled", true)
+			embed.addField("Channel", util.channel(target, guild).toString(), true);
 
-				channel.send(new MessageEmbed()
-				.setColor(guildConfig.theme.success)
-				.setDescription(`Disabled auditing.`)
-				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+			await sendAudit(guild, {
+				sender,
+				color: "success",
+				title: "Enabled Audit Logging",
+				desc: "Audit logging has been enabled in this channel. You will now receive a message about actions made to the server.",
+			})
 
-				sendAudit(guild, {
-					sender,
-					color: "error",
-					title: "Disabled Audit Logging",
-					desc: "This channel will no longer receive messages about actions made to the server.",
-				})
+			require("../Auditing.js")(client, guild);
+			return await channel.send(embed);
 
-			} else if (subcommand.toLowerCase() === "channel") {
+		}
 
-				if(target === null) {
-					channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.warn)
-					.setDescription(`Usage:\n\`${root} channel <#channel>\``)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-				} else {
+		if (subcommand.toLowerCase() === "disable") {
 
-					config[guild.id].audit.enabled = true;
-					config[guild.id].audit.channel = target.split("<#")[1].split(">")[0];
-					await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
+			config[guild.id].audit.enabled = false;
+			await util.writeConfig(guild.id);
 
-					channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.success)
-					.setDescription(`Audit logging enabled in the ${target} channel.`)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+			embed.setColor(guildConfig.theme.success)
+			embed.addField("Status", "Audit logging disabled", true)
 
-					sendAudit(guild, {
-						sender,
-						color: "success",
-						title: "Enabled Audit Logging",
-						desc: "Audit logging has been enabled in this channel. You will now receive a message about actions made to the server.",
-					})
+			await sendAudit(guild, {
+				sender,
+				color: "error",
+				title: "Disabled Audit Logging",
+				desc: "This channel will no longer receive messages about actions made to the server.",
+			});
 
-				}
+			return await channel.send(embed);
 
-			}
-
-		} else {
-			return channel.send(new MessageEmbed()
-			.setColor(guildConfig.theme.error)
-			.setDescription(`You my friend, are not a bot master.`)
-			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 		}
 
 	}

@@ -23,6 +23,10 @@ module.exports = {
 		return guild.member(typeof user === "String" ? user.replace(/[\\<>@#&!]/g, "") : user.id);
 	},
 
+	channel(channel, guild) {
+		return guild.channels.resolve(typeof channel === "String" ? channel.replace(/[\\<>@#&!]/g, "") : channel.id);
+	},
+
 	role(role, guild) {
 		if(role.match(/<@&([0-9]*)>/g)) {
 			return guild.roles.fetch(role.replace(/[\\<>@#&!]/g, ""));
