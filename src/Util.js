@@ -20,11 +20,11 @@ module.exports = {
     },
 
 	user(user, guild) {
-		return guild.member(typeof user === "String" ? user.replace(/[\\<>@#&!]/g, "") : user.id);
+		return guild.member(typeof user === "string" ? user.replace(/[\\<>@#&!]/g, "") : user.id);
 	},
 
 	channel(channel, guild) {
-		return guild.channels.resolve(typeof channel === "String" ? channel.replace(/[\\<>@#&!]/g, "") : channel.id);
+		return guild.channels.resolve(typeof channel === "string" ? channel.replace(/[\\<>@#&!]/g, "") : channel.id);
 	},
 
 	role(role, guild) {
