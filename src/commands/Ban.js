@@ -11,55 +11,51 @@ module.exports = class Command extends require("../Command.js") {
 		}]);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
-
-		const [ user = "", deleteMessages = "false", ...reason ] = args;
-		const userid = user.replace(/[\\<>@#&!]/g, "");
-		const member = guild.member(userid);
+	async onCommand({ args, sender, guildConfig, channel, guild }) {
 
 		// Make sure sender is a bot master
-		if(util.hasPermissions(sender, guildConfig, "BAN_MEMBERS")) {
-			if(user !== "") {
-				try {
+		if(!util.hasPermissions(sender, guildConfig, "BAN_MEMBERS")) return await util.noPermissions(channel, sender);
 
-					if(util.hasPermissions(member, guildConfig, "BAN_MEMBERS")) {
-						return channel.send(new MessageEmbed()
-						.setColor(guildConfig.theme.error)
-						.setDescription(`I do not have permission to ban <@!${userid}>.`)
-						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-					}
+		// Get params
+		const [ user = null, ...reason ] = args;
 
-					member.ban({ days: deleteMessages == true ? 7:0, reason: reason.join(" ") }).then(function() {
+		// Start formulating embed
+		const embed = new MessageEmbed();
+		embed.setTitle("Ban")
+		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
 
-						channel.send(new MessageEmbed()
-						.setColor(guildConfig.theme.success)
-						.setDescription(`User <@!${userid}> was banned. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}`)
-						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-
-					}).catch(function() {
-						channel.send(new MessageEmbed()
-						.setColor(guildConfig.theme.error)
-						.setDescription(`I do not have permission to ban <@!${userid}>.`)
-						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-					})
-				} catch (e) {
-					channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.error)
-					.setDescription(`<@!${userid}> has already been banned or left on their own.`)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-				}
-			} else {
-				return channel.send(new MessageEmbed()
-				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <@user> [deleteMessages = false] [reason]\``)
-				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-			}
-		} else {
-			return channel.send(new MessageEmbed()
-			.setColor(guildConfig.theme.error)
-			.setDescription(`You my friend, are not a bot master.`)
-			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+		// If not enough params
+		if(user === null) {
+			embed.setColor(guildConfig.theme.warn);
+			embed.addField("Description", this.description, true)
+			embed.addField("Usage", this.usage, true)
+            return await channel.send(embed);
 		}
+
+		// get guild member
+		const member = util.user(user, guild);
+
+		// If ban target has ban permissions
+		if(util.hasPermissions(member, guildConfig, "BAN_MEMBERS")) {
+			embed.setColor(guildConfig.theme.server);
+			embed.addField("Error", `${member.toString()} is not able to be banned. They most likley have equal or greater permissions than you.`, true)
+            return await channel.send(embed);
+		}
+
+		member.ban({ days: 7, reason: reason.join(" ") }).then(async function() {
+
+			embed.setColor(guildConfig.theme.succcess);
+			embed.addField("User", member.toString(), true);
+			reason.length > 0 && embed.addField("Reason", reason.join(" "), true);
+			return await channel.send(embed);
+
+		}).catch(async error => {
+
+			embed.setColor(guildConfig.theme.error);
+			embed.addField("Error", error.toString().split(":")[2], true)
+            return await channel.send(embed);
+
+		})
 
 	}
 
