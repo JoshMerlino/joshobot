@@ -11,58 +11,55 @@ module.exports = class Command extends require("../Command.js") {
 		}]);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
+	async onCommand({ args, sender, guildConfig, channel, guild }) {
 
-		const [ user = "", duration = null, ...reason ] = args;
-		const userid = user.replace(/[\\<>@#&!]/g, "");
+		// Make sure sender is a bot master
+		if(!util.hasPermissions(sender, guildConfig, "MANAGE_ROLES")) return await util.noPermission(channel, sender);
 
+		// Get arguments
+		const [ user = null, duration = null, ...reason ] = args;
+
+		// Get default mute time
 		let mutetime = 0;
 		if(duration !== null) mutetime = ms(duration);
 
-		// Make sure sender is a bot master
-		if(util.hasPermissions(sender, guildConfig, "MANAGE_ROLES")) {
+		// Start formulating embed
+		const embed = new MessageEmbed();
+		embed.setTitle("Mute")
+		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
 
-			const muterole = (await util.getMuteRole(guild)).id;
-
-			if(user !== "") {
-				try {
-					guild.member(userid).roles.add(muterole).then(async function() {
-						channel.send(new MessageEmbed()
-						.setColor(guildConfig.theme.severe)
-						.setDescription(`User <@!${userid}> was muted for ${duration === null ? "for an eternity": cms(mutetime)}. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}`)
-						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-
-						if (duration !== null) {
-							config[guild.id].commands.mute.persistance = config[guild.id].commands.mute.persistance.filter(({ specimen }) => specimen !== userid);
-							config[guild.id].commands.mute.persistance.push({ moderator: sender.id, specimen: userid, expires: Date.now() + mutetime, channel: channel.id });
-							await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
-						}
-
-					}).catch(function() {
-						channel.send(new MessageEmbed()
-						.setColor(guildConfig.theme.error)
-						.setDescription(`User <@!${userid}> can not be muted.`)
-						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-					});
-
-				} catch (e) {
-					channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.error)
-					.setDescription(`<@!${userid}> can not be muted.`)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-				}
-			} else {
-				return channel.send(new MessageEmbed()
-				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <@user> [reason]\``)
-				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-			}
-		} else {
-			return channel.send(new MessageEmbed()
-			.setColor(guildConfig.theme.error)
-			.setDescription(`You my friend, are not a bot master.`)
-			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+		// If not enough params
+		if(user === null) {
+			embed.setColor(guildConfig.theme.warn);
+			embed.addField("Description", this.description, true)
+			embed.addField("Usage", this.usage, true)
+            return await channel.send(embed);
 		}
+
+		// get guild member
+		const member = util.user(user, guild);
+
+		// Get mute role
+		const muterole = (await util.getMuteRole(guild)).id;
+
+		member.roles.add(muterole).then(async function() {
+			embed.setColor(guildConfig.theme.success);
+			embed.addField("User", member.toString(), true);
+			embed.addField("Duration", duration === null ? "Indeterminatly":cms(mutetime), true);
+			reason.length > 0 && embed.addField("Reason", reason.join(" "), true);
+
+			if (duration !== null) {
+				config[guild.id].commands.mute.persistance = config[guild.id].commands.mute.persistance.filter(({ specimen }) => specimen !== member.id);
+				config[guild.id].commands.mute.persistance.push({ moderator: sender.id, specimen: member.id, expires: Date.now() + mutetime, channel: channel.id });
+				await util.writeConfig(guild.id)
+			}
+
+			return await channel.send(embed);
+		}).catch(async error => {
+			embed.setColor(guildConfig.theme.error);
+			embed.addField("Error", error.toString(), true)
+            return await channel.send(embed);
+		})
 
 	}
 

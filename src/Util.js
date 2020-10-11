@@ -56,9 +56,9 @@ module.exports = {
 
 		// Configure all channels to deny sending
 		const role = await guild.roles.fetch(muterole);
-		Object.values(util.parseCollection(guild.channels.cache)).map(async ch => {
+		Object.values(util.parseCollection(guild.channels.cache)).map(async channel => {
 			if(channel.permissionsLocked !== true) {
-				await ch.updateOverwrite(role, {
+				await channel.updateOverwrite(role, {
 					SEND_MESSAGES: false,
 					EMBED_LINKS: false,
 					ATTACH_FILES: false,

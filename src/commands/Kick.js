@@ -21,7 +21,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		// Start formulating embed
 		const embed = new MessageEmbed();
-		embed.setTitle("Ban")
+		embed.setTitle("Kick")
 		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
 
 		// If not enough params
@@ -43,7 +43,7 @@ module.exports = class Command extends require("../Command.js") {
 		}
 
 		member.kick(reason.join(" ")).then(async function() {
-			embed.setColor(guildConfig.theme.succcess);
+			embed.setColor(guildConfig.theme.success);
 			embed.addField("User", member.toString(), true);
 			reason.length > 0 && embed.addField("Reason", reason.join(" "), true);
 			return await channel.send(embed);
