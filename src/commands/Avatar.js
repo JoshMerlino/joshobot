@@ -8,7 +8,7 @@ module.exports = class Command extends require("../Command.js") {
 		}]);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild }) {
+	async onCommand({ args, sender, guildConfig, channel, guild }) {
 
 		const user = util.user(args[0] || sender, guild);
 
