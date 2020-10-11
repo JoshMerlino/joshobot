@@ -4,11 +4,12 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super("invite", ...arguments);
-		this.register("Invite Josh O' Bot to your server. 😻", HelpSection.GENERAL);
+		this.register("Invite Josh O' Bot to your server. 😍", HelpSection.GENERAL);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
+	async onCommand({ sender, guildConfig, channel }) {
 
+		// Formulate Embed
 		const embed = new MessageEmbed();
 		embed.setColor(guildConfig.theme.info);
 		embed.setTitle("Click to Invite");
