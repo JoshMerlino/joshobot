@@ -11,57 +11,59 @@ module.exports = class Command extends require("../Command.js") {
 		}]);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
-
-		let [ name = null, link = null ] = args;
+	async onCommand({ args, sender, guildConfig, channel, guild }) {
 
 		// Make sure sender is a bot master
-		if(util.hasPermissions(sender, guildConfig, "MANAGE_EMOJIS")) {
+		if(!util.hasPermissions(sender, guildConfig, "MANAGE_EMOJIS")) return await util.noPermissions(channel, sender);
 
-			if(name !== null) {
+		// Get params
+		let [ name = null, link = null ] = args;
 
-				if(link === null) {
-					let messages = Object.values(util.parseCollection(await channel.messages.fetch({ limit: 24 })))
-					messages = messages.filter(message => {
-						const attachments = Object.values(util.parseCollection(message.attachments));
-						return attachments.length > 0;
-					});
-					const { attachment } = Object.values(util.parseCollection(messages[0].attachments))[0];
-					link = attachment;
-				}
+		// Start formulating embed
+		const embed = new MessageEmbed();
+		embed.setTitle("Add Emoji")
+		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
 
-				if(!link.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g)) {
-					return channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.error)
-					.setDescription(`It appears you've entered an invalid URL for this emoji.`)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-				}
-
-				guild.emojis.create(link, name).then(emoji => {
-					channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.success)
-					.setDescription(`Emoji \\:${name}: ${emoji.toString()} created!`));
-				}).catch(function(err) {
-					console.error(err);
-					channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.error)
-					.setDescription(`Emoji :\`${name}\`: could not be created!\nYou must have used up all the emoji slots for\nthis serveror the emoji is greater than \`256 kB\`.`)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-				})
-
-			} else {
-				channel.send(new MessageEmbed()
-				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <name> [link]\``)
-				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-			}
-
-		} else {
-			channel.send(new MessageEmbed()
-			.setColor(guildConfig.theme.error)
-			.setDescription(`You my friend, are not a bot master.`)
-			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+		// If not enough arguments, send default message
+		if(name === null) {
+			embed.setColor(guildConfig.theme.warn);
+			embed.addField("Description", this.description, true)
+			embed.addField("Usage", this.usage, true)
+            return await channel.send(embed);
 		}
+
+		// If no link, get previous message image
+		if(link === null) {
+			let messages = Object.values(util.parseCollection(await channel.messages.fetch({ limit: 24 })))
+			messages = messages.filter(message => Object.values(util.parseCollection(message.attachments)).length > 0);
+			link = Object.values(util.parseCollection(messages[0].attachments))[0].attachment;
+		}
+
+		// If no link at all
+		if(!link.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g)) {
+			embed.setColor(guildConfig.theme.error)
+			embed.addField("Error", `The link to the emoji image wasn't found.`, true)
+			return await channel.send(embed)
+		}
+
+		guild.emojis.create(link, name).then(async emoji => {
+
+			// On successful emoji create
+			embed.setTitle("Created Emoji")
+			embed.setColor(guildConfig.theme.success)
+			embed.addField("Emoji", `\`:${emoji.name}:\``, true)
+			embed.addField("Preview", emoji.toString(), true)
+			return await channel.send(embed);
+
+		}).catch(async error => {
+
+			// If error creating emoji
+			embed.setTitle("Error Making Emoji")
+			embed.setColor(guildConfig.theme.error)
+			embed.addField("Error", error.toString().split(":")[2], true);
+			await channel.send(embed);
+
+		})
 
 	}
 
