@@ -3,56 +3,46 @@ module.exports = class Command extends require("../Command.js") {
 	constructor() {
 		super("botmaster", ...arguments);
 		this.register("Manages who has permission overrides for the bot. 🤖", HelpSection.MODERATION, [{
-			argument: "@User | Role",
+			argument: "@User | @Role",
 			required: true,
 		}]);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
-
-		const [ subcommand = "", role = "" ] = args;
-		const roleid = role.replace(/[\\<>@#&!]/g, "");
+	async onCommand({ args, sender, guildConfig, channel, guild }) {
 
 		// Make sure sender is a bot master
-		if(util.hasPermissions(sender, guildConfig, "MANAGE_ROLES")) {
+		if(!util.hasPermissions(sender, guildConfig, "MANAGE_ROLES")) return await util.noPermissions(channel, sender)
 
-			if(role === "" || subcommand === "") {
-				return channel.send(new MessageEmbed()
-				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <add|remove> <@role | @user>\``)
-				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-			} else {
-				if(subcommand.toLowerCase() === "add") {
+		// Get params
+		const [ subcommand = null, userOrRole = "" ] = args;
+		const id = userOrRole.replace(/[\\<>@#&!]/g, "");
 
-					config[guild.id].botmasters.push(roleid);
-					await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
-					channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.success)
-					.setDescription(`Updated bot masters.`)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+		// Start formulating embed
+		const embed = new MessageEmbed();
+		embed.setTitle("Bot Masters");
+		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
 
-				} else if (subcommand.toLowerCase() === "remove") {
+		if(userOrRole === "" || subcommand === null) {
+			embed.setColor(guildConfig.theme.warn);
+			embed.addField("Description", this.description, true)
+			embed.addField("Usage", this.usage, true)
+            return await channel.send(embed);
+		}
 
-					config[guild.id].botmasters.splice(config[guild.id].botmasters.indexOf(roleid));
-					await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
-					channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.success)
-					.setDescription(`Updated bot masters.`)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+		if(subcommand.toLowerCase() === "add") {
+			config[guild.id].botmasters.push(id);
+			embed.setColor(guildConfig.theme.success);
+			embed.setDescription(`Added ${userOrRole} to bot masters.`);
+			await util.writeConfig(guild.id);
+            return await channel.send(embed);
+		}
 
-				} else {
-					return channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.warn)
-					.setDescription(`Usage:\n\`${root} <add|remove> <@role | @user>\``)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-				}
-			}
-
-		} else {
-			return channel.send(new MessageEmbed()
-			.setColor(guildConfig.theme.error)
-			.setDescription(`You my friend, are not a bot master.`)
-			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+		if (subcommand.toLowerCase() === "remove") {
+			config[guild.id].botmasters.splice(config[guild.id].botmasters.indexOf(id));
+			embed.setColor(guildConfig.theme.success);
+			embed.setDescription(`Removed ${userOrRole} from bot masters.`);
+			await util.writeConfig(guild.id);
+            return await channel.send(embed);
 		}
 
 	}
