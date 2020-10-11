@@ -63,6 +63,10 @@ module.exports = {
 		});
 
 		return role;
+	},
+
+	async noPermissions(channel, sender) {
+		// Dont say anything if no perms
 	}
 
 }

@@ -2,6 +2,9 @@ module.exports = class Command {
 
 	key = null;
 	aliases = null;
+	args = null;
+	desc = null;
+	guild_id = null
 
 	constructor(key, guild_id) {
 
@@ -19,7 +22,7 @@ module.exports = class Command {
 
 			aliases.map(async alias => {
 				if(config[guild_id].prefix + alias === root.toLowerCase() && config[guild_id].commands[key].enabled) {
-
+					this.guild_id = guild_id;
 					await this.onCommand({
 						root, args, channel, message, guild,
 						sender: member,
@@ -37,8 +40,18 @@ module.exports = class Command {
 	}
 
 	register(description, category, args = []) {
+		this.args = args;
+		this.desc = description;
 		if(global.help.filter(({ description: desc }) => description === desc ).length > 0) return;
 		global.help.push({ aliases: this.aliases, description, category, args })
+	}
+
+	get usage() {
+		return `\`${config[this.guild_id].prefix}${this.aliases[0]}${this.args.map(({ required, argument }) => ` ${required ? "<":"("}${argument}${required ? ">":")"}`).join("")}\``;
+	}
+
+	get description() {
+		return this.desc;
 	}
 
 }
