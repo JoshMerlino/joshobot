@@ -8,38 +8,35 @@ module.exports = class Command extends require("../Command.js") {
 		}]);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
+	async onCommand({ args, sender, channel }) {
 
+		// convert args to term
 		const term = args.join(" ");
 
-		request({
-		    method: "GET",
-		    url: "https://bing-image-search1.p.rapidapi.com/images/search",
-		    qs: { q: term },
+		channel.startTyping();
+
+		// Get images from bing
+		const { value } = await fetch(`https://bing-image-search1.p.rapidapi.com/images/search?q=${encodeURIComponent(term)}`, {
 		    headers: {
 		        "x-rapidapi-host": "bing-image-search1.p.rapidapi.com",
 		        "x-rapidapi-key": process.env.RAPID_API_KEY,
 		        useQueryString: true
 		    }
-		}, function(error, response, body) {
+		}).then(resp => resp.json());
 
-			const embed = new MessageEmbed();
-			embed.setTitle(term);
+		channel.stopTyping();
 
-			if (!error) {
+		// Pick a random image from search
+		const image = value[Math.floor(Math.random() * value.length)];
 
-				const { value: images } = JSON.parse(body);
-				const image = images[Math.floor(Math.random() * images.length)];
-				embed.setColor(`#${image.accentColor}`);
-				embed.setImage(image.contentUrl);
-				embed.setFooter(sender.displayName, sender.user.displayAvatarURL())
-
-			}
-
-			channel.send(embed);
-
-		})
-
+		// Formulate embed
+		const embed = new MessageEmbed();
+		embed.setTitle(`Image Search for "${term}"`);
+		embed.setDescription(image.name)
+		embed.setFooter(sender.displayName, sender.user.displayAvatarURL())
+		embed.setColor(`#${image.accentColor}`);
+		embed.setImage(image.contentUrl);
+		return await channel.send(embed);
 
 	}
 
