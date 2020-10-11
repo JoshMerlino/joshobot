@@ -13,44 +13,45 @@ module.exports = class Command extends require("../Command.js") {
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
 
-		const [ user = "", ...reason ] = args;
-		const userid = user.replace(/[\\<>@#&!]/g, "");
-
 		// Make sure sender is a bot master
-		if(util.hasPermissions(sender, guildConfig, "KICK_MEMBERS")) {
-			if(user !== "") {
-				try {
-					guild.member(userid).kick(reason.join(" ")).then(function() {
+		if(!util.hasPermissions(sender, guildConfig, "KICK_MEMBERS")) return await util.noPermissions(channel, sender);
 
-						channel.send(new MessageEmbed()
-						.setColor(guildConfig.theme.success)
-						.setDescription(`User <@!${userid}> was kicked. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}`)
-						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+		// Get arguments
+		const [ user = null, ...reason ] = args;
 
-					}).catch(function() {
-						channel.send(new MessageEmbed()
-						.setColor(guildConfig.theme.error)
-						.setDescription(`I do not have permission to kick <@!${userid}>.`)
-						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-					})
-				} catch (e) {
-					channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.error)
-					.setDescription(`<@!${userid}> is no longer in this server.`)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-				}
-			} else {
-				return channel.send(new MessageEmbed()
-				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <@user> [reason]\``)
-				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-			}
-		} else {
-			return channel.send(new MessageEmbed()
-			.setColor(guildConfig.theme.error)
-			.setDescription(`You my friend, are not a bot master.`)
-			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+		// Start formulating embed
+		const embed = new MessageEmbed();
+		embed.setTitle("Ban")
+		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
+
+		// If not enough params
+		if(user === null) {
+			embed.setColor(guildConfig.theme.warn);
+			embed.addField("Description", this.description, true)
+			embed.addField("Usage", this.usage, true)
+            return await channel.send(embed);
 		}
+
+		// get guild member
+		const member = util.user(user, guild);
+
+		// If ban target has ban permissions
+		if(util.hasPermissions(member, guildConfig, "KICK_MEMBERS")) {
+			embed.setColor(guildConfig.theme.server);
+			embed.addField("Error", `${member.toString()} is not able to be kicked. They most likley have equal or greater permissions than you.`, true)
+            return await channel.send(embed);
+		}
+
+		member.kick(reason.join(" ")).then(async function() {
+			embed.setColor(guildConfig.theme.succcess);
+			embed.addField("User", member.toString(), true);
+			reason.length > 0 && embed.addField("Reason", reason.join(" "), true);
+			return await channel.send(embed);
+		}).catch(async error => {
+			embed.setColor(guildConfig.theme.error);
+			embed.addField("Error", error.toString().split(":")[2], true)
+            return await channel.send(embed);
+		})
 
 	}
 
