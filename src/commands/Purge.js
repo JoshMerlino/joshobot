@@ -8,35 +8,41 @@ module.exports = class Command extends require("../Command.js") {
 		}]);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, audit, guild }) {
-
-		let [ messages ] = args;
+	async onCommand({ args, sender, guildConfig, channel }) {
 
 		// Make sure sender is a bot master
-		if(util.hasPermissions(sender, guildConfig, "MANAGE_MESSAGES")) {
-			if (!isNaN(parseInt(messages))) {
+		if(!util.hasPermissions(sender, guildConfig, "MANAGE_MESSAGES")) return await util.noPermissions(channel, sender);
 
-				messages++;
+		// Get amount of messages
+		let [ messages ] = args;
 
-				let numleft = messages;
-				while(numleft > 100) {
-					await channel.bulkDelete(100);
-					numleft -= 100;
-				}
-				await channel.bulkDelete(numleft % 100);
+		// Start formulating embed
+		const embed = new MessageEmbed();
+		embed.setTitle("Purge Messages")
+		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
 
-			} else {
-				return channel.send(new MessageEmbed()
-				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <amount>\``)
-				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-			}
-		} else {
-			return channel.send(new MessageEmbed()
-			.setColor(guildConfig.theme.error)
-			.setDescription(`You my friend, are not a bot master.`)
-			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+		// if number is not a number
+		if (isNaN(parseInt(messages))) {
+			embed.setColor(guildConfig.theme.warn);
+			embed.addField("Description", this.description, true)
+			embed.addField("Usage", this.usage, true)
+			return await channel.send(embed);
 		}
+
+		messages++;
+
+		embed.setColor(guildConfig.theme.success);
+		embed.addField("Amount", `${messages-1} Total Messages`, true)
+
+		let numleft = messages;
+		while(numleft > 100) {
+			await channel.bulkDelete(100);
+			numleft -= 100;
+		}
+
+		await channel.bulkDelete(numleft % 100);
+
+		return await channel.send(embed);
 
 	}
 
