@@ -3,101 +3,104 @@ module.exports = class Command extends require("../Command.js") {
 	constructor() {
 		super("channel", ...arguments);
 		this.register("Manages server channels. #️⃣", HelpSection.MODERATION, [{
-			argument: "add | remove | rename | nsfw",
+			argument: "add,create | delete,remove | lock | softlock | rename | nsfw | unlock",
 			required: true,
 		}, {
 			argument: "Channel | #Channel",
-			required: true,
+			required: false,
 		}, {
-			argument: "New channel name",
+			argument: "Name",
 			required: false,
 		}]);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild, message }) {
-
-		const [ subcommand = "", ch = "", name = "" ] = args;
+	async onCommand({ args, sender, guildConfig, channel, guild, message }) {
 
 		// Make sure sender is a bot master
-		if(util.hasPermissions(sender, guildConfig, "MANAGE_CHANNELS")) {
+		if(!util.hasPermissions(sender, guildConfig, "MANAGE_CHANNELS"))  return await util.noPermissions(channel, sender)
 
-			if(subcommand === "") {
-				return channel.send(new MessageEmbed()
-				.setColor(guildConfig.theme.warn)
-				.setDescription(`Usage:\n\`${root} <add|remove|rename|nsfw> <channel|#channel> [name]\``)
-				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-			} else {
+		// Get params
+		let [ subcommand = null, ch = null, name = null ] = args;
 
-				if (subcommand.toLowerCase() === "add") {
+		// Start formulating embed
+		const embed = new MessageEmbed();
+		embed.setTitle("Channel");
+		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
 
-					if(ch === "") {
-						return channel.send(new MessageEmbed()
-						.setColor(guildConfig.theme.warn)
-						.setDescription(`Usage:\n\`${root} add <name>\``)
-						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-					}
+		if(subcommand === null) {
+			embed.setColor(guildConfig.theme.warn);
+			embed.addField("Description", this.description, true)
+			embed.addField("Usage", this.usage, true)
+            return await channel.send(embed);
+		}
 
-					const created = await guild.channels.create(ch);
-					return channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.success)
-					.setDescription(`Created added ${created.toString()}.`)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+		if (subcommand.toLowerCase() === "add" || subcommand.toLowerCase() === "create") {
+			if(ch === null) ch = "new-channel";
+			const created = await guild.channels.create(ch);
+			embed.setColor(guildConfig.theme.success);
+			embed.addField("Created", created.toString(), true)
+            return await channel.send(embed);
+		}
 
-				} else if (subcommand.toLowerCase() === "remove") {
+		if (subcommand.toLowerCase() === "delete" || subcommand.toLowerCase() === "remove") {
+			ch = message.mentions.channels.first() || channel
+			ch.delete().then(async function() {
+				embed.setColor(guildConfig.theme.success);
+				embed.addField("Removed", `#${ch.name}`, true)
+	            return await channel.send(embed);
+			}).catch(async error => {
+				embed.setColor(guildConfig.theme.error);
+				embed.addField("Error", error.toString().split(":")[2], true)
+	            return await channel.send(embed);
+			})
+		}
 
-					if(channel === "") {
-						return channel.send(new MessageEmbed()
-						.setColor(guildConfig.theme.warn)
-						.setDescription(`Usage:\n\`${root} remove <#channel, ...>\``)
-						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-					}
+		if (subcommand.toLowerCase() === "rename") {
+			ch = message.mentions.channels.first() || channel;
+			ch.edit({ name: (name === null ? args[1] : name).toLowerCase().replace(/\s/g, "-") }).then(async function() {
+				embed.setColor(guildConfig.theme.success);
+				embed.addField("Renamed", ch.toString(), true)
+				return await channel.send(embed);
+			}).catch(async error => {
+				embed.setColor(guildConfig.theme.error);
+				embed.addField("Error", error.toString().split(":")[2], true)
+	            return await channel.send(embed);
+			})
+		}
 
-					message.mentions.channels.forEach(async channel => {
-		                await channel.delete().catch(() => {
-		                    return channel.send(new MessageEmbed()
-							.setColor(guildConfig.theme.warn)
-							.setDescription(`Unable to remove channel ${channel.name}`)
-							.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-		                })
-		            })
+		if (subcommand.toLowerCase() === "nsfw") {
+			ch = util.channel(ch || channel, guild);
+			const { nsfw } = ch;
+			ch.edit({ nsfw: !nsfw });
+			embed.setColor(guildConfig.theme.success);
+			embed.addField("Channel", ch.toString(), true)
+			embed.addField("NSFW", !nsfw ? "\`Yes\`" : "\`No\`", true)
+			return await channel.send(embed);
 
-					return channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.success)
-					.setDescription(`Removed channels.`)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+		}
 
-				} else if (subcommand.toLowerCase() === "rename") {
+		if(subcommand.toLowerCase() === "lock") {
+			ch = message.mentions.channels.first() || channel
+			await ch.overwritePermissions([{ id: guild.roles.everyone, deny: ["SEND_MESSAGES", "ADD_REACTIONS"] }]);
+			embed.setColor(guildConfig.theme.success);
+			embed.addField("Locked", ch.toString(), true)
+			return await channel.send(embed);
+		}
 
-					const specimen = message.mentions.channels.first();
-					specimen.edit({ name: name.toLowerCase().replace(/\s/g, "-") });
-					return channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.success)
-					.setDescription(`Renamed channel ${specimen.toString()}.`)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+		if(subcommand.toLowerCase() === "unlock") {
+			ch = message.mentions.channels.first() || channel
+			await ch.overwritePermissions([{ id: guild.roles.everyone, allow: ["SEND_MESSAGES", "ADD_REACTIONS", "EMBED_LINKS", "ATTACH_FILES"] }]);
+			embed.setColor(guildConfig.theme.success);
+			embed.addField("Unlocked", ch.toString(), true)
+			return await channel.send(embed);
+		}
 
-				} else if (subcommand.toLowerCase() === "nsfw") {
-
-					const specimen = message.mentions.channels.first() || channel;
-					const { nsfw } = specimen;
-					specimen.edit({ nsfw: !nsfw });
-					return channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.success)
-					.setDescription(`Channel ${specimen.toString()} is ${nsfw ? "no longer":"now"} NSFW.`)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-
-				} else {
-					return channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.warn)
-					.setDescription(`Usage:\n\`${root} <add|remove|rename|nsfw> <channel|#channel> [new name]\``)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-				}
-			}
-
-		} else {
-			return channel.send(new MessageEmbed()
-			.setColor(guildConfig.theme.error)
-			.setDescription(`You my friend, are not a bot master.`)
-			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+		if(subcommand.toLowerCase() === "softlock") {
+			ch = message.mentions.channels.first() || channel;
+			await ch.overwritePermissions([{ id: guild.roles.everyone, deny: ["EMBED_LINKS", "ATTACH_FILES"] }]);
+			embed.setColor(guildConfig.theme.success);
+			embed.addField("Soft Locked", ch.toString(), true)
+			return await channel.send(embed);
 		}
 
 	}
