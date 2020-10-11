@@ -5,15 +5,15 @@ module.exports = class Command extends require("../Command.js") {
 		this.register("Gives random life advice. 👨‍🦳", HelpSection.MISCELLANEOUS);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild }) {
+	async onCommand({ sender, guildConfig, channel }) {
 
-		const { slip } = await fetch(`https://api.adviceslip.com/advice`).then(resp => resp.json());
+		const { advice } = (await fetch(`https://api.adviceslip.com/advice`).then(resp => resp.json())).slip;
 
 		const embed = new MessageEmbed();
+		embed.setTitle("Advice");
 		embed.setColor(guildConfig.theme.info);
-		embed.setTitle(`A word from the wise`);
-		embed.setDescription(slip.advice);
 		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
+		embed.addField("A word from the wise", advice);
 
 		await channel.send(embed);
 
