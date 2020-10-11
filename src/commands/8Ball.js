@@ -1,53 +1,31 @@
 module.exports = class Command extends require("../Command.js") {
 
-	answers = [
-		"as i see it, yes",
-	    "Ask again later",
-	    "Better not tell you now",
-	    "Cannot predict now",
-	    "Concentrate and ask again",
-	    "Don’t count on it",
-	    "It is certain",
-	    "It is decidedly so",
-	    "Most likely",
-	    "My reply is no",
-	    "My sources say no",
-	    "Outlook not so good",
-	    "Outlook promising",
-	    "Reply hazy, try again",
-	    "Signs point to yes",
-	    "Very doubtful",
-	    "Without a doubt",
-	    "Yes",
-	    "Yes – definitely",
-	    "You may rely on it",
-	    "<a:eatmyass:751566082451439627>"
-	]
-
 	constructor() {
 		super("8ball", ...arguments);
-		this.register("Predicts the future. ⏱", HelpSection.MISCELLANEOUS, [{
+		this.register("Predicts the future. 🎱", HelpSection.MISCELLANEOUS, [{
 			argument: "Question",
 			required: true,
 		}]);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild }) {
+	async onCommand({ args, sender, guildConfig, channel }) {
 
 		const embed = new MessageEmbed();
 		embed.setTitle("8 Ball")
+		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
 
 		if (args.length === 0) {
-			embed.setColor(guildConfig.theme.error);
-			embed.setDescription(`You must ask the 8 ball something.\nUsage: \`${root} <question ...>\``)
-			embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
+			embed.setColor(guildConfig.theme.warn);
+			embed.addField("Description", this.description, true)
+			embed.addField("Usage", this.usage, true)
             return channel.send(embed);
         }
 
 		const question = args.join(" ");
+		const answer = Texts.PROBABILITYS[Math.floor(Math.random() * Texts.PROBABILITYS.length)] + ".";
 		embed.setColor(guildConfig.theme.info);
-		embed.setDescription("**" + question + "**: _" + this.answers[Math.floor(Math.random() * this.answers.length)] + "_");
-		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
+		embed.addField("Question", question, true)
+		embed.addField("Answer", answer, true)
 
 		await channel.send(embed);
 
