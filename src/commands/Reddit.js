@@ -1,4 +1,4 @@
-const isImageUrl = require('is-image-url');
+const isImageUrl = require("is-image-url");
 const redditImage = async function(post, allowed)  {
 	let image = post.data.url
 
@@ -76,46 +76,63 @@ module.exports = class Command extends require("../Command.js") {
 		}]);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild, audit, message }) {
+	async onCommand({ args, sender, guildConfig, channel, message }) {
 
-		const subreddit = args[0].toLowerCase();
-
-		let allowed
-
-        try {
-            const res = await fetch("https://www.reddit.com/r/" + args[0] + ".json?limit=100").then(a => a.json())
-            allowed = res.data.children.filter(post => !post.data.is_self)
-        } catch (e) {
-            return channel.send("Invalid subreddit")
-        }
-
-        const chosen = allowed[Math.floor(Math.random() * allowed.length)]
-
+		// Formulate embed
 		const embed = new MessageEmbed();
 		embed.setColor(guildConfig.theme.info);
 		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
 
-		const a = await redditImage(chosen, allowed)
-        const image = a.split("|")[0];
-        const title = a.split("|")[1];
-        let url = a.split("|")[2];
-        const author = a.split("|")[3];
-		url = "https://reddit.com" + url
-
-		embed.setTitle(title);
-		embed.setAuthor("u/" + author + " | r/" + subreddit)
-		image !== "lol" && embed.setImage(image);
-		embed.setURL(url)
-
-		if(chosen.over_18 && message.channel.nsfw) {
-			return channel.send(new MessageEmbed()
-			.setColor(guildConfig.theme.error)
-			.setDescription(`This is NSFW content and \`#${channel.displayName}\` is not an NSFW channel.`)
-			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
-		} else {
-			channel.send(embed);
+		// Makesure subreddit is specified
+		if(args.length !== 1) {
+			embed.setColor(guildConfig.theme.warn);
+			embed.addField("Description", this.description, true)
+			embed.addField("Usage", this.usage, true)
+            return await channel.send(embed);
 		}
 
+		// Get subreddit
+		const subreddit = args[0].toLowerCase();
+
+		// Show typing while making external API request
+		channel.startTyping();
+
+		let allowed
+
+        try {
+            const res = await fetch(`https://www.reddit.com/r/${args[0]}.json?limit=100`).then(a => a.json())
+            allowed = res.data.children.filter(post => !post.data.is_self)
+        } catch (e) {
+			embed.setColor(guildConfig.theme.error);
+			embed.addField("Error", "Invalid subreddit", true);
+			embed.addField("Description", this.description, true);
+			embed.addField("Usage", this.usage, true);
+            return await channel.send(embed);
+        }
+
+        const chosen = allowed[Math.floor(Math.random() * allowed.length)];
+		const { data } = chosen;
+
+		const a = await redditImage(chosen, allowed)
+        const image = a.split("|")[0];
+		const url = `https://reddit.com${a.split("|")[2]}`;
+
+		embed.setAuthor(`u/${data.author} • r/${data.subreddit}`, (await fetch(`https://www.reddit.com/user/${data.author}/about.json`).then(resp => resp.json())).data.icon_img.split("?")[0])
+		embed.setTitle(data.title);
+		embed.setColor(data.link_flair_background_color === "" ? guildConfig.theme.info : data.link_flair_background_color)
+
+		channel.stopTyping();
+
+		if(data.over_18 && channel.nsfw) {
+			embed.setColor(guildConfig.theme.error)
+			embed.addField("Error", `This subreddit contains NSFW content. Run this command again in an NSFW channel.`, true)
+			return await channel.send(embed);
+		}
+
+		embed.setImage(image);
+		embed.setURL(url);
+
+		return await channel.send(embed);
 
 	}
 
