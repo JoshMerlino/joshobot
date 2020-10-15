@@ -102,7 +102,7 @@ module.exports = class Command extends require("../Command.js") {
             allowed = res.data.children.filter(post => !post.data.is_self)
         } catch (e) {
 			channel.stopTyping();
-			
+
 			embed.setColor(guildConfig.theme.error);
 			embed.addField("Error", "Invalid subreddit", true);
             return await channel.send(embed);
@@ -121,7 +121,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		channel.stopTyping();
 
-		if(data.over_18 && channel.nsfw) {
+		if(data.over_18 && !channel.nsfw) {
 			embed.setColor(guildConfig.theme.error)
 			embed.addField("Error", `This subreddit contains NSFW content. Run this command again in an NSFW channel.`, true)
 			return await channel.send(embed);
