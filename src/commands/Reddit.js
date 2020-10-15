@@ -76,7 +76,7 @@ module.exports = class Command extends require("../Command.js") {
 		}]);
 	}
 
-	async onCommand({ args, sender, guildConfig, channel, message }) {
+	async onCommand({ args, sender, guildConfig, channel }) {
 
 		// Formulate embed
 		const embed = new MessageEmbed();
@@ -91,13 +91,10 @@ module.exports = class Command extends require("../Command.js") {
             return await channel.send(embed);
 		}
 
-		// Get subreddit
-		const subreddit = args[0].toLowerCase();
-
 		// Show typing while making external API request
 		channel.startTyping();
 
-		let allowed
+		let allowed;
 
         try {
             const res = await fetch(`https://www.reddit.com/r/${args[0]}.json?limit=100`).then(a => a.json())
