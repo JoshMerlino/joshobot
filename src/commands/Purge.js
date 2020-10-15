@@ -31,7 +31,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		messages++;
 
-		embed.setColor(guildConfig.theme.success);
+		embed.setColor(guildConfig.theme.severe);
 		embed.addField("Amount", `${messages-1} Total Messages`, true)
 
 		let numleft = messages;
@@ -42,7 +42,9 @@ module.exports = class Command extends require("../Command.js") {
 
 		await channel.bulkDelete(numleft % 100);
 
-		return await channel.send(embed);
+		const msg = await channel.send(embed);
+
+		return client.setTimeout(() => msg.delete(), 5000);
 
 	}
 
