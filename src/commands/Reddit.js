@@ -81,6 +81,7 @@ module.exports = class Command extends require("../Command.js") {
 		// Formulate embed
 		const embed = new MessageEmbed();
 		embed.setColor(guildConfig.theme.info);
+		embed.setTitle("Reddit");
 		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
 
 		// Makesure subreddit is specified
@@ -100,10 +101,10 @@ module.exports = class Command extends require("../Command.js") {
             const res = await fetch(`https://www.reddit.com/r/${args[0]}.json?limit=100`).then(a => a.json())
             allowed = res.data.children.filter(post => !post.data.is_self)
         } catch (e) {
+			channel.stopTyping();
+			
 			embed.setColor(guildConfig.theme.error);
 			embed.addField("Error", "Invalid subreddit", true);
-			embed.addField("Description", this.description, true);
-			embed.addField("Usage", this.usage, true);
             return await channel.send(embed);
         }
 
