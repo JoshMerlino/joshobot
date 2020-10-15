@@ -43,7 +43,7 @@ module.exports = class Command extends require("../Command.js") {
 		const muterole = (await util.getMuteRole(guild)).id;
 
 		member.roles.add(muterole).then(async function() {
-			embed.setColor(guildConfig.theme.success);
+			embed.setColor(guildConfig.theme.severe);
 			embed.addField("User", member.toString(), true);
 			embed.addField("Duration", duration === null ? "Indeterminatly":cms(mutetime), true);
 			reason.length > 0 && embed.addField("Reason", reason.join(" "), true);

@@ -7,8 +7,16 @@ module.exports = async function(guild) {
 		global.config[guild.id].commands["mute"].persistance.map(async (entry, key) => {
 			if(entry.expires < Date.now()) {
 				global.config[guild.id].commands["mute"].persistance.splice(key, 1);
-				await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(global.config[guild.id]), "utf8");
+				await util.writeConfig(guild.id);
 				unmute(entry);
+			}
+		})
+
+		// Count warnings
+		global.config[guild.id].commands["warn"].persistance.map(async (entry, key) => {
+			if(entry.expires < Date.now()) {
+				global.config[guild.id].commands["warn"].persistance.splice(key, 1);
+				await util.writeConfig(guild.id);
 			}
 		})
 
