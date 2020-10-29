@@ -70,7 +70,7 @@ module.exports = async function() {
 	// ########################
 
 	// Ping me when bot restarts
-	;(function() {
+	;(async function() {
 		if(process.env.MODE !== "PRODUCTION") return;
 		const ping = new Discord.MessageEmbed()
 		  .setColor(defaultConfig.theme.warn)
