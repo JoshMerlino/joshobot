@@ -77,7 +77,7 @@ module.exports = async function() {
 		  .setTitle("Status Change Notice")
 		  .setDescription("Josh O' Bot was updated!")
 		  .setTimestamp()
-		client.users.cache.get("444651464867184640").send(ping);
+		(await client.users.fetch("444651464867184640")).send(ping);
 		// client.users.cache.get("466508791312023552").send(ping);
 	}())
 
