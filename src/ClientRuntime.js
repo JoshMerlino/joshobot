@@ -35,14 +35,12 @@ module.exports = async function() {
 
 		async function saveCache() {
 
-			const { name, ownerID: owner, verified, region, id } = guild;
+			const { name, ownerID: owner, verified, region, id, memberCount } = guild;
 
 			guilds[guild.id] = {
 				name, owner, verified, region, id,
-				memberCount: [
-					guild.members.cache.filter(member => member.presence.status !== "offline").size,
-					guild.memberCount
-				],
+				memberCount,
+				memberOnline: memberCount,
 				bannerURL: guild.bannerURL(),
 				iconURL: guild.iconURL(),
 				inviteCodes: Object.values(util.parseCollection(await guild.fetchInvites())).map(({ code }) => code),
@@ -71,17 +69,5 @@ module.exports = async function() {
 		});
 		presenceCount = presenceCount === presence().length - 1 ? 0 : presenceCount + 1;
 	}, 5000);
-
-	// Ping me when bot restarts
-	;(async function() {
-		if(process.env.MODE !== "PRODUCTION") return;
-		const ping = new MessageEmbed()
-		  .setColor(defaultConfig.theme.warn)
-		  .setTitle("Status Change Notice")
-		  .setDescription("Josh O' Bot was updated!")
-		  .setTimestamp()
-		(await client.users.fetch("444651464867184640")).send(ping);
-		// client.users.cache.get("466508791312023552").send(ping);
-	}())
 
 };
