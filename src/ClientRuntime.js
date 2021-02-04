@@ -40,7 +40,7 @@ module.exports = async function() {
 			guilds[guild.id] = {
 				name, owner, verified, region, id,
 				memberCount,
-				memberOnline: memberCount,
+				memberOnline: guild.members.cache.filter(member => member.presence.status !== "offline").size,
 				bannerURL: guild.bannerURL(),
 				iconURL: guild.iconURL(),
 				inviteCodes: Object.values(util.parseCollection(await guild.fetchInvites())).map(({ code }) => code),
