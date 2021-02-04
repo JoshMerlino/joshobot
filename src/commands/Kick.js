@@ -11,7 +11,7 @@ module.exports = class Command extends require("../Command.js") {
 		}]);
 	}
 
-	async onCommand({ args, sender, guildConfig, channel, guild }) {
+	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
 
 		// Make sure sender is a bot master
 		if(!util.hasPermissions(sender, guildConfig, "KICK_MEMBERS")) return await util.noPermissions(channel, sender);
@@ -37,13 +37,13 @@ module.exports = class Command extends require("../Command.js") {
 
 		// If ban target has ban permissions
 		if(util.hasPermissions(member, guildConfig, "KICK_MEMBERS")) {
-			embed.setColor(guildConfig.theme.error);
+			embed.setColor(guildConfig.theme.server);
 			embed.addField("Error", `${member.toString()} is not able to be kicked. They most likley have equal or greater permissions than you.`, true)
             return await channel.send(embed);
 		}
 
 		member.kick(reason.join(" ")).then(async function() {
-			embed.setColor(guildConfig.theme.severe);
+			embed.setColor(guildConfig.theme.success);
 			embed.addField("User", member.toString(), true);
 			reason.length > 0 && embed.addField("Reason", reason.join(" "), true);
 			return await channel.send(embed);

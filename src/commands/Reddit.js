@@ -76,12 +76,11 @@ module.exports = class Command extends require("../Command.js") {
 		}]);
 	}
 
-	async onCommand({ args, sender, guildConfig, channel }) {
+	async onCommand({ args, sender, guildConfig, channel, message }) {
 
 		// Formulate embed
 		const embed = new MessageEmbed();
 		embed.setColor(guildConfig.theme.info);
-		embed.setTitle("Reddit");
 		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
 
 		// Makesure subreddit is specified
@@ -92,19 +91,22 @@ module.exports = class Command extends require("../Command.js") {
             return await channel.send(embed);
 		}
 
+		// Get subreddit
+		const subreddit = args[0].toLowerCase();
+
 		// Show typing while making external API request
 		channel.startTyping();
 
-		let allowed;
+		let allowed
 
         try {
             const res = await fetch(`https://www.reddit.com/r/${args[0]}.json?limit=100`).then(a => a.json())
             allowed = res.data.children.filter(post => !post.data.is_self)
         } catch (e) {
-			channel.stopTyping();
-
 			embed.setColor(guildConfig.theme.error);
 			embed.addField("Error", "Invalid subreddit", true);
+			embed.addField("Description", this.description, true);
+			embed.addField("Usage", this.usage, true);
             return await channel.send(embed);
         }
 
@@ -121,7 +123,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		channel.stopTyping();
 
-		if(data.over_18 && !channel.nsfw) {
+		if(data.over_18 && channel.nsfw) {
 			embed.setColor(guildConfig.theme.error)
 			embed.addField("Error", `This subreddit contains NSFW content. Run this command again in an NSFW channel.`, true)
 			return await channel.send(embed);

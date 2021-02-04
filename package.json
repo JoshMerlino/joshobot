@@ -17,14 +17,12 @@
     },
     "homepage": "https://github.com/JoshMerlino/josh-o-bot#readme",
     "dependencies": {
-        "@discordjs/opus": "^0.3.2",
-        "dayjs": "^1.8.35",
-        "discord.js": "^12.3.1",
+        "dayjs": "^1.10.4",
+        "discord.js": "^12.5.1",
         "ffmpeg-static": "^4.2.7",
         "is-image-url": "^1.1.8",
         "mkdirp": "^1.0.4",
         "ms": "^2.1.2",
-        "namemc": "^0.1.4",
         "node-fetch": "^2.6.1",
         "ordinalize": "^1.0.2",
         "pretty-ms": "^7.0.0",
@@ -35,7 +33,7 @@
         "ytdl-core": "^3.3.0"
     },
     "engines": {
-        "node": "14.5.0"
+        "node": "14"
     },
     "devDependencies": {
         "nodemon": "^2.0.4"

@@ -44,7 +44,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		member.ban({ days: 7, reason: reason.join(" ") }).then(async function() {
 
-			embed.setColor(guildConfig.theme.severe);
+			embed.setColor(guildConfig.theme.success);
 			embed.addField("User", member.toString(), true);
 			reason.length > 0 && embed.addField("Reason", reason.join(" "), true);
 			return await channel.send(embed);

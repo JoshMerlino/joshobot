@@ -1,3 +1,6 @@
+// Cache guilds for api
+const guilds = {};
+
 module.exports = async function() {
 
 	// Get global configuration
@@ -6,11 +9,8 @@ module.exports = async function() {
 	// Register all enums
 	(await fs.readdir(path.join(APP_ROOT, "src", "enum"))).map(e => global[e.split(".js")[0]] = require(path.join(APP_ROOT, "src", "enum", e)));
 
+	// Initialize each guild
 	require("./UptimeManager.js")(async function(guild) {
-
-		// #################
-		// # Configuration #
-		// #################
 
 		// Get configuration for this specific guild and load it into memory
 		const config = await (require("./ConfigurationAPI.js")(guild.id));
@@ -21,23 +21,11 @@ module.exports = async function() {
 			global.config[guild.id] = YAML.parse(await fs.readFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), "utf8"));
 		}, 1000);
 
-		// ############
-		// # Auditing #
-		// ############
-
 		// If the guild has autiting enabled, call all audit hooks
 		if(config.audit.enabled) require("./Auditing.js")(client, guild);
 
-		// ###################
-		// # Repeating Tasks #
-		// ###################
-
 		// Schedule async tasks
 		require("./AsyncActions.js")(guild);
-
-		// ############
-		// # Commands #
-		// ############
 
 		// Register all commands
 		(await fs.readdir(path.join(APP_ROOT, "src", "commands"))).map(command => {
@@ -45,15 +33,34 @@ module.exports = async function() {
 			new Command(guild.id);
 		});
 
+		async function saveCache() {
+
+			const { name, ownerID: owner, verified, region, id } = guild;
+
+			guilds[guild.id] = {
+				name, owner, verified, region, id,
+				memberCount: [
+					guild.members.cache.filter(member => member.presence.status !== "offline").size,
+					guild.memberCount
+				],
+				bannerURL: guild.bannerURL(),
+				iconURL: guild.iconURL(),
+				inviteCodes: Object.values(util.parseCollection(await guild.fetchInvites())).map(({ code }) => code),
+			}
+		}
+
+		client.setInterval(saveCache, 1000);
+		await saveCache();
+
 	});
 
-	// ############
-	// # Presence #
-	// ############
+	client.setInterval(async function() {
+		await fs.writeFile(path.join(APP_ROOT, "api.db"), JSON.stringify(guilds, null, 4), "utf8");
+	}, 1000);
 
 	// Display presence
 	let presenceCount = 0;
-	const presence = () => [ "?help", "josho.bot.nu", `${client.guilds.cache.size} Servers` ];
+	const presence = () => [ "?help", `${client.guilds.cache.size} Servers` ];
 	client.setInterval(async function() {
 		client.user.setPresence({
 		    activity: {
@@ -65,14 +72,10 @@ module.exports = async function() {
 		presenceCount = presenceCount === presence().length - 1 ? 0 : presenceCount + 1;
 	}, 5000);
 
-	// ########################
-	// # Status Change Notice #
-	// ########################
-
 	// Ping me when bot restarts
 	;(async function() {
 		if(process.env.MODE !== "PRODUCTION") return;
-		const ping = new Discord.MessageEmbed()
+		const ping = new MessageEmbed()
 		  .setColor(defaultConfig.theme.warn)
 		  .setTitle("Status Change Notice")
 		  .setDescription("Josh O' Bot was updated!")

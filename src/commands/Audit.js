@@ -21,7 +21,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		// Start formulating embed
 		const embed = new MessageEmbed();
-		embed.setTitle("Auditing")
+		embed.setTitle("Audit Log")
 		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
 
 		// If not enough arguments, send default message
