@@ -9,7 +9,7 @@ theme:
   severe:   0xffa06d
   warn:     0xffd740
   info:     0x4dd0e1
-  dunce:    0x546e7a 
+  dunce:    0x546e7a
 
 # Audit log configuration
 audit:
@@ -394,3 +394,16 @@ commands:
     - suggest
     - suggestion
     - su
+
+  # Dox command configuration
+  dox:
+
+    # Should this ommand be used?
+    enabled: true
+
+    # Which command should this bind to
+    alias:
+    - dox
+    - ipaddr
+    - ip
+    - iplookup
