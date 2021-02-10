@@ -16,8 +16,6 @@ module.exports = class Command extends require("../Command.js") {
 		// Look up ip address
 		const details = await fetch(`https://joshm.us.to/api/iputils/v1/lookup?query=${query}`).then(resp => resp.json());
 
-		console.log(details)
-
 		// Formulate embed
 		const embed = new MessageEmbed();
 		embed.setTitle(`Geolocation for: ${query}`);

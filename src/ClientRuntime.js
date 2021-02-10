@@ -33,10 +33,8 @@ module.exports = async function() {
 			new Command(guild.id);
 		});
 
-		async function saveCache() {
-
+		(async function saveCache() {
 			const { name, ownerID: owner, verified, region, id, memberCount } = guild;
-
 			guilds[guild.id] = {
 				name, owner, verified, region, id,
 				memberCount,
@@ -45,10 +43,8 @@ module.exports = async function() {
 				iconURL: guild.iconURL(),
 				inviteCodes: Object.values(util.parseCollection(await guild.fetchInvites())).map(({ code }) => code),
 			}
-		}
-
-		client.setInterval(saveCache, 1000);
-		await saveCache();
+			client.setTime()(saveCache, 1000);
+		}());
 
 	});
 
