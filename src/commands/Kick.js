@@ -1,17 +1,24 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["kick", "k"], ...arguments);
-		this.register("Kick a member from the server. 🥾", HelpSection.MODERATION, [{
-			argument: "@User",
-			required: true,
-		}, {
-			argument: "Reason",
-			required: false,
-		}]);
+		super([
+			"kick",
+			"k"
+		], ...arguments);
+		this.register(
+			"Kick a member from the server. 🥾",
+			HelpSection.MODERATION,
+			[{
+				argument: "@User",
+				required: true,
+			}, {
+				argument: "Reason",
+				required: false,
+			}]
+		);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
+	async onCommand({ args, sender, guildConfig, channel, guild }) {
 
 		// Make sure sender is a bot master
 		if(!util.hasPermissions(sender, guildConfig, "KICK_MEMBERS")) return await util.noPermissions(channel, sender);

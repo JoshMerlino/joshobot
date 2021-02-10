@@ -1,14 +1,22 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["user", "whois", "who"], ...arguments);
-		this.register("Gets basic information about a Discord account. ℹ", HelpSection.GENERAL, [{
-			argument: "@User",
-			required: false,
-		}]);
+		super([
+			"user",
+			"whois",
+			"who"
+		], ...arguments);
+		this.register(
+			"Gets basic information about a Discord account. ℹ",
+			HelpSection.GENERAL,
+			[{
+				argument: "@User",
+				required: false,
+			}]
+		);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild }) {
+	async onCommand({ args, sender, channel, guild }) {
 
 		const member = guild.member(args[0] ? args[0].replace(/[\\<>@#&!]/g, "") : sender.id);
 		const { user } = member;

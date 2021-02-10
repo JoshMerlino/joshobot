@@ -1,14 +1,25 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["dox", "ipaddr", "ipaddress", "ip", "iplookup", "geoip"], ...arguments);
-		this.register("Look up an IP Address. 📍", HelpSection.MISCELLANEOUS, [{
-			argument: "IP Address",
-			required: true,
-		}]);
+		super([
+			"ip",
+			"dox",
+			"ipaddr",
+			"ipaddress",
+			"iplookup",
+			"geoip"
+		], ...arguments);
+		this.register(
+			"Look up an IP Address. 📍",
+			HelpSection.MISCELLANEOUS,
+			[{
+				argument: "IP Address",
+				required: true,
+			}]
+		);
 	}
 
-	async onCommand({ args, sender, channel, guildConfig }) {
+	async onCommand({ args, sender, channel }) {
 
 		// Parse arguments
 		const [ query ] = args;

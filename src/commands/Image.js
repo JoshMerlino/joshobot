@@ -1,11 +1,19 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["image", "im", "i"], ...arguments);
-		this.register("Google image search. 🖼", HelpSection.GENERAL, [{
-			argument: "Search query",
-			required: true,
-		}]);
+		super([
+			"image",
+			"im",
+			"i"
+		], ...arguments);
+		this.register(
+			"Google image search. 🖼",
+			HelpSection.GENERAL,
+			[{
+				argument: "Search query",
+				required: true,
+			}]
+		);
 	}
 
 	async onCommand({ args, sender, channel }) {

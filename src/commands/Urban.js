@@ -1,14 +1,21 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["urban", "ur"], ...arguments);
-		this.register("Look up a term from Urban Dictionary. 📘", HelpSection.GENERAL, [{
-			argument: "Term",
-			required: true,
-		}]);
+		super([
+			"urban",
+			"ur"
+		], ...arguments);
+		this.register(
+			"Look up a term from Urban Dictionary. 📘",
+			HelpSection.GENERAL,
+			[{
+				argument: "Term",
+				required: true,
+			}]
+		);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
+	async onCommand({ args, sender, channel }) {
 
 		const term = args.join(" ");
 
@@ -21,7 +28,7 @@ module.exports = class Command extends require("../Command.js") {
 		        "x-rapidapi-key": process.env.RAPID_API_KEY,
 		        useQueryString: true
 		    }
-		}, function(error, response, body) {
+		}, function(error, _response, body) {
 		    if (error) {
 				return channel.send(new MessageEmbed()
 				.setColor(Color.error)
@@ -43,7 +50,7 @@ module.exports = class Command extends require("../Command.js") {
 			        "x-rapidapi-key": process.env.RAPID_API_KEY,
 			        useQueryString: true
 			    }
-			}, function(error, response, body) {
+			}, function(error, _response, body) {
 
 				const embed = new MessageEmbed();
 				embed.setTitle(list[0].word);

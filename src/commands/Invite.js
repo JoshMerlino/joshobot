@@ -3,11 +3,17 @@ const link = `https://discord.com/api/oauth2/authorize?client_id=748971236276699
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["invite", "inv"], ...arguments);
-		this.register("Invite Josh O' Bot to your server. 😍", HelpSection.GENERAL);
+		super([
+			"invite",
+			"inv"
+		], ...arguments);
+		this.register(
+			"Invite Josh O' Bot to your server. 😍",
+			HelpSection.GENERAL
+		);
 	}
 
-	async onCommand({ sender, guildConfig, channel }) {
+	async onCommand({ sender, channel }) {
 
 		// Formulate Embed
 		const embed = new MessageEmbed();

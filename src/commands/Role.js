@@ -1,17 +1,23 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["role"], ...arguments);
-		this.register("Manage server roles. 🧻", HelpSection.MODERATION, [{
-			argument: "add | create | delete | remove",
-			required: true,
-		}, {
-			argument: "Role | @Role",
-			required: true,
-		}, {
-			argument: "@User",
-			required: false,
-		}]);
+		super([
+			"role"
+		], ...arguments);
+		this.register(
+			"Manage server roles. 🧻",
+			HelpSection.MODERATION,
+			[{
+				argument: "add | create | delete | remove",
+				required: true,
+			}, {
+				argument: "Role | @Role",
+				required: true,
+			}, {
+				argument: "@User",
+				required: false,
+			}]
+		);
 	}
 
 	async onCommand({ args, sender, guildConfig, root, channel, guild }) {

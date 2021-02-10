@@ -1,14 +1,20 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["avatar", "av"], ...arguments);
-		this.register("Displays the profile picture of a user.", HelpSection.GENERAL, [{
-			argument: "@User",
-			required: true,
-		}]);
+		super([
+			"avatar",
+			"av"
+		], ...arguments);
+		this.register(
+			"Displays the profile picture of a user. 🖼",
+			HelpSection.GENERAL, [{
+				argument: "@User",
+				required: true,
+			}]
+		);
 	}
 
-	async onCommand({ args, sender, guildConfig, channel, guild }) {
+	async onCommand({ args, sender, channel, guild }) {
 
 		const user = util.user(args[0] || sender, guild);
 

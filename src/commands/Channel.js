@@ -1,17 +1,24 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["channel", "ch"], ...arguments);
-		this.register("Manages server channels. #️⃣", HelpSection.MODERATION, [{
-			argument: "add,create | delete,remove | lock | softlock | rename | nsfw | unlock",
-			required: true,
-		}, {
-			argument: "Channel | #Channel",
-			required: false,
-		}, {
-			argument: "Name",
-			required: false,
-		}]);
+		super([
+			"channel",
+			"ch"
+		], ...arguments);
+		this.register(
+			"Manages server channels. #️⃣",
+			HelpSection.MODERATION,
+			[{
+				argument: "add,create | delete,remove | lock | softlock | rename | nsfw | unlock",
+				required: true,
+			}, {
+				argument: "Channel | #Channel",
+				required: false,
+			}, {
+				argument: "Name",
+				required: false,
+			}]
+		);
 	}
 
 	async onCommand({ args, sender, guildConfig, channel, guild, message }) {

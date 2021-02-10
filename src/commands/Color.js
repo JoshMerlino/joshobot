@@ -1,11 +1,17 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["color"], ...arguments);
-		this.register("Preview a color. 🎨", HelpSection.MISCELLANEOUS, [{
-			argument: "@User | #RRGGBB",
-			required: false,
-		}]);
+		super([
+			"color"
+		], ...arguments);
+		this.register(
+			"Preview a color. 🎨",
+			HelpSection.MISCELLANEOUS,
+			[{
+				argument: "@User | #RRGGBB",
+				required: false,
+			}]
+		);
 	}
 
 	async onCommand({ args, sender, channel, guild }) {

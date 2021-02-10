@@ -1,11 +1,16 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["roast"], ...arguments);
-		this.register("Sends a random insult. 😡", HelpSection.MISCELLANEOUS);
+		super([
+			"roast"
+		], ...arguments);
+		this.register(
+			"Sends a random insult. 😡",
+			HelpSection.MISCELLANEOUS
+		);
 	}
 
-	async onCommand({ sender, guildConfig, channel }) {
+	async onCommand({ sender, channel }) {
 
 		const embed = new MessageEmbed();
 		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());

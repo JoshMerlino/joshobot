@@ -1,11 +1,18 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["help", "h"], ...arguments);
-		this.register("Shows this message 😎.", HelpSection.GENERAL, [{
-			argument: "Help section",
-			required: false,
-		}]);
+		super([
+			"help",
+			"h"
+		], ...arguments);
+		this.register(
+			"Shows this message 😎.",
+			HelpSection.GENERAL,
+			[{
+				argument: "Help section",
+				required: false,
+			}]
+		);
 	}
 
 	async onCommand({ root, args, channel, guildConfig }) {
@@ -21,7 +28,6 @@ module.exports = class Command extends require("../Command.js") {
 			[HelpSection.GENERAL]: "General",
 			[HelpSection.MISCELLANEOUS]: "Miscellaneous",
 			[HelpSection.MODERATION]: "Moderation",
-			[HelpSection.MUSIC]: "Music",
 		}
 
 		// Show default help page if no args

@@ -1,14 +1,21 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["namemc", "mc"], ...arguments);
-		this.register("Look up a Minecraft player. 🎮", HelpSection.MISCELLANEOUS, [{
-			argument: "Username",
-			required: true,
-		}]);
+		super([
+			"namemc",
+			"mc"
+		], ...arguments);
+		this.register(
+			"Look up a Minecraft player. 🎮",
+			HelpSection.MISCELLANEOUS,
+			[{
+				argument: "Username",
+				required: true,
+			}]
+		);
 	}
 
-	async onCommand({ args, sender, guildConfig, channel }) {
+	async onCommand({ args, sender, channel }) {
 
 		// Get arguments
 		const [ mcname ] = args;

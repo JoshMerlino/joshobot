@@ -1,11 +1,18 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["purge", "bulkdelete"], ...arguments);
-		this.register("Bulk delete messages in a channel. ❌", HelpSection.MODERATION, [{
-			argument: "Amount",
-			required: true,
-		}]);
+		super([
+			"purge",
+			"bulkdelete"
+		], ...arguments);
+		this.register(
+			"Bulk delete messages in a channel. ❌",
+			HelpSection.MODERATION,
+			[{
+				argument: "Amount",
+				required: true,
+			}]
+		);
 	}
 
 	async onCommand({ args, sender, guildConfig, channel }) {

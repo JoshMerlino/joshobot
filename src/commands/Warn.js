@@ -1,17 +1,24 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["warn", "w"], ...arguments);
-		this.register("Warns a user about an action they may have done. ⚠", HelpSection.MODERATION, [{
-			argument: "@User",
-			required: true,
-		}, {
-			argument: "Reason",
-			required: false,
-		}]);
+		super([
+			"warn",
+			"w"
+		], ...arguments);
+		this.register(
+			"Warns a user about an action they may have done. ⚠",
+			HelpSection.MODERATION,
+			[{
+				argument: "@User",
+				required: true,
+			}, {
+				argument: "Reason",
+				required: false,
+			}]
+		);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
+	async onCommand({ args, sender, guildConfig, root, channel, guild }) {
 
 		const [ user = "", ...reason ] = args;
 		const userid = user.replace(/[\\<>@#&!]/g, "");

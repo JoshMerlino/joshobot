@@ -69,14 +69,20 @@ const redditImage = async function(post, allowed)  {
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["reddit"], ...arguments);
-		this.register("Gets a random picture off of Reddit. 🖼", HelpSection.GENERAL, [{
-			argument: "Subreddit",
-			required: true,
-		}]);
+		super([
+			"reddit"
+		], ...arguments);
+		this.register(
+			"Gets a random picture off of Reddit. 🖼",
+			HelpSection.GENERAL,
+			[{
+				argument: "Subreddit",
+				required: true,
+			}]
+		);
 	}
 
-	async onCommand({ args, sender, guildConfig, channel, message }) {
+	async onCommand({ args, sender, channel }) {
 
 		// Formulate embed
 		const embed = new MessageEmbed();
@@ -90,9 +96,6 @@ module.exports = class Command extends require("../Command.js") {
 			embed.addField("Usage", this.usage, true)
             return await channel.send(embed);
 		}
-
-		// Get subreddit
-		const subreddit = args[0].toLowerCase();
 
 		// Show typing while making external API request
 		channel.startTyping();

@@ -3,14 +3,20 @@ const [ ppbottom, ppmiddle, pphead  ] = [ "<:ppbottom:762165942942826517>", "<:p
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["pp"], ...arguments);
-		this.register("Estimates a server members PP size. 😏", HelpSection.MISCELLANEOUS, [{
-			argument: "@User",
-			required: false,
-		}]);
+		super([
+			"pp"
+		], ...arguments);
+		this.register(
+			"Estimates a server members PP size. 😏",
+			HelpSection.MISCELLANEOUS,
+			[{
+				argument: "@User",
+				required: false,
+			}]
+		);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild, audit }) {
+	async onCommand({ args, sender, channel, guild }) {
 
 		const user = guild.member(args.length > 0 ? args[0].replace(/[\\<>@#&!]/g, "") : sender.id);
 		const size = Math.max(3, parseInt(user.user.id.substr(2, 2)) * 0.18 % 10);

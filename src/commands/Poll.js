@@ -1,14 +1,20 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["poll"], ...arguments);
-		this.register("Creates a poll. ❎", HelpSection.MISCELLANEOUS, [{
-			argument: "Poll",
-			required: true,
-		}]);
+		super([
+			"poll"
+		], ...arguments);
+		this.register(
+			"Creates a poll. ❎",
+			HelpSection.MISCELLANEOUS,
+			[{
+				argument: "Poll",
+				required: true,
+			}]
+		);
 	}
 
-	async onCommand({ args, sender, guildConfig, channel }) {
+	async onCommand({ args, sender, channel }) {
 
 		const msg = args.join(" ");
 

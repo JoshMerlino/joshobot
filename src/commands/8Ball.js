@@ -1,14 +1,20 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super(["8ball"], ...arguments);
-		this.register("Predicts the future. 🎱", HelpSection.MISCELLANEOUS, [{
-			argument: "Question",
-			required: true,
-		}]);
+		super([
+			"8ball"
+		], ...arguments);
+		this.register(
+			"Predicts the future. 🎱",
+			HelpSection.MISCELLANEOUS,
+			[{
+				argument: "Question",
+				required: true,
+			}]
+		);
 	}
 
-	async onCommand({ args, sender, guildConfig, channel }) {
+	async onCommand({ args, sender, channel }) {
 
 		const embed = new MessageEmbed();
 		embed.setTitle("8 Ball")
