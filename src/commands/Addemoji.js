@@ -21,23 +21,17 @@ module.exports = class Command extends require("../Command.js") {
 	async onCommand({ args, sender, guildConfig, channel, guild }) {
 
 		// Make sure sender is a bot master
-		if(!util.hasPermissions(sender, guildConfig, "MANAGE_EMOJIS")) return await util.noPermissions(channel, sender);
+		if(!util.hasPermissions(sender, guildConfig, "MANAGE_EMOJIS")) return;
+
+		// If no args, send usage
+		if(args.length === 0) return this.sendUsage(channel);
 
 		// Get params
 		let [ name = null, link = null ] = args;
 
 		// Start formulating embed
 		const embed = new MessageEmbed();
-		embed.setTitle("Add Emoji")
-		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
-
-		// If not enough arguments, send default message
-		if(name === null) {
-			embed.setColor(Color.warn);
-			embed.addField("Description", this.description, true)
-			embed.addField("Usage", this.usage, true)
-            return await channel.send(embed);
-		}
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
 
 		// If no link, get previous message image
 		if(link === null) {
@@ -48,28 +42,27 @@ module.exports = class Command extends require("../Command.js") {
 
 		// If no link at all
 		if(!link.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g)) {
-			embed.setColor(Color.error)
-			embed.addField("Error", `The link to the emoji image wasn't found.`, true)
-			return await channel.send(embed)
+			embed.setColor(Color.error);
+			embed.setDescription(`The link to the emoji image wasn't found.`);
+			return await channel.send(embed);
 		}
 
-		guild.emojis.create(link, name).then(async emoji => {
+		guild.emojis.create(link, name).then(emoji => {
 
 			// On successful emoji create
-			embed.setTitle("Created Emoji")
-			embed.setColor(Color.success)
-			embed.addField("Emoji", `\`:${emoji.name}:\``, true)
-			embed.addField("Preview", emoji.toString(), true)
-			return await channel.send(embed);
+			embed.setTitle("Emoji added");
+			embed.setColor(Color.success);
+			embed.setDescription(`Added emoji \`:${emoji.name}:\` ${emoji.toString()}`);
 
-		}).catch(async error => {
+		}).catch(error => {
 
 			// If error creating emoji
-			embed.setTitle("Error Making Emoji")
-			embed.setColor(Color.error)
-			embed.addField("Error", error.toString().split(":")[2], true);
-			await channel.send(embed);
+			embed.setTitle("Couldn't add Emoji");
+			embed.setColor(Color.error);
+			embed.setDescription(error.toString().split(":")[2]);
 
+		}).finally(async () => {
+			await channel.send(embed);
 		})
 
 	}
