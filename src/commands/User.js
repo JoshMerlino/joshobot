@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("user", ...arguments);
+		super(["user", "whois", "who"], ...arguments);
 		this.register("Gets basic information about a Discord account. ℹ", HelpSection.GENERAL, [{
 			argument: "@User",
 			required: false,

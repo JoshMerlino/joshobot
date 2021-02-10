@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("advice", ...arguments);
+		super(["advice", "adv"], ...arguments);
 		this.register("Gives random life advice. 👨‍🦳", HelpSection.MISCELLANEOUS);
 	}
 
@@ -11,7 +11,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		const embed = new MessageEmbed();
 		embed.setTitle("Advice");
-		embed.setColor(guildConfig.theme.info);
+		embed.setColor(Color.info);
 		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
 		embed.addField("A word from the wise", advice);
 

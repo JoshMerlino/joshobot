@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("help", ...arguments);
+		super(["help", "h"], ...arguments);
 		this.register("Shows this message 😎.", HelpSection.GENERAL, [{
 			argument: "Help section",
 			required: false,
@@ -69,7 +69,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		// Formulate embed
 		const embed = new MessageEmbed();
-		embed.setColor(guildConfig.theme.info);
+		embed.setColor(Color.info);
 		embed.setTitle(`Josh O' Bot - Help`)
 		embed.setDescription(list.join("\n").replace(/\n\n/gm, "\n"));
 		return channel.send(embed);

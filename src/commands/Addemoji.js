@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("addemoji", ...arguments);
+		super(["addemoji", "ae"], ...arguments);
 		this.register("Creates a new server emoji. 💩", HelpSection.MODERATION, [{
 			argument: "Emoji name",
 			required: true,
@@ -26,7 +26,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		// If not enough arguments, send default message
 		if(name === null) {
-			embed.setColor(guildConfig.theme.warn);
+			embed.setColor(Color.warn);
 			embed.addField("Description", this.description, true)
 			embed.addField("Usage", this.usage, true)
             return await channel.send(embed);
@@ -41,7 +41,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		// If no link at all
 		if(!link.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g)) {
-			embed.setColor(guildConfig.theme.error)
+			embed.setColor(Color.error)
 			embed.addField("Error", `The link to the emoji image wasn't found.`, true)
 			return await channel.send(embed)
 		}
@@ -50,7 +50,7 @@ module.exports = class Command extends require("../Command.js") {
 
 			// On successful emoji create
 			embed.setTitle("Created Emoji")
-			embed.setColor(guildConfig.theme.success)
+			embed.setColor(Color.success)
 			embed.addField("Emoji", `\`:${emoji.name}:\``, true)
 			embed.addField("Preview", emoji.toString(), true)
 			return await channel.send(embed);
@@ -59,7 +59,7 @@ module.exports = class Command extends require("../Command.js") {
 
 			// If error creating emoji
 			embed.setTitle("Error Making Emoji")
-			embed.setColor(guildConfig.theme.error)
+			embed.setColor(Color.error)
 			embed.addField("Error", error.toString().split(":")[2], true);
 			await channel.send(embed);
 

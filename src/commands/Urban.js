@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("urban", ...arguments);
+		super(["urban", "ur"], ...arguments);
 		this.register("Look up a term from Urban Dictionary. 📘", HelpSection.GENERAL, [{
 			argument: "Term",
 			required: true,
@@ -24,7 +24,7 @@ module.exports = class Command extends require("../Command.js") {
 		}, function(error, response, body) {
 		    if (error) {
 				return channel.send(new MessageEmbed()
-				.setColor(guildConfig.theme.error)
+				.setColor(Color.error)
 				.setDescription(`No definitions found for **\`${term}\`**.`));
 			}
 

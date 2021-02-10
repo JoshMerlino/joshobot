@@ -48,7 +48,7 @@ module.exports = {
 		let muterole = config[guild.id].commands["mute"].muterole;
 		if(!Object.keys(util.parseCollection(guild.roles.cache)).includes(muterole)) muterole = null
 		if(Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name === `Muted (Josh O' Bot)`).length > 0) muterole = Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name === `Muted (Josh O' Bot)`)[0].id
-		if(!muterole) muterole = (await guild.roles.create({ data: { color: guildConfig.theme.dunce, name: `Muted (Josh O' Bot)` }, reason: "Create a role for muted users - Josh O' Bot" })).id;
+		if(!muterole) muterole = (await guild.roles.create({ data: { color: Color.dunce, name: `Muted (Josh O' Bot)` }, reason: "Create a role for muted users - Josh O' Bot" })).id;
 
 		// Ensure role is saved
 		config[guild.id].commands.mute.muterole = muterole;

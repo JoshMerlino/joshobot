@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("dox", ...arguments);
+		super(["dox", "ipaddr", "ipaddress", "ip", "iplookup", "geoip"], ...arguments);
 		this.register("Look up an IP Address. 📍", HelpSection.MISCELLANEOUS, [{
 			argument: "IP Address",
 			required: true,
@@ -23,13 +23,13 @@ module.exports = class Command extends require("../Command.js") {
 
 		// If bad request
 		if(details.success === false) {
-			embed.setColor(guildConfig.theme.error);
+			embed.setColor(Color.error);
 			embed.setDescription(details.error);
 			return await channel.send(embed);
 		}
 
 		// If successful
-		embed.setColor(guildConfig.theme.info);
+		embed.setColor(Color.info);
 		embed.setURL(details.mapUrl);
 		embed.addField("Location", `${details.city} ${details.region}, ${details.zip}, ${details.country}`);
 		embed.addField("Lat & Lon", `${details.lat}, ${details.lon}`, true);

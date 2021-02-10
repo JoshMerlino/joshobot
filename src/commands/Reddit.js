@@ -69,7 +69,7 @@ const redditImage = async function(post, allowed)  {
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("reddit", ...arguments);
+		super(["reddit"], ...arguments);
 		this.register("Gets a random picture off of Reddit. 🖼", HelpSection.GENERAL, [{
 			argument: "Subreddit",
 			required: true,
@@ -80,12 +80,12 @@ module.exports = class Command extends require("../Command.js") {
 
 		// Formulate embed
 		const embed = new MessageEmbed();
-		embed.setColor(guildConfig.theme.info);
+		embed.setColor(Color.info);
 		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
 
 		// Makesure subreddit is specified
 		if(args.length !== 1) {
-			embed.setColor(guildConfig.theme.warn);
+			embed.setColor(Color.warn);
 			embed.addField("Description", this.description, true)
 			embed.addField("Usage", this.usage, true)
             return await channel.send(embed);
@@ -103,7 +103,7 @@ module.exports = class Command extends require("../Command.js") {
             const res = await fetch(`https://www.reddit.com/r/${args[0]}.json?limit=100`).then(a => a.json())
             allowed = res.data.children.filter(post => !post.data.is_self)
         } catch (e) {
-			embed.setColor(guildConfig.theme.error);
+			embed.setColor(Color.error);
 			embed.addField("Error", "Invalid subreddit", true);
 			embed.addField("Description", this.description, true);
 			embed.addField("Usage", this.usage, true);
@@ -119,12 +119,12 @@ module.exports = class Command extends require("../Command.js") {
 
 		embed.setAuthor(`u/${data.author} • r/${data.subreddit}`, (await fetch(`https://www.reddit.com/user/${data.author}/about.json`).then(resp => resp.json())).data.icon_img.split("?")[0])
 		embed.setTitle(data.title);
-		embed.setColor(data.link_flair_background_color === "" ? guildConfig.theme.info : data.link_flair_background_color)
+		embed.setColor(data.link_flair_background_color === "" ? Color.info : data.link_flair_background_color)
 
 		channel.stopTyping();
 
 		if(data.over_18 && channel.nsfw) {
-			embed.setColor(guildConfig.theme.error)
+			embed.setColor(Color.error)
 			embed.addField("Error", `This subreddit contains NSFW content. Run this command again in an NSFW channel.`, true)
 			return await channel.send(embed);
 		}

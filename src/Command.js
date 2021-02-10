@@ -1,16 +1,12 @@
 module.exports = class Command {
 
-	key = null;
 	aliases = null;
 	args = null;
 	desc = null;
 	guild_id = null
 
-	constructor(key, guild_id) {
+	constructor(aliases, guild_id) {
 
-		this.key = key;
-
-		const aliases = config[guild_id].commands[key].alias;
 		this.aliases = aliases;
 
 		client.on("message", async message => {
@@ -21,7 +17,7 @@ module.exports = class Command {
 			if(guild.id !== guild_id) return;
 
 			aliases.map(async alias => {
-				if(config[guild_id].prefix + alias === root.toLowerCase() && config[guild_id].commands[key].enabled) {
+				if(config[guild_id].prefix + alias === root.toLowerCase()) {
 					this.guild_id = guild_id;
 					await this.onCommand({
 						root, args, channel, message, guild,

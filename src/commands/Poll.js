@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("poll", ...arguments);
+		super(["poll"], ...arguments);
 		this.register("Creates a poll. ❎", HelpSection.MISCELLANEOUS, [{
 			argument: "Poll",
 			required: true,
@@ -13,7 +13,7 @@ module.exports = class Command extends require("../Command.js") {
 		const msg = args.join(" ");
 
 		const embed = new MessageEmbed();
-		embed.setColor(guildConfig.theme.info);
+		embed.setColor(Color.info);
 		embed.setAuthor(sender.displayName, sender.user.displayAvatarURL());
 		embed.setTitle(`${sender.displayName} Created a Poll`);
 		embed.addField("Poll", msg);

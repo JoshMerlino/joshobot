@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("image", ...arguments);
+		super(["image", "im", "i"], ...arguments);
 		this.register("Google image search. 🖼", HelpSection.GENERAL, [{
 			argument: "Search query",
 			required: true,

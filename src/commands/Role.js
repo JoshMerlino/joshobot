@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("role", ...arguments);
+		super(["role"], ...arguments);
 		this.register("Manage server roles. 🧻", HelpSection.MODERATION, [{
 			argument: "add | create | delete | remove",
 			required: true,
@@ -23,7 +23,7 @@ module.exports = class Command extends require("../Command.js") {
 
 			if(role === "" || subcommand === "") {
 				return channel.send(new MessageEmbed()
-				.setColor(guildConfig.theme.warn)
+				.setColor(Color.warn)
 				.setDescription(`Usage:\n\`${root} <add|remove|create|delete> <role> <@user | #color>\``)
 				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 			} else {
@@ -35,12 +35,12 @@ module.exports = class Command extends require("../Command.js") {
 
 					guild.member(userid).roles.add(roleid).then(function() {
 						channel.send(new MessageEmbed()
-						.setColor(guildConfig.theme.success)
+						.setColor(Color.success)
 						.setDescription(`Added <@&${roleid}> to <@!${userid}>`)
 						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 					}).catch(function() {
 						channel.send(new MessageEmbed()
-						.setColor(guildConfig.theme.error)
+						.setColor(Color.error)
 						.setDescription(`Missing Permissions.\nIs the ${guild.member(client.user).roles.highest.toString()} role higher than <@&${roleid}> role?`)
 						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 					})
@@ -52,12 +52,12 @@ module.exports = class Command extends require("../Command.js") {
 
 					guild.member(userid).roles.remove(roleid).then(function() {
 						channel.send(new MessageEmbed()
-						.setColor(guildConfig.theme.success)
+						.setColor(Color.success)
 						.setDescription(`Removed <@&${roleid}> from <@!${userid}>`)
 						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 					}).catch(function() {
 						channel.send(new MessageEmbed()
-						.setColor(guildConfig.theme.error)
+						.setColor(Color.error)
 						.setDescription(`Missing Permissions.\nIs the ${guild.member(client.user).roles.highest.toString()} role higher than <@&${roleid}> role?`)
 						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 					})
@@ -72,7 +72,7 @@ module.exports = class Command extends require("../Command.js") {
 				  	})
 
 					channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.success)
+					.setColor(Color.success)
 					.setDescription(`Created role \`${args[1]}\`.`)
 					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
@@ -82,7 +82,7 @@ module.exports = class Command extends require("../Command.js") {
 					const specimin = await guild.roles.fetch(roleid);
 
 					channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.success)
+					.setColor(Color.success)
 					.setDescription(`Deleted role \`${specimin.name}\`.`)
 					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
@@ -90,7 +90,7 @@ module.exports = class Command extends require("../Command.js") {
 
 				} else {
 					return channel.send(new MessageEmbed()
-					.setColor(guildConfig.theme.warn)
+					.setColor(Color.warn)
 					.setDescription(`Usage:\n\`${root} <add|remove|create|delete> <role> <@user | #color>\``)
 					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 				}
@@ -98,7 +98,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		} else {
 			return channel.send(new MessageEmbed()
-			.setColor(guildConfig.theme.error)
+			.setColor(Color.error)
 			.setDescription(`You my friend, are not a bot master.`)
 			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 		}

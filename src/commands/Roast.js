@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("roast", ...arguments);
+		super(["roast"], ...arguments);
 		this.register("Sends a random insult. 😡", HelpSection.MISCELLANEOUS);
 	}
 
@@ -9,7 +9,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		const embed = new MessageEmbed();
 		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
-		embed.setColor(guildConfig.theme.info);
+		embed.setColor(Color.info);
 		embed.setTitle("Roast");
 		embed.setDescription(Texts.ROASTS[Math.floor(Math.random() * Texts.ROASTS.length)]);
 		return await channel.send(embed);

@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("unmute", ...arguments);
+		super(["unmute", "umute", "unm", "um"], ...arguments);
 		this.register("Unmute a member in this server. 🔊", HelpSection.MODERATION, [{
 			argument: "@User",
 			required: true,
@@ -23,7 +23,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		// If not enough params
 		if(user === null) {
-			embed.setColor(guildConfig.theme.warn);
+			embed.setColor(Color.warn);
 			embed.addField("Description", this.description, true)
 			embed.addField("Usage", this.usage, true)
             return await channel.send(embed);
@@ -38,7 +38,7 @@ module.exports = class Command extends require("../Command.js") {
 		// Remove muterole
 		member.roles.remove(muterole);
 
-		embed.setColor(guildConfig.theme.success);
+		embed.setColor(Color.success);
 		embed.addField("User", member.toString(), true);
 		return await channel.send(embed);
 

@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("warn", ...arguments);
+		super(["warn", "w"], ...arguments);
 		this.register("Warns a user about an action they may have done. ⚠", HelpSection.MODERATION, [{
 			argument: "@User",
 			required: true,
@@ -24,7 +24,7 @@ module.exports = class Command extends require("../Command.js") {
 				persistance.push({ specimen: userid, moderator: sender.id, expires: Date.now() + 8.64e7 });
 
 				channel.send(new MessageEmbed()
-				.setColor(guildConfig.theme.severe)
+				.setColor(Color.severe)
 				.setDescription(`User <@!${userid}> has been warned. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}\nThis is their ${ordinalize(persistance.filter(p => p.specimen === userid).length)} warning in the last 24 hours!`)
 				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 
@@ -33,13 +33,13 @@ module.exports = class Command extends require("../Command.js") {
 
 			} else {
 				return channel.send(new MessageEmbed()
-				.setColor(guildConfig.theme.warn)
+				.setColor(Color.warn)
 				.setDescription(`Usage:\n\`${root} <@user> [reason]\``)
 				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 			}
 		} else {
 			return channel.send(new MessageEmbed()
-			.setColor(guildConfig.theme.error)
+			.setColor(Color.error)
 			.setDescription(`You my friend, are not a bot master.`)
 			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
 		}

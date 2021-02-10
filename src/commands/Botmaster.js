@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("botmaster", ...arguments);
+		super(["botmaster", "bm"], ...arguments);
 		this.register("Manages who has permission overrides for the bot. 🤖", HelpSection.MODERATION, [{
 			argument: "@User | @Role",
 			required: true,
@@ -23,7 +23,7 @@ module.exports = class Command extends require("../Command.js") {
 		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
 
 		if(userOrRole === "" || subcommand === null) {
-			embed.setColor(guildConfig.theme.warn);
+			embed.setColor(Color.warn);
 			embed.addField("Description", this.description, true)
 			embed.addField("Usage", this.usage, true)
             return await channel.send(embed);
@@ -31,7 +31,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		if(subcommand.toLowerCase() === "add") {
 			config[guild.id].botmasters.push(id);
-			embed.setColor(guildConfig.theme.success);
+			embed.setColor(Color.success);
 			embed.setDescription(`Added ${userOrRole} to bot masters.`);
 			await util.writeConfig(guild.id);
             return await channel.send(embed);
@@ -39,7 +39,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		if (subcommand.toLowerCase() === "remove") {
 			config[guild.id].botmasters.splice(config[guild.id].botmasters.indexOf(id));
-			embed.setColor(guildConfig.theme.success);
+			embed.setColor(Color.success);
 			embed.setDescription(`Removed ${userOrRole} from bot masters.`);
 			await util.writeConfig(guild.id);
             return await channel.send(embed);

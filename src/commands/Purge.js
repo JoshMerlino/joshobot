@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("purge", ...arguments);
+		super(["purge", "bulkdelete"], ...arguments);
 		this.register("Bulk delete messages in a channel. ❌", HelpSection.MODERATION, [{
 			argument: "Amount",
 			required: true,
@@ -23,7 +23,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		// if number is not a number
 		if (isNaN(parseInt(messages))) {
-			embed.setColor(guildConfig.theme.warn);
+			embed.setColor(Color.warn);
 			embed.addField("Description", this.description, true)
 			embed.addField("Usage", this.usage, true)
 			return await channel.send(embed);
@@ -31,7 +31,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		messages++;
 
-		embed.setColor(guildConfig.theme.success);
+		embed.setColor(Color.success);
 		embed.addField("Amount", `${messages-1} Total Messages`, true)
 
 		let numleft = messages;

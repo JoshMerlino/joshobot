@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("mute", ...arguments);
+		super(["mute", "m"], ...arguments);
 		this.register("Mute a member in this server. 🔇", HelpSection.MODERATION, [{
 			argument: "@User",
 			required: true,
@@ -30,7 +30,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		// If not enough params
 		if(user === null) {
-			embed.setColor(guildConfig.theme.warn);
+			embed.setColor(Color.warn);
 			embed.addField("Description", this.description, true)
 			embed.addField("Usage", this.usage, true)
             return await channel.send(embed);
@@ -43,7 +43,7 @@ module.exports = class Command extends require("../Command.js") {
 		const muterole = (await util.getMuteRole(guild)).id;
 
 		member.roles.add(muterole).then(async function() {
-			embed.setColor(guildConfig.theme.success);
+			embed.setColor(Color.success);
 			embed.addField("User", member.toString(), true);
 			embed.addField("Duration", duration === null ? "Indeterminatly":cms(mutetime), true);
 			reason.length > 0 && embed.addField("Reason", reason.join(" "), true);
@@ -56,7 +56,7 @@ module.exports = class Command extends require("../Command.js") {
 
 			return await channel.send(embed);
 		}).catch(async error => {
-			embed.setColor(guildConfig.theme.error);
+			embed.setColor(Color.error);
 			embed.addField("Error", error.toString(), true)
             return await channel.send(embed);
 		})

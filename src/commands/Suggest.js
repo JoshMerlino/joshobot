@@ -1,6 +1,6 @@
 module.exports = class Command extends require("../Command.js") {
 	constructor() {
-		super("suggest", ...arguments);
+		super(["suggest"], ...arguments);
 		this.register("Makes a suggestion in our Josh O' Bot support server. 😍", HelpSection.GENERAL, [{
 			argument: "Suggestion",
 			required: true,
@@ -11,7 +11,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		if(args.length === 0) {
 			return channel.send(new MessageEmbed()
-			.setColor(guildConfig.theme.warn)
+			.setColor(Color.warn)
 			.setFooter(sender.displayName, sender.user.displayAvatarURL())
 	        .setDescription(`Suggestions can not be blank.`));
 		}
@@ -19,7 +19,7 @@ module.exports = class Command extends require("../Command.js") {
 		const msg = args.join(" ");
 
 		const embed = new MessageEmbed();
-		embed.setColor(guildConfig.theme.info);
+		embed.setColor(Color.info);
 		embed.setFooter(`${sender.user.tag} • ${sender.id}`, sender.user.displayAvatarURL());
         embed.setTitle("New Suggestion!")
         embed.setDescription(msg);
@@ -31,7 +31,7 @@ module.exports = class Command extends require("../Command.js") {
         });
 
 		return channel.send(new MessageEmbed()
-		.setColor(guildConfig.theme.success)
+		.setColor(Color.success)
 		.setFooter(sender.displayName, sender.user.displayAvatarURL())
         .setDescription(`We have recieved your suggestion. Thanks for helping improve Josh O' Bot`));
 

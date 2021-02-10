@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("audit", ...arguments);
+		super(["audit", "au"], ...arguments);
 		this.register("Manage server audit logging. ℹ", HelpSection.MODERATION, [{
 			argument: "setup | disable",
 			required: true,
@@ -26,7 +26,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		// If not enough arguments, send default message
 		if (subcommand === null) {
-			embed.setColor(guildConfig.theme.warn);
+			embed.setColor(Color.warn);
 			embed.addField("Description", this.description, true)
 			embed.addField("Usage", this.usage, true)
             return await channel.send(embed);
@@ -38,7 +38,7 @@ module.exports = class Command extends require("../Command.js") {
 			config[guild.id].audit.channel = util.channel(target, guild);
 			await util.writeConfig(guild.id);
 
-			embed.setColor(guildConfig.theme.success)
+			embed.setColor(Color.success)
 			embed.addField("Status", "Audit logging enabled", true)
 			embed.addField("Channel", util.channel(target, guild).toString(), true);
 
@@ -59,7 +59,7 @@ module.exports = class Command extends require("../Command.js") {
 			config[guild.id].audit.enabled = false;
 			await util.writeConfig(guild.id);
 
-			embed.setColor(guildConfig.theme.success)
+			embed.setColor(Color.success)
 			embed.addField("Status", "Audit logging disabled", true)
 
 			await sendAudit(guild, {

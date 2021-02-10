@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("ban", ...arguments);
+		super(["ban", "banish", "b"], ...arguments);
 		this.register("Bans a member from the server. 🔨", HelpSection.MODERATION, [{
 			argument: "@User",
 			required: true,
@@ -26,7 +26,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		// If not enough params
 		if(user === null) {
-			embed.setColor(guildConfig.theme.warn);
+			embed.setColor(Color.warn);
 			embed.addField("Description", this.description, true)
 			embed.addField("Usage", this.usage, true)
             return await channel.send(embed);
@@ -37,21 +37,21 @@ module.exports = class Command extends require("../Command.js") {
 
 		// If ban target has ban permissions
 		if(util.hasPermissions(member, guildConfig, "BAN_MEMBERS")) {
-			embed.setColor(guildConfig.theme.server);
+			embed.setColor(Color.server);
 			embed.addField("Error", `${member.toString()} is not able to be banned. They most likley have equal or greater permissions than you.`, true)
             return await channel.send(embed);
 		}
 
 		member.ban({ days: 7, reason: reason.join(" ") }).then(async function() {
 
-			embed.setColor(guildConfig.theme.success);
+			embed.setColor(Color.success);
 			embed.addField("User", member.toString(), true);
 			reason.length > 0 && embed.addField("Reason", reason.join(" "), true);
 			return await channel.send(embed);
 
 		}).catch(async error => {
 
-			embed.setColor(guildConfig.theme.error);
+			embed.setColor(Color.error);
 			embed.addField("Error", error.toString().split(":")[2], true)
             return await channel.send(embed);
 

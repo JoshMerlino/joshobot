@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("color", ...arguments);
+		super(["color"], ...arguments);
 		this.register("Preview a color. 🎨", HelpSection.MISCELLANEOUS, [{
 			argument: "@User | #RRGGBB",
 			required: false,

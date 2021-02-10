@@ -1,7 +1,7 @@
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
-		super("namemc", ...arguments);
+		super(["namemc", "mc"], ...arguments);
 		this.register("Look up a Minecraft player. 🎮", HelpSection.MISCELLANEOUS, [{
 			argument: "Username",
 			required: true,
@@ -20,7 +20,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		// If no args
 		if(args.length !== 1) {
-			embed.setColor(guildConfig.theme.warn);
+			embed.setColor(Color.warn);
 			embed.addField("Description", this.description, true)
 			embed.addField("Usage", this.usage, true)
             return await channel.send(embed);
@@ -32,7 +32,7 @@ module.exports = class Command extends require("../Command.js") {
 		// If no user found
 		if(mcuser.success === false) {
 			return channel.send(new MessageEmbed()
-			.setColor(guildConfig.theme.error)
+			.setColor(Color.error)
 			.setDescription(`Minecraft user "${mcname}" was not found!`)
 			.setFooter(sender.displayName, sender.user.displayAvatarURL()))
 		}
@@ -40,7 +40,7 @@ module.exports = class Command extends require("../Command.js") {
 		// Send embed
 		embed.setURL(`https://mine.ly/${mcuser.profileId}`);
 		embed.setTitle(mcuser.currentName);
-		embed.setColor(guildConfig.theme.info);
+		embed.setColor(Color.info);
 		embed.addField("UUID", `\`${mcuser.uuid}\``);
 		embed.addField("Previous Names", mcuser.pastNames.map(({ name }) => `\`${name}\``), true);
 		embed.addField("Changed At", mcuser.pastNames.map(({ changedAt }) => `${changedAt !== null ? "`" + dayjs(changedAt).fromNow() + "`" : "__Never__"}`), true);
