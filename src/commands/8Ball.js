@@ -16,23 +16,21 @@ module.exports = class Command extends require("../Command.js") {
 
 	async onCommand({ args, sender, channel }) {
 
-		const embed = new MessageEmbed();
-		embed.setTitle("8 Ball")
-		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
+		// If no args, send usage
+		if(args.length === 0) return this.sendUsage(channel);
 
-		if (args.length === 0) {
-			embed.setColor(Color.warn);
-			embed.addField("Description", this.description, true)
-			embed.addField("Usage", this.usage, true)
-            return channel.send(embed);
-        }
-
+		// Get Q&A
 		const question = args.join(" ");
 		const answer = Texts.PROBABILITYS[Math.floor(Math.random() * Texts.PROBABILITYS.length)] + ".";
-		embed.setColor(Color.info);
-		embed.addField("Question", question, true)
-		embed.addField("Answer", answer, true)
 
+		// Formulate embed
+		const embed = new MessageEmbed();
+		embed.setTitle("8 Ball");
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
+		embed.setColor(Color.info);
+		embed.setDescription(`${sender.displayName} asks "**${question}?**" • 8 Ball says "||*${answer}*||"`, true);
+
+		// Send embed
 		await channel.send(embed);
 
 	}
