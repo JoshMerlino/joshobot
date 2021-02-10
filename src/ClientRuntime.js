@@ -6,6 +6,12 @@ module.exports = async function() {
 	// Register all enums
 	(await fs.readdir(path.join(APP_ROOT, "src", "enum"))).map(e => global[e.split(".js")[0]] = require(path.join(APP_ROOT, "src", "enum", e)));
 
+	// Convert symbols to strings for use in enums
+	Symbol.prototype.__toString = Symbol.prototype.toString;
+	Symbol.prototype.toString = function() {
+		return this.__toString().replace(/Symbol|\(|\)/gm, "");
+	}
+
 	// Initialize each guild
 	require("./UptimeManager.js")(async function(guild) {
 

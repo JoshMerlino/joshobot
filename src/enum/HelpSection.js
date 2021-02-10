@@ -1,5 +1,5 @@
 module.exports = new class HelpSection {
-	GENERAL 			= util.uuid();
-	MODERATION 			= util.uuid();
-	MISCELLANEOUS		= util.uuid();
+	GENERAL 			= Symbol("General");
+	MODERATION 			= Symbol("Moderation");
+	MISCELLANEOUS		= Symbol("Miscellaneous");
 }

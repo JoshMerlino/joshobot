@@ -42,10 +42,22 @@ module.exports = class Command {
 		global.help.push({ aliases: this.aliases, description, category, args })
 	}
 
+	// Get command usage
 	get usage() {
 		return `\`${config[this.guild_id].prefix}${this.aliases[0]}${this.args.map(({ required, argument }) => ` ${required ? "<":"("}${argument}${required ? ">":")"}`).join("")}\``;
 	}
 
+	// Send command usage
+	async sendUsage(channel) {
+		const embed = new MessageEmbed();
+		embed.setTitle("Incorrect Usage!");
+		embed.setColor(Color.warn);
+		embed.addField("Description", this.description, true)
+		embed.addField("Usage", this.usage, true)
+		return await channel.send(embed);
+	}
+
+	// Get command description
 	get description() {
 		return this.desc;
 	}
