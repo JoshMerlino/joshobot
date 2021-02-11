@@ -1,3 +1,5 @@
+const toHsl = require("hex-to-hsl");
+
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
@@ -8,7 +10,7 @@ module.exports = class Command extends require("../Command.js") {
 			"Preview a color. 🎨",
 			HelpSection.MISCELLANEOUS,
 			[{
-				argument: "@User | #RRGGBB",
+				argument: "#RRGGBB",
 				required: false,
 			}]
 		);
@@ -17,28 +19,42 @@ module.exports = class Command extends require("../Command.js") {
 	async onCommand({ args, sender, channel, guild }) {
 
 		// Parse arguments
-		const [ userorcolor ] = args;
+		const [ color = "" ] = args;
 
-		// Generate random color as fallback
-		const h = () => Math.floor(Math.random()*256).toString(16).padStart(2, "0");
-		let color = `#${h()}${h()}${h()}`;
+		// Set hex
+		let hex = null;
 
-		try {
-			// Attempt to make color the color of the pinged user
-			color = (await util.user(userorcolor, guild)).displayHexColor;
-		} catch (err) {
-			// If failed make sure the color is in hex format
-			if(args[0]) color = "#" + args[0].replace(/\#/g, "");
+		// If is a hex color
+		if(color.match(/^#?(([0-9a-fA-F]{2}){3})$/gm)) {
+			hex = color.replace(/\#/gm, "").toLowerCase();
+		}
+
+		// If is a ping of a user
+		if(color !== "" && util.user(color, guild) !== null) {
+			hex = (await util.user(color, guild)).displayHexColor.replace(/\#/gm, "");
+		}
+
+		// If is a role
+		if(color !== "" && util.role(color, guild) !== null) {
+			hex = (await util.role(color, guild)).hexColor.replace(/\#/gm, "");
+		}
+
+		// If no color create random
+		if(hex === null) {
+			const h = () => Math.floor(Math.random()*256).toString(16).padStart(2, "0");
+			hex = `${h()}${h()}${h()}`;
 		}
 
 		// Formulate embed
 		const embed = new MessageEmbed();
-		embed.setColor(color);
+		embed.setColor(Color.info);
 		embed.setTitle("Color");
-		embed.addField("Integer", `\`${parseInt(color.split("#")[1], 16)}\``, true)
-		embed.addField("Hex", `\`${color.toUpperCase()}\``, true)
-		embed.addField("RGB", `\`${parseInt(color.split("#")[1].substr(0,2), 16)}, ${parseInt(color.split("#")[1].substr(2,2), 16)}, ${parseInt(color.split("#")[1].substr(4,2), 16)}\``, true)
-		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
+		embed.setThumbnail(`https://singlecolorimage.com/get/${hex}/100x100`)
+		embed.addField("Integer", `\`${parseInt(hex, 16)}\``, true)
+		embed.addField("Hex", `\`#${hex}\``, true)
+		embed.addField("RGB", `\`rgb(${parseInt(hex.substr(0,2), 16)}, ${parseInt(hex.substr(2,2), 16)}, ${parseInt(hex.substr(4,2), 16)})\``, true)
+		embed.addField("HSL", `\`hsl(${toHsl(`#${hex}`).join(", ")})\``, true)
 		return await channel.send(embed);
 
 	}
