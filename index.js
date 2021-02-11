@@ -1,6 +1,9 @@
 // Log errors to console instead of crashing application
 process.on("uncaughtException", err => console.error("[ERROR]", err));
 
+// Set up environment
+require("dotenv").config();
+
 // Import some modules into the global scope
 global.Discord = require("discord.js");
 global.ytdl = require("ytdl-core");

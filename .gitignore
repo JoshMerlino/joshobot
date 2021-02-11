@@ -1,4 +1,4 @@
 node_modules/
 config/
-start*
 api.db
+.env
