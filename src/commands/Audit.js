@@ -9,7 +9,7 @@ module.exports = class Command extends require("../Command.js") {
 			"Manage server audit logging. ℹ",
 			HelpSection.MODERATION,
 			[{
-				argument: "setup | disable",
+				argument: "enable | disable",
 				required: true,
 			}, {
 				argument: "#Channel",
@@ -21,64 +21,82 @@ module.exports = class Command extends require("../Command.js") {
 	async onCommand({ args, sender, guildConfig, channel, guild }) {
 
 		// Make sure sender is a bot master
-		if(!util.hasPermissions(sender, guildConfig, "VIEW_AUDIT_LOG")) return await util.noPermissions(channel, sender);
+		if(!util.hasPermissions(sender, guildConfig, "VIEW_AUDIT_LOG")) return;
+
+		// If no args, send usage
+		if(args.length === 0) return this.sendUsage(channel);
 
 		// Get params
-		const [ subcommand = null, target = null ] = args;
+		const [ subcommand, target = null ] = args;
 
 		// Start formulating embed
 		const embed = new MessageEmbed();
-		embed.setTitle("Audit Log")
-		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
+		embed.setTitle("Audit Logging");
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
 
-		// If not enough arguments, send default message
-		if (subcommand === null) {
-			embed.setColor(Color.warn);
-			embed.addField("Description", this.description, true)
-			embed.addField("Usage", this.usage, true)
-            return await channel.send(embed);
+		// If enabling
+		switch(subcommand.toLowerCase()) {
+
+			// Enable
+			case "enable":
+			case "en":
+			case "e":
+
+				// If no channel
+				if(target === null) return this.sendUsage(channel);
+
+				// Get channel
+				const targetChannel = util.channel(target, guild);
+
+				// Add audit to config
+				config[guild.id].audit.enabled = true;
+				config[guild.id].audit.channel = targetChannel.id;
+
+				// Write config to disk
+				await util.writeConfig(guild.id);
+
+				// Enable auditing
+				require("../Auditing.js")(client, guild);
+
+				// Send audit
+				await sendAudit(guild, {
+					sender,
+					color: "success",
+					title: "Enabled Audit Logging",
+					desc: "Audit logging has been enabled in this channel. You will now receive messages about actions made to the server.",
+				});
+
+				// Send embed
+				embed.setColor(Color.success);
+				embed.setDescription(`Audit logging enabled in the ${targetChannel.toString()} channel!`);
+				return await channel.send(embed);
+
+			// Disable
+			case "disable":
+			case "dis":
+			case "d":
+
+				// Disable auditing
+				config[guild.id].audit.enabled = false;
+				await util.writeConfig(guild.id);
+
+				// Send audit
+				await sendAudit(guild, {
+					sender,
+					color: "error",
+					title: "Disabled Audit Logging",
+					desc: "This channel will no longer receive messages about actions made to the server.",
+				});
+
+				// Send embed
+				embed.setColor(Color.severe);
+				embed.setDescription(`Audit logging disabled!`);
+				return await channel.send(embed);
+
 		}
 
-		if (subcommand.toLowerCase() === "setup") {
-
-			config[guild.id].audit.enabled = true;
-			config[guild.id].audit.channel = util.channel(target, guild);
-			await util.writeConfig(guild.id);
-
-			embed.setColor(Color.success)
-			embed.addField("Status", "Audit logging enabled", true)
-			embed.addField("Channel", util.channel(target, guild).toString(), true);
-
-			await sendAudit(guild, {
-				sender,
-				color: "success",
-				title: "Enabled Audit Logging",
-				desc: "Audit logging has been enabled in this channel. You will now receive a message about actions made to the server.",
-			})
-
-			require("../Auditing.js")(client, guild);
-			return await channel.send(embed);
-
-		}
-
-		if (subcommand.toLowerCase() === "disable") {
-
-			config[guild.id].audit.enabled = false;
-			await util.writeConfig(guild.id);
-
-			embed.setColor(Color.success)
-			embed.addField("Status", "Audit logging disabled", true)
-
-			await sendAudit(guild, {
-				sender,
-				color: "error",
-				title: "Disabled Audit Logging",
-				desc: "This channel will no longer receive messages about actions made to the server.",
-			});
-
-			return await channel.send(embed);
-
-		}
+		// If unknown sub-arg
+		return this.sendUsage(channel);
 
 	}
 
