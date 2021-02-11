@@ -16,15 +16,16 @@ module.exports = class Command extends require("../Command.js") {
 
 	async onCommand({ args, sender, channel, guild }) {
 
+		// Get user
 		const user = util.user(args[0] || sender, guild);
 
+		// Send embed
 		const embed = new MessageEmbed();
 		embed.setColor(Color.info);
 		embed.setTitle(`${user.displayName}'s avatar`);
-		embed.setImage(user.user.displayAvatarURL())
-		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
-
-		await channel.send(embed);
+		embed.setImage(user.user.displayAvatarURL({ size: 2048 }))
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
+		return await channel.send(embed);
 
 	}
 
