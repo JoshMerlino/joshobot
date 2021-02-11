@@ -24,8 +24,13 @@ module.exports = class Command extends require("../Command.js") {
 		// Parse arguments
 		const [ query ] = args;
 
+		// Show typing
+		channel.startTyping();
+
 		// Look up ip address
-		const details = await fetch(`https://joshm.us.to/api/iputils/v1/lookup?query=${query}`).then(resp => resp.json());
+		const details = await fetch(`http://joshm.us.to/api/iputils/v1/lookup?query=${query}`)
+		  .then(resp => resp.json())
+		  .finally(() => channel.stopTyping());
 
 		// Formulate embed
 		const embed = new MessageEmbed();

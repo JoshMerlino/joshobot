@@ -21,6 +21,7 @@ module.exports = class Command extends require("../Command.js") {
 		// convert args to term
 		const term = args.join(" ");
 
+		// Show typing
 		channel.startTyping();
 
 		// Get images from bing
@@ -30,7 +31,9 @@ module.exports = class Command extends require("../Command.js") {
 		        "x-rapidapi-key": process.env.RAPID_API_KEY,
 		        useQueryString: true
 		    }
-		}).then(resp => resp.json());
+		})
+		  .then(resp => resp.json())
+		  .finally(() => channel.stopTyping())
 
 		channel.stopTyping();
 
