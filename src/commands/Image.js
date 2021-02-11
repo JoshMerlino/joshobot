@@ -31,11 +31,8 @@ module.exports = class Command extends require("../Command.js") {
 		        "x-rapidapi-key": process.env.RAPID_API_KEY,
 		        useQueryString: true
 		    }
-		})
-		  .then(resp => resp.json())
+		}).then(resp => resp.json())
 		  .finally(() => channel.stopTyping())
-
-		channel.stopTyping();
 
 		// Pick a random image from search
 		const image = value[Math.floor(Math.random() * value.length)];
