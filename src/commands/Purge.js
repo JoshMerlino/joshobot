@@ -26,7 +26,7 @@ module.exports = class Command extends require("../Command.js") {
 		// Start formulating embed
 		const embed = new MessageEmbed();
 		embed.setTitle("Purge Messages")
-		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
 
 		// if number is not a number
 		if (isNaN(parseInt(messages))) {

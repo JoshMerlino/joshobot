@@ -23,7 +23,7 @@ module.exports = class Command extends require("../Command.js") {
 		// Set embed constants
 		const embed = new MessageEmbed();
 		embed.setTitle("Minecraft Account Lookup")
-		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
 
 		// If no args
 		if(args.length !== 1) {
@@ -52,7 +52,7 @@ module.exports = class Command extends require("../Command.js") {
 		embed.addField("Previous Names", mcuser.pastNames.map(({ name }) => `\`${name}\``), true);
 		embed.addField("Changed At", mcuser.pastNames.map(({ changedAt }) => `${changedAt !== null ? "`" + dayjs(changedAt).fromNow() + "`" : "__Never__"}`), true);
 		embed.setThumbnail(mcuser.imageUrls.head);
-		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
 		return channel.send(embed)
 
 	}

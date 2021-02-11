@@ -13,7 +13,7 @@ module.exports = class Command extends require("../Command.js") {
 	async onCommand({ sender, channel }) {
 
 		const embed = new MessageEmbed();
-		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
 		embed.setColor(Color.info);
 		embed.setTitle("Roast");
 		embed.setDescription(Texts.ROASTS[Math.floor(Math.random() * Texts.ROASTS.length)]);

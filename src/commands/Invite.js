@@ -22,7 +22,7 @@ module.exports = class Command extends require("../Command.js") {
 		embed.setURL(link)
 		embed.setDescription(`Invite ${client.user.toString()} to your server for epic\nmoderation tools and other fun goodies! 😎`)
 		embed.setThumbnail(client.user.displayAvatarURL());
-		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
 		channel.send(embed)
 
 	}

@@ -58,7 +58,7 @@ module.exports = class Command extends require("../Command.js") {
 				let definitions = [];
 				list.splice(0,3).map(({ definition }) => definitions.push(definition));
 				embed.setDescription(definitions.join("\n\n").replace(/\[|\]/g, "_"));
-				embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
+				embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
 
 				if (!error) {
 

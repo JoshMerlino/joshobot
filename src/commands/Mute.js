@@ -33,7 +33,7 @@ module.exports = class Command extends require("../Command.js") {
 		// Start formulating embed
 		const embed = new MessageEmbed();
 		embed.setTitle("Mute")
-		embed.setFooter(sender.displayName, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
 
 		// If not enough params
 		if(user === null) {
