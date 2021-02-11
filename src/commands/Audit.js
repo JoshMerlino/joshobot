@@ -34,7 +34,7 @@ module.exports = class Command extends require("../Command.js") {
 		embed.setTitle("Audit Logging");
 		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
 
-		// If enabling
+		// Switch subcommand
 		switch(subcommand.toLowerCase()) {
 
 			// Enable
