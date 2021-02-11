@@ -61,9 +61,7 @@ module.exports = class Command extends require("../Command.js") {
 			embed.setColor(Color.error);
 			embed.setDescription(error.toString().split(":")[2]);
 
-		}).finally(async () => {
-			await channel.send(embed);
-		})
+		}).finally(async () => await channel.send(embed))
 
 	}
 
