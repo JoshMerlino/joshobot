@@ -28,11 +28,7 @@ module.exports = {
 	},
 
 	role(role, guild) {
-		if(role.match(/<@&([0-9]*)>/g)) {
-			return guild.roles.fetch(role.replace(/[\\<>@#&!]/g, ""));
-		} else {
-			return guild.roles.fetch(Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name.toLowerCase().replace(/\s/g, "-") === role.toLowerCase())[0].id)
-		}
+		return role.match(/<@&([0-9]*)>/g) ? guild.roles.fetch(role.replace(/[\\<>@#&!]/g, "")) : guild.roles.fetch(Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name.toLowerCase().replace(/\s/g, "-") === role.toLowerCase())[0].id)
 	},
 
 	arrayDiff(arr1, arr2) {
@@ -44,6 +40,7 @@ module.exports = {
 	},
 
 	async getMuteRole(guild) {
+
 		// Find a mute role or generate one if one wasnt found
 		let muterole = config[guild.id].commands["mute"].muterole;
 		if(!Object.keys(util.parseCollection(guild.roles.cache)).includes(muterole)) muterole = null
@@ -67,10 +64,7 @@ module.exports = {
 		});
 
 		return role;
-	},
 
-	async noPermissions(channel, sender) {
-		// Dont say anything if no perms
-	}
+	},
 
 }
