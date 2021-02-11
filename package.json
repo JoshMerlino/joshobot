@@ -4,7 +4,8 @@
     "description": "The best Discord bot around",
     "main": "index.js",
     "scripts": {
-        "start": "node ."
+        "start": "node .",
+        "dev": "./node_modules/.bin/nodemon --unhandled-rejections=strict --trace-uncaught --trace-warnings ."
     },
     "repository": {
         "type": "git",
