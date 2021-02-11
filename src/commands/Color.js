@@ -30,12 +30,12 @@ module.exports = class Command extends require("../Command.js") {
 		}
 
 		// If is a ping of a user
-		if(color !== "" && util.user(color, guild) !== null) {
+		if(hex === null && color !== "" && util.user(color, guild) !== null) {
 			hex = (await util.user(color, guild)).displayHexColor.replace(/\#/gm, "");
 		}
 
 		// If is a role
-		if(color !== "" && util.role(color, guild) !== null) {
+		if(hex === null && color !== "" && util.role(color, guild) !== null) {
 			hex = (await util.role(color, guild)).hexColor.replace(/\#/gm, "");
 		}
 
