@@ -21,7 +21,7 @@ module.exports = class Command extends require("../Command.js") {
 		);
 	}
 
-	async onCommand({ args, sender, guildConfig, channel, guild, message }) {
+	async onCommand({ args, sender, guildConfig, channel, guild }) {
 
 		// Make sure sender is a bot master
 		if(!util.hasPermissions(sender, guildConfig, "MANAGE_CHANNELS")) return;
