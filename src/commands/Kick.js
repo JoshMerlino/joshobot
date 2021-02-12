@@ -24,7 +24,7 @@ module.exports = class Command extends require("../Command.js") {
 		if(!util.hasPermissions(sender, guildConfig, "KICK_MEMBERS")) return;
 
 		// If not enough args
-		if(args.length < 1) return this.sendUsage(channel);
+		if(args.length < 1) return await this.sendUsage(channel);
 
 		// Get arguments
 		const [ user, ...reason ] = args;
@@ -45,10 +45,10 @@ module.exports = class Command extends require("../Command.js") {
 		}
 
 		// Ban member
-		member.ban(reason.join(" ")).then(async function() {
+		member.ban(reason.join(" ")).then(function() {
 			embed.setColor(Color.success);
 			embed.setDescription(`Kicked ${member.toString()}${reason.length > 0 ? " for ":""}${reason.join(" ")}`);
-		}).catch(async error => {
+		}).catch(error => {
 			embed.setColor(Color.error);
 			embed.setDescription(`${member.toString()} is not able to be kicked.\n${error.toString().split(":")[2]}`);
 		}).finally(async () =>  await channel.send(embed));

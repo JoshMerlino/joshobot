@@ -17,7 +17,7 @@ module.exports = class Command extends require("../Command.js") {
 	async onCommand({ args, sender, channel }) {
 
 		// If no args, send usage
-		if(args.length === 0) return this.sendUsage(channel);
+		if(args.length === 0) return await this.sendUsage(channel);
 
 		// Get Q&A
 		const question = args.join(" ");

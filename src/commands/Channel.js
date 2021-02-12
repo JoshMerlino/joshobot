@@ -27,7 +27,7 @@ module.exports = class Command extends require("../Command.js") {
 		if(!util.hasPermissions(sender, guildConfig, "MANAGE_CHANNELS")) return;
 
 		// If not enough args
-		if(args.length < 1) return this.sendUsage(channel);
+		if(args.length < 1) return await this.sendUsage(channel);
 
 		// Get params
 		let [ subcommand, ch, name = null ] = args;
@@ -87,7 +87,7 @@ module.exports = class Command extends require("../Command.js") {
 			case "rn":
 
 				// If no new name
-				if(name === null) return this.sendUsage(channel);
+				if(name === null) return await this.sendUsage(channel);
 
 				// If no channel use current channel
 				ch = util.channel(ch, guild);
@@ -187,7 +187,7 @@ module.exports = class Command extends require("../Command.js") {
 		}
 
 		// Send usage if invalid subcommand
-		return this.sendUsage(channel);
+		return await this.sendUsage(channel);
 
 	}
 

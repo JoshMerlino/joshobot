@@ -31,6 +31,11 @@ module.exports = {
 		return role.match(/<@&([0-9]*)>/g) ? guild.roles.fetch(role.replace(/[\\<>@#&!]/g, "")) : guild.roles.fetch(Object.values(util.parseCollection(guild.roles.cache)).filter(r => r.name.toLowerCase().replace(/\s/g, "-") === role.toLowerCase())[0].id)
 	},
 
+	ts(timestamp) {
+		const time = dayjs(timestamp);
+		return `${time.format("MMMM DD, YYYY")}`
+	},
+
 	arrayDiff(arr1, arr2) {
 		return arr1.concat(arr2).filter(val => !(arr1.includes(val) && arr2.includes(val)));
 	},

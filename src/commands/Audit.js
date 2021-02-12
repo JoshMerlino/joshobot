@@ -24,7 +24,7 @@ module.exports = class Command extends require("../Command.js") {
 		if(!util.hasPermissions(sender, guildConfig, "VIEW_AUDIT_LOG")) return;
 
 		// If no args, send usage
-		if(args.length === 0) return this.sendUsage(channel);
+		if(args.length === 0) return await this.sendUsage(channel);
 
 		// Get params
 		const [ subcommand, target = null ] = args;
@@ -43,7 +43,7 @@ module.exports = class Command extends require("../Command.js") {
 			case "e":
 
 				// If no channel
-				if(target === null) return this.sendUsage(channel);
+				if(target === null) return await this.sendUsage(channel);
 
 				// Get channel
 				const targetChannel = util.channel(target, guild);
@@ -96,7 +96,7 @@ module.exports = class Command extends require("../Command.js") {
 		}
 
 		// If unknown sub-arg
-		return this.sendUsage(channel);
+		return await this.sendUsage(channel);
 
 	}
 

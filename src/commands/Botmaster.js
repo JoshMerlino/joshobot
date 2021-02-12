@@ -24,7 +24,7 @@ module.exports = class Command extends require("../Command.js") {
 		if(!util.hasPermissions(sender, guildConfig, "MANAGE_ROLES")) return;
 
 		// If not enough params
-		if(args.length < 2) return this.sendUsage(channel);
+		if(args.length < 2) return await this.sendUsage(channel);
 
 		// Get params
 		const [ subcommand, userOrRole ] = args;
@@ -85,7 +85,7 @@ module.exports = class Command extends require("../Command.js") {
 		};
 
 		// If unknown subcommand
-		return this.sendUsage(channel);
+		return await this.sendUsage(channel);
 
 	}
 

@@ -17,31 +17,30 @@ module.exports = class Command extends require("../Command.js") {
 
 	async onCommand({ args, sender, channel }) {
 
+		// If no args
+		if(args.length < 1) return await this.sendUsage(channel);
+
 		// Get arguments
 		const [ mcname ] = args;
 
-		// Set embed constants
-		const embed = new MessageEmbed();
-		embed.setTitle("Minecraft Account Lookup")
-		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
-
-		// If no args
-		if(args.length !== 1) {
-			embed.setColor(Color.warn);
-			embed.addField("Description", this.description, true)
-			embed.addField("Usage", this.usage, true)
-            return await channel.send(embed);
-		}
+		// Start typing
+		channel.startTyping();
 
 		// Lookup user
-		const mcuser = await fetch(`https://joshm.us.to/api/namemc/v1/lookup?query=${mcname}`).then(resp => resp.json());
+		const mcuser = await fetch(`https://joshm.us.to/api/namemc/v1/lookup?query=${mcname}`)
+		  .then(resp => resp.json())
+		  .finally(() => channel.stopTyping());
+
+		// Set up embed
+		const embed = new MessageEmbed();
+		embed.setTitle("Name MC Lookup")
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
 
 		// If no user found
 		if(mcuser.success === false) {
-			return channel.send(new MessageEmbed()
-			.setColor(Color.error)
-			.setDescription(`Minecraft user "${mcname}" was not found!`)
-			.setFooter(sender.displayName, sender.user.displayAvatarURL()))
+			embed.setColor(Color.error)
+			embed.setDescription(mcuser.error)
+			return await channel.send(embed)
 		}
 
 		// Send embed
@@ -50,10 +49,9 @@ module.exports = class Command extends require("../Command.js") {
 		embed.setColor(Color.info);
 		embed.addField("UUID", `\`${mcuser.uuid}\``);
 		embed.addField("Previous Names", mcuser.pastNames.map(({ name }) => `\`${name}\``), true);
-		embed.addField("Changed At", mcuser.pastNames.map(({ changedAt }) => `${changedAt !== null ? "`" + dayjs(changedAt).fromNow() + "`" : "__Never__"}`), true);
+		embed.addField("Changed At", mcuser.pastNames.map(({ changedAt }) => `${changedAt !== null ? util.ts(changedAt) : "*Never*"}`), true);
 		embed.setThumbnail(mcuser.imageUrls.head);
-		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
-		return channel.send(embed)
+		return await channel.send(embed)
 
 	}
 

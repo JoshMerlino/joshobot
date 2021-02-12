@@ -25,7 +25,7 @@ module.exports = class Command extends require("../Command.js") {
 		if(!util.hasPermissions(sender, guildConfig, "BAN_MEMBERS")) return;
 
 		// If not enough args
-		if(args.length < 1) return this.sendUsage(channel);
+		if(args.length < 1) return await this.sendUsage(channel);
 
 		// Get params
 		const [ user, ...reason ] = args;

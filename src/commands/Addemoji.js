@@ -24,7 +24,7 @@ module.exports = class Command extends require("../Command.js") {
 		if(!util.hasPermissions(sender, guildConfig, "MANAGE_EMOJIS")) return;
 
 		// If no args, send usage
-		if(args.length === 0) return this.sendUsage(channel);
+		if(args.length === 0) return await this.sendUsage(channel);
 
 		// Get params
 		let [ name = null, link = null ] = args;

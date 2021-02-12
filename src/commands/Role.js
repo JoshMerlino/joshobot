@@ -31,7 +31,7 @@ module.exports = class Command extends require("../Command.js") {
 				return channel.send(new MessageEmbed()
 				.setColor(Color.warn)
 				.setDescription(`Usage:\n\`${root} <add|remove|create|delete> <role> <@user | #color>\``)
-				.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+				.setFooter(sender.user.tag, sender.user.displayAvatarURL()));
 			} else {
 
 				if (subcommand.toLowerCase() === "add") {
@@ -43,12 +43,12 @@ module.exports = class Command extends require("../Command.js") {
 						channel.send(new MessageEmbed()
 						.setColor(Color.success)
 						.setDescription(`Added <@&${roleid}> to <@!${userid}>`)
-						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+						.setFooter(sender.user.tag, sender.user.displayAvatarURL()));
 					}).catch(function() {
 						channel.send(new MessageEmbed()
 						.setColor(Color.error)
 						.setDescription(`Missing Permissions.\nIs the ${guild.member(client.user).roles.highest.toString()} role higher than <@&${roleid}> role?`)
-						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+						.setFooter(sender.user.tag, sender.user.displayAvatarURL()));
 					})
 
 				} else if (subcommand.toLowerCase() === "remove") {
@@ -60,12 +60,12 @@ module.exports = class Command extends require("../Command.js") {
 						channel.send(new MessageEmbed()
 						.setColor(Color.success)
 						.setDescription(`Removed <@&${roleid}> from <@!${userid}>`)
-						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+						.setFooter(sender.user.tag, sender.user.displayAvatarURL()));
 					}).catch(function() {
 						channel.send(new MessageEmbed()
 						.setColor(Color.error)
 						.setDescription(`Missing Permissions.\nIs the ${guild.member(client.user).roles.highest.toString()} role higher than <@&${roleid}> role?`)
-						.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+						.setFooter(sender.user.tag, sender.user.displayAvatarURL()));
 					})
 
 				} else if (subcommand.toLowerCase() === "create") {
@@ -80,7 +80,7 @@ module.exports = class Command extends require("../Command.js") {
 					channel.send(new MessageEmbed()
 					.setColor(Color.success)
 					.setDescription(`Created role \`${args[1]}\`.`)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+					.setFooter(sender.user.tag, sender.user.displayAvatarURL()));
 
 				} else if (subcommand.toLowerCase() === "delete") {
 
@@ -90,7 +90,7 @@ module.exports = class Command extends require("../Command.js") {
 					channel.send(new MessageEmbed()
 					.setColor(Color.success)
 					.setDescription(`Deleted role \`${specimin.name}\`.`)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+					.setFooter(sender.user.tag, sender.user.displayAvatarURL()));
 
 					await specimin.delete();
 
@@ -98,7 +98,7 @@ module.exports = class Command extends require("../Command.js") {
 					return channel.send(new MessageEmbed()
 					.setColor(Color.warn)
 					.setDescription(`Usage:\n\`${root} <add|remove|create|delete> <role> <@user | #color>\``)
-					.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+					.setFooter(sender.user.tag, sender.user.displayAvatarURL()));
 				}
 			}
 
@@ -106,7 +106,7 @@ module.exports = class Command extends require("../Command.js") {
 			return channel.send(new MessageEmbed()
 			.setColor(Color.error)
 			.setDescription(`You my friend, are not a bot master.`)
-			.setFooter(sender.displayName, sender.user.displayAvatarURL()));
+			.setFooter(sender.user.tag, sender.user.displayAvatarURL()));
 		}
 
 	}
