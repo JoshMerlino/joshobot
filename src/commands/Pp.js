@@ -18,15 +18,21 @@ module.exports = class Command extends require("../Command.js") {
 
 	async onCommand({ args, sender, channel, guild }) {
 
+		// Get user from arguments
 		const user = guild.member(args.length > 0 ? args[0].replace(/[\\<>@#&!]/g, "") : sender.id);
-		const size = Math.max(3, parseInt(user.user.id.substr(2, 2)) * 0.18 % 10);
 
+		// Calculate size
+		let size = Math.sqrt(parseInt(user.user.id) % 10000);
+			size = size / 10;
+			size = Math.min(size, size % 9);
+
+		// Send embed
 		const embed = new MessageEmbed();
 		embed.setColor(Color.info);
 		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
 		embed.setTitle(`${user.displayName}'s PP Size`);
 		embed.setDescription(`Estimated Size: **${Math.floor(size*10)/10}in**\n${ppbottom}${ new Array(Math.max(Math.floor(size - 2), 0)).fill(ppmiddle).join("") }${pphead}`);
-		channel.send(embed);
+		return await channel.send(embed);
 
 	}
 
