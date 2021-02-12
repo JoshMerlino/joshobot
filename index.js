@@ -1,6 +1,3 @@
-// Log errors to console instead of crashing application
-process.on("uncaughtException", err => console.error("[ERROR]", err));
-
 // Set up environment
 require("dotenv").config();
 
@@ -17,6 +14,13 @@ global.dayjs = require("dayjs");
 global.ms = require("ms");
 global.cms = require("pretty-ms");
 global.fs = require("fs").promises;
+global.chalk = require("chalk");
+
+// Add methods to console
+require("./console.js");
+
+// Log errors to console instead of crashing application
+process.on("uncaughtException", console.error);
 
 // Load dayjs plugins
 dayjs.extend(require("dayjs/plugin/relativeTime"));
