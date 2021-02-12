@@ -24,7 +24,7 @@ module.exports = class Command extends require("../Command.js") {
 		embed.setColor(Color.info);
 		embed.setTitle(`${user.displayName}'s avatar`);
 		embed.setImage(user.user.displayAvatarURL({ size: 2048 }))
-		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
 		return await channel.send(embed);
 
 	}

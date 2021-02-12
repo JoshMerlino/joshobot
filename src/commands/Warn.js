@@ -33,7 +33,7 @@ module.exports = class Command extends require("../Command.js") {
 				channel.send(new MessageEmbed()
 				.setColor(Color.severe)
 				.setDescription(`User <@!${userid}> has been warned. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}\nThis is their ${ordinalize(persistance.filter(p => p.specimen === userid).length)} warning in the last 24 hours!`)
-				.setFooter(sender.user.tag, sender.user.displayAvatarURL()));
+				.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp());
 
 				config[guild.id].commands.warn.persistance = persistance;
 				await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
@@ -42,13 +42,13 @@ module.exports = class Command extends require("../Command.js") {
 				return channel.send(new MessageEmbed()
 				.setColor(Color.warn)
 				.setDescription(`Usage:\n\`${root} <@user> [reason]\``)
-				.setFooter(sender.user.tag, sender.user.displayAvatarURL()));
+				.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp());
 			}
 		} else {
 			return channel.send(new MessageEmbed()
 			.setColor(Color.error)
 			.setDescription(`You my friend, are not a bot master.`)
-			.setFooter(sender.user.tag, sender.user.displayAvatarURL()));
+			.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp());
 		}
 
 	}

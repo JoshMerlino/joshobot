@@ -2,7 +2,9 @@ module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
 		super([
-			"poll"
+			"poll",
+			"sug",
+			"suggest"
 		], ...arguments);
 		this.register(
 			"Creates a poll. ❎",
@@ -16,18 +18,23 @@ module.exports = class Command extends require("../Command.js") {
 
 	async onCommand({ args, sender, channel }) {
 
+		// If no args
+		if(args.length === 0) return await this.sendUsage(channel);
+
+		// Get message
 		const msg = args.join(" ");
 
+		// Set up embed
 		const embed = new MessageEmbed();
 		embed.setColor(Color.info);
-		embed.setAuthor(sender.displayName, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
 		embed.setTitle(`${sender.displayName} Created a Poll`);
-		embed.addField("Poll", msg);
+		embed.setDescription(msg);
 
-		channel.send(embed).then(async m => {
-            await m.react("✅");
-            await m.react("❌");
-        });
+		// Add reactions
+		const poll = await channel.send(embed)
+        await poll.react("👍");
+        await poll.react("👎");
 
 	}
 

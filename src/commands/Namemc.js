@@ -34,7 +34,7 @@ module.exports = class Command extends require("../Command.js") {
 		// Set up embed
 		const embed = new MessageEmbed();
 		embed.setTitle("Name MC Lookup")
-		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
 
 		// If no user found
 		if(mcuser.success === false) {

@@ -41,7 +41,7 @@ module.exports = class Command extends require("../Command.js") {
 		const embed = new MessageEmbed();
 		embed.setTitle(`Image Search for "${term}"`);
 		embed.setDescription(image.name)
-		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL())
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp()
 		embed.setColor(`#${image.accentColor}`);
 		embed.setImage(image.contentUrl);
 		return await channel.send(embed);

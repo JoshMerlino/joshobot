@@ -31,7 +31,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		// Start formulating embed
 		const embed = new MessageEmbed();
-		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
 
 		// If no link, get previous message image
 		if(link === null) {

@@ -41,7 +41,7 @@ module.exports = class Command extends require("../Command.js") {
         }
 
 		const embed = new MessageEmbed();
-		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
 
 		embed.setThumbnail(user.avatarURL({ format: "png", dynamic: true, size: 128 }))
 		embed.setColor(color)

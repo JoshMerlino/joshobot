@@ -87,7 +87,7 @@ module.exports = class Command extends require("../Command.js") {
 		// Formulate embed
 		const embed = new MessageEmbed();
 		embed.setColor(Color.info);
-		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
 
 		// Makesure subreddit is specified
 		if(args.length !== 1) {

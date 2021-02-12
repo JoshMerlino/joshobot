@@ -20,7 +20,7 @@ module.exports = class Command extends require("../Command.js") {
 		const embed = new MessageEmbed();
 		embed.setTitle("Advice");
 		embed.setColor(Color.info);
-		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
 		embed.setDescription(`**A word from the wise** • "||${advice}||"`);
 
 		// Send embed

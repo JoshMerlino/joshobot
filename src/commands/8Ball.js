@@ -26,7 +26,7 @@ module.exports = class Command extends require("../Command.js") {
 		// Formulate embed
 		const embed = new MessageEmbed();
 		embed.setTitle("8 Ball");
-		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
 		embed.setColor(Color.info);
 		embed.setDescription(`${sender.displayName} asks "**${question}?**" • 8 Ball says "||*${answer}*||"`, true);
 

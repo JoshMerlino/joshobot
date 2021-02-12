@@ -35,7 +35,7 @@ module.exports = class Command extends require("../Command.js") {
 		// Start formulating embed
 		const embed = new MessageEmbed();
 		embed.setTitle("Channel");
-		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
 
 		// Switch subcommand
 		switch(subcommand.toLowerCase()) {

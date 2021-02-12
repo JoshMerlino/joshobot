@@ -32,7 +32,7 @@ module.exports = class Command extends require("../Command.js") {
 		// Start formulating embed
 		const embed = new MessageEmbed();
 		embed.setTitle("Kick")
-		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
 
 		// get guild member
 		const member = util.user(user, guild);

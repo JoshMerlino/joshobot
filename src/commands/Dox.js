@@ -35,7 +35,7 @@ module.exports = class Command extends require("../Command.js") {
 		// Formulate embed
 		const embed = new MessageEmbed();
 		embed.setTitle(`Geolocation for: ${query}`);
-		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
 
 		// If bad request
 		if(details.success === false) {

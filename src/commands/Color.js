@@ -49,7 +49,7 @@ module.exports = class Command extends require("../Command.js") {
 		const embed = new MessageEmbed();
 		embed.setColor(Color.info);
 		embed.setTitle("Color");
-		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
 		embed.setThumbnail(`https://singlecolorimage.com/get/${hex}/100x100`)
 		embed.addField("Integer", `\`${parseInt(hex, 16)}\``, true)
 		embed.addField("Hex", `\`#${hex}\``, true)

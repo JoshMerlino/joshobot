@@ -18,7 +18,7 @@ module.exports = class Command extends require("../Command.js") {
 		if(args.length === 0) {
 			return channel.send(new MessageEmbed()
 			.setColor(Color.warn)
-			.setFooter(sender.user.tag, sender.user.displayAvatarURL())
+			.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp()
 	        .setDescription(`Suggestions can not be blank.`));
 		}
 
@@ -38,7 +38,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		return channel.send(new MessageEmbed()
 		.setColor(Color.success)
-		.setFooter(sender.user.tag, sender.user.displayAvatarURL())
+		.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp()
         .setDescription(`We have recieved your suggestion. Thanks for helping improve Josh O' Bot`));
 
 	}

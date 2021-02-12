@@ -38,7 +38,7 @@ module.exports = class Command extends require("../Command.js") {
 		// Start formulating embed
 		const embed = new MessageEmbed();
 		embed.setTitle("Mute")
-		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL());
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
 
 		// Get member
 		const member = util.user(user, guild);
