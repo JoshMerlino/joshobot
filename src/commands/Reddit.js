@@ -14,7 +14,7 @@ module.exports = class Command extends require("../Command.js") {
 		);
 	}
 
-	async onCommand({ args, sender, channel }) {
+	async onCommand({ args, sender, channel, guildConfig }) {
 
 		// Formulate embed
 		const embed = new MessageEmbed();
@@ -59,7 +59,7 @@ module.exports = class Command extends require("../Command.js") {
 		// Ensure NSFW only is posted in NSFW channels
 		if(data.over_18 && !channel.nsfw) {
 			embed.setColor(Color.error);
-			embed.setDescription(`This subreddit contains NSFW content.\nTo make this an NSFW channel do \`?ch nsfw\``);
+			embed.setDescription(`This subreddit contains NSFW content.\nTo make this an NSFW channel do \`${guildConfig.prefix}ch nsfw\``);
 		} else {
 			embed.setAuthor(`u/${data.author} • r/${data.subreddit}`, author.data.icon_img.split("?")[0]);
 			embed.setDescription(data.title);

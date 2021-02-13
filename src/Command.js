@@ -71,7 +71,7 @@ module.exports = class Command {
 
 	// Get command usage
 	get usage() {
-		return `\`${config[this.guild_id].prefix}${this.aliases[0]}${this.args.map(({ required, argument }) => ` ${required ? "<":"("}${argument}${required ? ">":")"}`).join("")}\``;
+		return `${config[this.guild_id].prefix}${this.aliases[0]}${this.args.map(({ required, argument }) => ` ${required ? "<":"("}${argument}${required ? ">":")"}`).join("")}`;
 	}
 
 	// Get command description
@@ -84,8 +84,9 @@ module.exports = class Command {
 		const embed = new MessageEmbed();
 		embed.setTitle("Incorrect Usage!");
 		embed.setColor(Color.warn);
-		embed.addField("Description", this.description, true)
-		embed.addField("Usage", this.usage, true)
+		embed.addField("Aliases", this.aliases.map(a => `\`${config[this.guild_id].prefix}${a}\``).join(", "), true);
+		embed.addField("Description", this.description, true);
+		embed.addField("Usage", `\`\`\`${this.usage}\`\`\``);
 		return await channel.send(embed);
 	}
 

@@ -9,7 +9,7 @@ module.exports = class Command extends require("../Command.js") {
 			"Manages server channels. #️⃣",
 			HelpSection.MODERATION,
 			[{
-				argument: "add | remove | lock | softlock | rename | nsfw | unlock",
+				argument: "add, a, create | remove, rm, d, del, delete | lock, lockdown, l | softlock, sl | rename, rn, name | nsfw, togglensfw | unlock, unsoftlock, ul, usl",
 				required: true,
 			}, {
 				argument: "Channel | #Channel",
