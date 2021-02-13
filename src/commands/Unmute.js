@@ -20,23 +20,18 @@ module.exports = class Command extends require("../Command.js") {
 	async onCommand({ args, sender, guildConfig, channel, guild }) {
 
 		// Make sure sender is a bot master
-		if(!util.hasPermissions(sender, guildConfig, "MANAGE_ROLES")) return await util.noPermission(channel, sender);
+		if(!util.hasPermissions(sender, guildConfig, "MANAGE_ROLES")) return;
+
+		// If not enough args
+		if(args.length < 1) return await this.sendUsage(channel);
 
 		// Get arguments
-		const [ user = null ] = args;
+		const [ user ] = args;
 
 		// Start formulating embed
 		const embed = new MessageEmbed();
 		embed.setTitle("Unmute")
 		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
-
-		// If not enough params
-		if(user === null) {
-			embed.setColor(Color.warn);
-			embed.addField("Description", this.description, true)
-			embed.addField("Usage", this.usage, true)
-            return await channel.send(embed);
-		}
 
 		// get guild member
 		const member = util.user(user, guild);
@@ -44,11 +39,25 @@ module.exports = class Command extends require("../Command.js") {
 		// Get mute role
 		const muterole = (await util.getMuteRole(guild)).id;
 
-		// Remove muterole
-		member.roles.remove(muterole);
+		// If member is muted
+		if(Object.keys(util.parseCollection(member.roles.cache)).includes(muterole)) {
 
-		embed.setColor(Color.success);
-		embed.addField("User", member.toString(), true);
+			// Remove muterole
+			await member.roles.remove(muterole);
+
+			// Configure embed
+			embed.setColor(Color.success);
+			embed.setDescription(`${member.toString()} is no longer muted.`);
+
+		} else {
+
+			// Configure embed
+			embed.setColor(Color.error);
+			embed.setDescription(`${member.toString()} is not muted.`);
+
+		}
+
+		// Send embed
 		return await channel.send(embed);
 
 	}
