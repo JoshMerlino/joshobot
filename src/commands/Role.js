@@ -8,106 +8,150 @@ module.exports = class Command extends require("../Command.js") {
 			"Manage server roles. 🧻",
 			HelpSection.MODERATION,
 			[{
-				argument: "add | create | delete | remove",
+				argument: "add, give, a | create, new | delete, del, d | remove, take, r",
 				required: true,
 			}, {
 				argument: "Role | @Role",
 				required: true,
 			}, {
-				argument: "@User",
+				argument: "@User | #RRGGBB",
 				required: false,
 			}]
 		);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild }) {
-
-		const [ subcommand = "", role = "", user = null ] = args;
+	async onCommand({ args, sender, guildConfig, channel, guild }) {
 
 		// Make sure sender is a bot master
-		if(util.hasPermissions(sender, guildConfig, "MANAGE_ROLES")) {
+		if(!util.hasPermissions(sender, guildConfig, "MANAGE_ROLES")) return;
 
-			if(role === "" || subcommand === "") {
-				return channel.send(new MessageEmbed()
-				.setColor(Color.warn)
-				.setDescription(`Usage:\n\`${root} <add|remove|create|delete> <role> <@user | #color>\``)
-				.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp());
-			} else {
+		// If not enough args
+		if(args.length < 1) return await this.sendUsage(channel);
 
-				if (subcommand.toLowerCase() === "add") {
+		// Get params
+		let [ subcommand, name = null ] = args;
 
-					const roleid = (await util.role(role, guild)).id;
-					const userid = user.replace(/[\\<>@#&!]/g, "");
+		// Start formulating embed
+		const embed = new MessageEmbed();
+		embed.setTitle("Role");
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
 
-					guild.member(userid).roles.add(roleid).then(function() {
-						channel.send(new MessageEmbed()
-						.setColor(Color.success)
-						.setDescription(`Added <@&${roleid}> to <@!${userid}>`)
-						.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp());
-					}).catch(function() {
-						channel.send(new MessageEmbed()
-						.setColor(Color.error)
-						.setDescription(`Missing Permissions.\nIs the ${guild.member(client.user).roles.highest.toString()} role higher than <@&${roleid}> role?`)
-						.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp());
-					})
+		// Switch subcommand
+		switch(subcommand.toLowerCase()) {
 
-				} else if (subcommand.toLowerCase() === "remove") {
+			// Create
+			case "new":
+			case "create":
 
-					const roleid = (await util.role(role, guild)).id;
-					const userid = user.replace(/[\\<>@#&!]/g, "");
+				// If no name given
+				if(name === null) name = "New-role";
 
-					guild.member(userid).roles.remove(roleid).then(function() {
-						channel.send(new MessageEmbed()
-						.setColor(Color.success)
-						.setDescription(`Removed <@&${roleid}> from <@!${userid}>`)
-						.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp());
-					}).catch(function() {
-						channel.send(new MessageEmbed()
-						.setColor(Color.error)
-						.setDescription(`Missing Permissions.\nIs the ${guild.member(client.user).roles.highest.toString()} role higher than <@&${roleid}> role?`)
-						.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp());
-					})
+				// Serialize name
+				name = name.replace(/\-/gm, " ");
 
-				} else if (subcommand.toLowerCase() === "create") {
+				// Create role
+				guild.roles.create({ data: { name, color: args[2] || "#000000" } }).then(created => {
+					embed.setColor(Color.success);
+					embed.setDescription(`Created new role: ${created.toString()}.`);
+				}).catch(error => {
+					embed.setColor(Color.error);
+					embed.setDescription(`Could not create role.\n${error.toString().split(":")[2]}`);
+				}).finally(async () => await channel.send(embed));
 
-					await guild.roles.create({
-					  	data: {
-					    	name: args[1],
-					    	color: args[2] || "#000000",
-					  	}
-				  	})
+				return;
 
-					channel.send(new MessageEmbed()
-					.setColor(Color.success)
-					.setDescription(`Created role \`${args[1]}\`.`)
-					.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp());
+			// Delete
+			case "d":
+			case "del":
+			case "delete":
 
-				} else if (subcommand.toLowerCase() === "delete") {
+				// If no name given
+				if(name === null) return await this.sendUsage(channel);
 
-					const roleid = (await util.role(role, guild)).id;
-					const specimin = await guild.roles.fetch(roleid);
+				try {
 
-					channel.send(new MessageEmbed()
-					.setColor(Color.success)
-					.setDescription(`Deleted role \`${specimin.name}\`.`)
-					.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp());
+					// Get role
+					const role = await util.role(name, guild);
 
-					await specimin.delete();
+					// Create role
+					role.delete().then(() => {
+						embed.setColor(Color.success);
+						embed.setDescription(`Deleted role: *@${role.name}*.`);
+					}).catch(error => {
+						embed.setColor(Color.error);
+						embed.setDescription(`Could not delete role.\n${error.toString().split(":")[2]}`);
+					}).finally(async () => await channel.send(embed));
 
-				} else {
-					return channel.send(new MessageEmbed()
-					.setColor(Color.warn)
-					.setDescription(`Usage:\n\`${root} <add|remove|create|delete> <role> <@user | #color>\``)
-					.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp());
+				} catch(err) {
+					embed.setColor(Color.error);
+					embed.setDescription(`Could not delete role.\n*@${name}* does not exist.`);
+					await channel.send(embed);
 				}
-			}
 
-		} else {
-			return channel.send(new MessageEmbed()
-			.setColor(Color.error)
-			.setDescription(`You my friend, are not a bot master.`)
-			.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp());
+				return;
+
+			// Add
+			case "add":
+			case "give":
+			case "a":
+
+				// If no name given
+				if(name === null || args[2] === undefined) return await this.sendUsage(channel);
+
+				try {
+
+					// Get role and user
+					const role = await util.role(name, guild);
+					const user = await util.user(args[2], guild);
+
+					// Create role
+					guild.member(user).roles.add(role.id).then(() => {
+						embed.setColor(Color.success);
+						embed.setDescription(`Added ${role.toString()} to ${user.toString()}.`);
+					}).catch(async error => {
+						embed.setColor(Color.error);
+						embed.setDescription(`Could add role.\n${error.toString().split(":")[1]}.`);
+					}).finally(async () => await channel.send(embed));
+
+				} catch(err) {
+					await this.sendUsage(channel);
+				}
+
+				return;
+
+			// Remove
+			case "remove":
+			case "t":
+			case "take":
+
+				// If no name given
+				if(name === null || args[2] === undefined) return await this.sendUsage(channel);
+
+				try {
+
+					// Get role and user
+					const role = await util.role(name, guild);
+					const user = await util.user(args[2], guild);
+
+					// Create role
+					guild.member(user).roles.remove(role.id).then(() => {
+						embed.setColor(Color.success);
+						embed.setDescription(`Removed ${role.toString()} from ${user.toString()}.`);
+					}).catch(async error => {
+						embed.setColor(Color.error);
+						embed.setDescription(`Could remove role.\n${error.toString().split(":")[1]}.`);
+					}).finally(async () => await channel.send(embed));
+
+				} catch(err) {
+					await this.sendUsage(channel);
+				}
+
+				return;
+
 		}
+
+		// Send usage if invalid subcommand
+		return await this.sendUsage(channel);
 
 	}
 
