@@ -17,6 +17,7 @@ global.dayjs = require("dayjs");
 global.ms = require("ms");
 global.cms = require("pretty-ms");
 global.fs = require("fs").promises;
+global.isImageUrl = require("is-image-url");
 
 // Load dayjs plugins
 dayjs.extend(require("dayjs/plugin/relativeTime"));

@@ -1,71 +1,3 @@
-const isImageUrl = require("is-image-url");
-const redditImage = async function(post, allowed)  {
-	let image = post.data.url
-
-	if (image.includes("imgur.com/a/")) {
-		post = allowed[Math.floor(Math.random() * allowed.length)]
-		image = post.data.url
-	}
-
-	if (image.includes("imgur") && !image.includes("gif")) {
-		image = "https://i.imgur.com/" + image.split("/")[3]
-		if (!isImageUrl(image)) {
-			image = "https://i.imgur.com/" + image.split("/")[3] + ".gif"
-		}
-		return image + "|" + post.data.title + "|" + post.data.permalink + "|" + post.data.author
-	}
-
-	if (image.includes("gfycat")) {
-
-		const link = await fetch("https://api.gfycat.com/v1/gfycats/" + image.split("/")[3]).then(url => url.json())
-
-		if (link.gfyItem) {
-			image = link.gfyItem.max5mbGif
-			return image + "|" + post.data.title + "|" + post.data.permalink + "|" + post.data.author
-		}
-	}
-
-	let count = 0
-
-	while (!isImageUrl(image)) {
-
-		if (count >= 10) {
-			console.log("couldnt find image @ " + post.data.subreddit_name_prefixed)
-			return "lol"
-		}
-
-		count++
-
-		post = allowed[Math.floor(Math.random() * allowed.length)]
-		image = post.data.url
-
-		if (image.includes("imgur.com/a/")) {
-			post = allowed[Math.floor(Math.random() * allowed.length)]
-			image = post.data.url
-		}
-
-		if (image.includes("imgur") && !image.includes("gif") && !image.includes("png")) {
-			image = "https://i.imgur.com/" + image.split("/")[3]
-			image = "https://i.imgur.com/" + image.split("/")[3] + ".png"
-			if (!isImageUrl(image)) {
-				image = "https://i.imgur.com/" + image.split("/")[3] + ".gif"
-				return image + "|" + post.data.title + "|" + post.data.permalink + "|" + post.data.author
-			}
-		}
-
-		if (image.includes("gfycat")) {
-
-			const link = await fetch("https://api.gfycat.com/v1/gfycats/" + image.split("/")[3]).then(url => url.json())
-
-			if (link) {
-				image = link.gfyItem.max5mbGif
-				return image + "|" + post.data.title + "|" + post.data.permalink + "|" + post.data.author
-			}
-		}
-	}
-	return image + "|" + post.data.title + "|" + post.data.permalink + "|" + post.data.author
-}
-
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
@@ -88,53 +20,54 @@ module.exports = class Command extends require("../Command.js") {
 		const embed = new MessageEmbed();
 		embed.setColor(Color.info);
 		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
+		embed.setTitle("Reddit");
 
 		// Makesure subreddit is specified
-		if(args.length !== 1) {
-			embed.setColor(Color.warn);
-			embed.addField("Description", this.description, true)
-			embed.addField("Usage", this.usage, true)
-            return await channel.send(embed);
-		}
+		if(args.length < 1) return await this.sendUsage(channel);
+
+		// Get args
+		const [ subreddit ] = args;
 
 		// Show typing while making external API request
 		channel.startTyping();
 
-		let allowed
+		// Initialize allowed posts
+		let allowed;
 
+		// Attempt to fetch allowed post
         try {
-            const res = await fetch(`https://www.reddit.com/r/${args[0]}.json?limit=100`).then(a => a.json())
+            const res = await fetch(`https://www.reddit.com/r/${subreddit}.json?limit=100`).then(a => a.json())
             allowed = res.data.children.filter(post => !post.data.is_self)
         } catch (e) {
 			embed.setColor(Color.error);
-			embed.addField("Error", "Invalid subreddit", true);
-			embed.addField("Description", this.description, true);
-			embed.addField("Usage", this.usage, true);
+			embed.setDescription(`r/${subreddit} is not a valid subreddit!`);
             return await channel.send(embed);
-        }
+        } finally {
+			channel.stopTyping();
+		}
 
         const chosen = allowed[Math.floor(Math.random() * allowed.length)];
 		const { data } = chosen;
 
-		const a = await redditImage(chosen, allowed)
-        const image = a.split("|")[0];
-		const url = `https://reddit.com${a.split("|")[2]}`;
+		// Get image
+		const [ image,, rpath ] = await util.redditImage(chosen, allowed);
+		const url = `https://reddit.com${rpath}`;
 
-		embed.setAuthor(`u/${data.author} • r/${data.subreddit}`, (await fetch(`https://www.reddit.com/user/${data.author}/about.json`).then(resp => resp.json())).data.icon_img.split("?")[0])
-		embed.setTitle(data.title);
-		embed.setColor(data.link_flair_background_color === "" ? Color.info : data.link_flair_background_color)
+		// Get author info
+		const author = await fetch(`https://www.reddit.com/user/${data.author}/about.json`).then(resp => resp.json());
 
-		channel.stopTyping();
-
-		if(data.over_18 && channel.nsfw) {
-			embed.setColor(Color.error)
-			embed.addField("Error", `This subreddit contains NSFW content. Run this command again in an NSFW channel.`, true)
-			return await channel.send(embed);
+		// Ensure NSFW only is posted in NSFW channels
+		if(data.over_18 && !channel.nsfw) {
+			embed.setColor(Color.error);
+			embed.setDescription(`This subreddit contains NSFW content.\nTo make this an NSFW channel do \`?ch nsfw\``);
+		} else {
+			embed.setAuthor(`u/${data.author} • r/${data.subreddit}`, author.data.icon_img.split("?")[0]);
+			embed.setDescription(data.title);
+			embed.setImage(image);
+			embed.setURL(url);
 		}
 
-		embed.setImage(image);
-		embed.setURL(url);
-
+		// Send embed
 		return await channel.send(embed);
 
 	}

@@ -72,4 +72,88 @@ module.exports = {
 
 	},
 
+	async redditImage(post, allowed)  {
+
+		// Get image
+		let image = post.data.url;
+
+		// If subreddit contains an imgur link
+		if(image.includes("imgur.com/a/")) {
+			post = allowed[Math.floor(Math.random() * allowed.length)];
+			image = post.data.url;
+		}
+
+		// If is not an imgur gif
+		if(image.includes("imgur") && !image.includes("gif")) {
+			image = "https://i.imgur.com/" + image.split("/")[3];
+			if(!isImageUrl(image)) image = "https://i.imgur.com/" + image.split("/")[3] + ".gif";
+			return [ image, post.data.title, post.data.permalink, post.data.author ];
+		}
+
+		// Get gfycat image
+		if(image.includes("gfycat")) {
+
+			// Api request
+			const link = await fetch("https://api.gfycat.com/v1/gfycats/" + image.split("/")[3]).then(url => url.json());
+
+			// If theres a gif
+			if(link.gfyItem) {
+				image = link.gfyItem.max5mbGif;
+				return [ image, post.data.title, post.data.permalink, post.data.author ];
+			}
+
+		}
+
+		// Initialize count
+		let count = 0
+
+		// Iterate until an image is found
+		while (!isImageUrl(image)) {
+
+			// Set max amount of tries
+			if (count >= 10) break;
+
+			// Increment count
+			count ++;
+
+			// Get a random post and image from subreddit
+			post = allowed[Math.floor(Math.random() * allowed.length)];
+			image = post.data.url;
+
+			// If is an imgur link
+			if(image.includes("imgur.com/a/")) {
+				post = allowed[Math.floor(Math.random() * allowed.length)];
+				image = post.data.url;
+			}
+
+			// If is not a gif or png link from imgur
+			if(image.includes("imgur") && !image.includes("gif") && !image.includes("png")) {
+				image = "https://i.imgur.com/" + image.split("/")[3];
+				image = "https://i.imgur.com/" + image.split("/")[3] + ".png";
+				if(!isImageUrl(image)) {
+					image = "https://i.imgur.com/" + image.split("/")[3] + ".gif";
+					return [ image, post.data.title, post.data.permalink, post.data.author ];
+				}
+			}
+
+			if(image.includes("gfycat")) {
+
+				// Fetch api
+				const link = await fetch("https://api.gfycat.com/v1/gfycats/" + image.split("/")[3]).then(url => url.json());
+
+				// If successful
+				if(link) {
+					image = link.gfyItem.max5mbGif
+					return [ image, post.data.title, post.data.permalink, post.data.author ];
+				}
+
+			}
+
+		}
+
+		// Return image
+		return [ image, post.data.title, post.data.permalink, post.data.author ];
+
+	}
+
 }
