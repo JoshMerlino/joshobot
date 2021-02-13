@@ -12,11 +12,20 @@ module.exports = class Command extends require("../Command.js") {
 
 	async onCommand({ sender, channel }) {
 
+		// Start typing
+		channel.startTyping();
+
+		// Get roast
+		const { roast } = await fetch("https://joshm.us.to/api/v1/roast")
+		  .then(resp => resp.json())
+		  .finally(() => channel.stopTyping());
+
+		// Send embed
 		const embed = new MessageEmbed();
 		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
 		embed.setColor(Color.info);
 		embed.setTitle("Roast");
-		embed.setDescription(Texts.ROASTS[Math.floor(Math.random() * Texts.ROASTS.length)]);
+		embed.setDescription(roast);
 		return await channel.send(embed);
 
 	}
