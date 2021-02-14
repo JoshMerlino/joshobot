@@ -9,14 +9,14 @@ Invite [Josh O' Bot](https://discord.com/api/oauth2/authorize?client_id=74897123
 ⚠ Be sure to create a `.env` file and replace `...` with the appropriate variables.
 ```bash
 # Allow requests to own server
-NODE_TLS_REJECT_UNAUTHORIZED	=	0
+NODE_TLS_REJECT_UNAUTHORIZED	= 0
 
 # Nodejs mode
-MODE							=	DEVELOPMENT # or "PRODUCTION"
+MODE				= DEVELOPMENT # or "PRODUCTION"
 
 # Secret API Keys
-CLIENT_SECRET					=	...
-RAPID_API_KEY					=	...
+CLIENT_SECRET			= ...
+RAPID_API_KEY			= ...
 
 ```
 
