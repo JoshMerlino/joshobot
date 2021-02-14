@@ -18,38 +18,41 @@ module.exports = class Command extends require("../Command.js") {
 		);
 	}
 
-	async onCommand({ args, sender, guildConfig, root, channel, guild }) {
+	async onCommand({ args, sender, guildConfig, channel, guild }) {
 
-		const [ user = "", ...reason ] = args;
-		const userid = user.replace(/[\\<>@#&!]/g, "");
+		// Ensure sender has permission
+		if(!util.hasPermissions(sender, guildConfig, "MANAGE_ROLES")) return;
 
-		// Make sure sender is a bot master
-		if(util.hasPermissions(sender, guildConfig, "MANAGE_ROLES")) {
-			if(user !== "") {
+		// If not enough args
+		if(args.length < 1) return await this.sendUsage(channel);
 
-				const persistance = guildConfig.commands.warn.persistance;
-				persistance.push({ specimen: userid, moderator: sender.id, expires: Date.now() + 8.64e7 });
+		// Get arguments
+		const [ user, ...reason ] = args;
 
-				channel.send(new MessageEmbed()
-				.setColor(Color.severe)
-				.setDescription(`User <@!${userid}> has been warned. ${reason.length === 0 ? "":"Reason: __" + reason.join(" ") + "__."}\nThis is their ${ordinalize(persistance.filter(p => p.specimen === userid).length)} warning in the last 24 hours!`)
-				.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp());
+		// Get member
+		const member = await util.user(user, guild);
 
-				config[guild.id].commands.warn.persistance = persistance;
-				await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guild.id}.yml`), YAML.stringify(config[guild.id]), "utf8");
+		// Get persistance and add new entry
+		const persistance = guildConfig.commands.warn.persistance;
+		persistance.push({ specimen: member.id, moderator: sender.id, expires: Date.now() + 8.64e7 });
 
-			} else {
-				return channel.send(new MessageEmbed()
-				.setColor(Color.warn)
-				.setDescription(`Usage:\n\`${root} <@user> [reason]\``)
-				.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp());
-			}
-		} else {
-			return channel.send(new MessageEmbed()
-			.setColor(Color.error)
-			.setDescription(`You my friend, are not a bot master.`)
-			.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp());
-		}
+		// Get how many warns in time frame
+		const nth = ordinalize(persistance.filter(p => p.specimen === member.id).length);
+
+		// Set up embed
+		const embed = new MessageEmbed();
+		embed.setColor(Color.severe);
+		embed.setTitle("Warn");
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
+		embed.setDescription(`Warned ${member}${reason.length === 0 ? ".":` for **${reason.join(" ")}**.`}\nThis is their ${nth} warning in the last 24 hours!`)
+
+		// Write persistance to file
+		config[guild.id].commands.warn.persistance = persistance;
+		await util.writeConfig(guild.id);
+
+		// Send embed
+		return await channel.send(embed);
+
 
 	}
 
