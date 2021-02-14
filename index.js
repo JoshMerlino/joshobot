@@ -13,6 +13,7 @@ global.fetch = require("node-fetch");
 global.dayjs = require("dayjs");
 global.ms = require("ms");
 global.cms = require("pretty-ms");
+global.mkdirp = require("mkdirp");
 global.fs = require("fs").promises;
 global.isImageUrl = require("is-image-url");
 

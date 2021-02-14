@@ -18,7 +18,7 @@ module.exports = function(guildId) {
 				await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guildId}.yml`), YAML.stringify(merge(defaultConfig, config)), "utf8");
 				resolve(merge(defaultConfig, config));
 			} else {
-				await require("mkdirp")(path.join(APP_ROOT, "config"));
+				await mkdirp(path.join(APP_ROOT, "config"));
 				await fs.writeFile(path.join(APP_ROOT ,"config", `guild_${guildId}.yml`), YAML.stringify(defaultConfig), "utf8");
 				const config = defaultConfig;
 				config.guild = guildId;
