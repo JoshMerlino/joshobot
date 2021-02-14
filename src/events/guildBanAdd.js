@@ -1,20 +1,34 @@
-module.exports = async function(guild, [ _guild, user ]) {
+module.exports = async function(guild, [, member ]) {
 
-	const fields = [];
+	// Fetch ban
+	const { user, reason } = await guild.fetchBan(member);
 
-	const ban = guild.fetchBan(user.id);
-
-	if(ban.reason) fields.push({
-		name: "Reason",
-		value: ban.reason,
-		inline: true
-	})
-
+	// Send audit
 	await sendAudit(guild, {
-		fields,
 		color: "severe",
-		title: "Was Banned",
-		sender: { user }
-	})
+		title: "Banned member",
+		thumbnail: user.displayAvatarURL(),
+		fields: [{
+
+			// Left column
+			name: "Ban info",
+			value: [
+				`• Reason:`,
+				`• User:`,
+			].join("\n"),
+			inline: true
+
+		}, {
+
+			// Right column
+			name: "\u200b",
+			value: [
+				`**\`${reason === undefined ? "none" : reason}\`**`,
+				`**\`${user.tag}\`**`,
+			].join("\n"),
+			inline: true
+
+		}],
+	});
 
 }
