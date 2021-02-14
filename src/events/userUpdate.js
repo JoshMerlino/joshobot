@@ -18,9 +18,9 @@ module.exports = async function(guild, [ before, after ]) {
 		aft.push(`• Language: **\`${after.local}\`**`);
 	}
 
-	if(before.avatar !== after.avatar) {
-		bef.push(`• Profile Picture: **\`${before.displayAvatarURL()}\`**`);
-		aft.push(`• Profile Picture: **\`${after.displayAvatarURL()}\`**`);
+	if(before.user.avatar !== after.user.avatar) {
+		bef.push(`• Profile Picture: **\`[View](${before.user.displayAvatarURL()})\`**`);
+		aft.push(`• Profile Picture: **\`[View](${after.user.displayAvatarURL()})\`**`);
 	}
 
 	if(before.username !== after.username) {

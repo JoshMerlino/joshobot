@@ -5,14 +5,9 @@ module.exports = async function(guild, [ before, after ]) {
 	const aft = [];
 
 	// Compare users
-	if(before.user.username !== after.user.username) {
-		bef.push(`• Username: **\`${before.user.username}\`**`);
-		aft.push(`• Username: **\`${after.user.username}\`**`);
-	}
-
-	if(before.user.tag !== after.user.tag) {
-		bef.push(`• Tag: **\`${before.user.tag}\`**`);
-		aft.push(`• Tag: **\`${after.user.tag}\`**`);
+	if(before.displayHexColor !== after.displayHexColor) {
+		bef.push(`• Color: **\`${before.displayHexColor}\`**`);
+		aft.push(`• Color: **\`${after.displayHexColor}\`**`);
 	}
 
 	if(before.user.local !== after.user.local) {
@@ -20,14 +15,14 @@ module.exports = async function(guild, [ before, after ]) {
 		aft.push(`• Language: **\`${after.user.local}\`**`);
 	}
 
-	if(before.user.avatar !== after.user.avatar) {
-		bef.push(`• Profile Picture: **\`${before.user.displayAvatarURL()}\`**`);
-		aft.push(`• Profile Picture: **\`${after.user.displayAvatarURL()}\`**`);
+	if(before.nickname !== after.nickname) {
+		bef.push(`• Nickname: **\`${before.nickname ? before.nickname : before.user.username}\`**`);
+		aft.push(`• Nickname: **\`${after.nickname ? after.nickname : after.user.username}\`**`);
 	}
 
-	if(before.displayHexColor !== after.displayHexColor) {
-		bef.push(`• Color: **\`${before.displayHexColor}\`**`);
-		aft.push(`• Color: **\`${after.displayHexColor}\`**`);
+	if(before.user.avatar !== after.user.avatar) {
+		bef.push(`• Profile Picture: **\`[View](${before.user.displayAvatarURL()})\`**`);
+		aft.push(`• Profile Picture: **\`[View](${after.user.displayAvatarURL()})\`**`);
 	}
 
 	if(Object.values(util.parseCollection(before.roles.cache)).join() !== Object.values(util.parseCollection(after.roles.cache)).join()) {
