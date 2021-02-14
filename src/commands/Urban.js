@@ -3,6 +3,7 @@ module.exports = class Command extends require("../Command.js") {
 	constructor() {
 		super([
 			"urban",
+			"urbandictionary",
 			"ur"
 		], ...arguments);
 		this.register(
@@ -17,62 +18,49 @@ module.exports = class Command extends require("../Command.js") {
 
 	async onCommand({ args, sender, channel }) {
 
+		// Begin setting up embed
+		const embed = new MessageEmbed();
+		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
+		embed.setColor(Color.info);
+		embed.setTitle("Urban Dictionary");
+
+		// Get word to look up
 		const term = args.join(" ");
 
-		request({
-		    method: "GET",
-		    url: "https://mashape-community-urban-dictionary.p.rapidapi.com/define",
-		    qs: { term },
+		// Show typing
+		channel.startTyping();
+
+		// Get image from bing
+		const image = await fetch(`https://bing-image-search1.p.rapidapi.com/images/search?q=${encodeURIComponent(term)}`, {
 		    headers: {
-		        "x-rapidapi-host": "mashape-community-urban-dictionary.p.rapidapi.com",
 		        "x-rapidapi-key": process.env.RAPID_API_KEY,
 		        useQueryString: true
 		    }
-		}, function(error, _response, body) {
-		    if (error) {
-				return channel.send(new MessageEmbed()
-				.setColor(Color.error)
-				.setDescription(`No definitions found for **\`${term}\`**.`));
-			}
+		}).then(resp => resp.json())
+		  .then(({ value }) => value[Math.floor(Math.random() * value.length)].contentUrl)
+		  .catch(() => false)
+		  .finally(() => channel.stopTyping())
 
-		    const { list } = JSON.parse(body);
+		// If image is applicable
+		if(image) embed.setThumbnail(image);
 
-			request({
-			    method: "GET",
-			    url: "https://bing-image-search1.p.rapidapi.com/images/search",
-			    qs: {
-			        offset: "1",
-			        count: "1",
-			        q: term
-			    },
-			    headers: {
-			        "x-rapidapi-host": "bing-image-search1.p.rapidapi.com",
-			        "x-rapidapi-key": process.env.RAPID_API_KEY,
-			        useQueryString: true
-			    }
-			}, function(error, _response, body) {
+		// Show typing
+		channel.startTyping();
 
-				const embed = new MessageEmbed();
-				embed.setTitle(list[0].word);
+		// Get image from bing
+		const { definition, thumbs_up, thumbs_down, example } = await fetch(`https://mashape-community-urban-dictionary.p.rapidapi.com/define?term=${encodeURIComponent(term)}`, {
+		    headers: {
+		        "x-rapidapi-key": process.env.RAPID_API_KEY
+		    }
+		}).then(resp => resp.json())
+		  .then(({ list }) => list[0])
+		  .finally(() => channel.stopTyping())
 
-				let definitions = [];
-				list.splice(0,3).map(({ definition }) => definitions.push(definition));
-				embed.setDescription(definitions.join("\n\n").replace(/\[|\]/g, "_"));
-				embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
+		// Add to embed
+		embed.setDescription(`${definition.replace(/\[|\]/gm, "**")}\n\n${example.replace(/\[|\]/gm, "**")}\n\n👍 **${thumbs_up}** • 👎 **${thumbs_down}**`);
 
-				if (!error) {
-
-					const { value: images } = JSON.parse(body);
-					embed.setColor(`#${images[0].accentColor}`);
-					embed.setThumbnail(images[0].contentUrl)
-
-				}
-
-				channel.send(embed);
-
-			})
-
-		});
+		// Send embed
+		return await channel.send(embed);
 
 	}
 
