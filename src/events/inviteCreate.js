@@ -1,30 +1,39 @@
-module.exports = async function(guild, [ event ]) {
+module.exports = async function(guild, [ invite ]) {
 
-	const fields = [];
+	// Send audit message
+	return await sendAudit(guild, {
 
-	fields.push({
-		name: "Invite Code",
-		value: `https://discord.gg/${event.code}`,
-		inline: true
-	})
-
-	if(event.expiresAt) fields.push({
-		name: "Expires",
-		value: `\`${dayjs(event.expiresAt).format("MM/DD/YYYY HH:mm:ss")}\` • \`${dayjs(event.expiresAt).fromNow(true)}\``,
-		inline: true
-	})
-
-	if(event.maxUses) fields.push({
-		name: "Max Uses",
-		value: `\`${event.maxUses}\``,
-		inline: true
-	})
-
-	await sendAudit(guild, {
-		sender: { user: event.inviter },
 		color: "success",
-		title: "Created an Invite to the Server",
-		fields
-	})
+		title: `Invite created`,
+		desc: invite,
+		fields: [{
+
+			// Left column
+			name: "Invite info",
+			value: [
+				`• Channel:`,
+				`• Code:`,
+				`• Expires:`,
+				`• Inviter:`,
+				`• Max Uses:`,
+			].join("\n"),
+			inline: true
+
+		}, {
+
+			// Right column
+			name: "\u200b",
+			value: [
+				`${invite.channel}`,
+				`**\`${invite.code}\`**`,
+				`**\`${invite.maxAge === 0 ? "never" : cms(invite.maxAge * 1000, { verbose: true })}\`**`,
+				`${invite.inviter}`,
+				`**\`${invite.maxUses === 0 ? "unlimited" : invite.maxUses}\`**`,
+			].join("\n"),
+			inline: true
+
+		}],
+
+	});
 
 }
