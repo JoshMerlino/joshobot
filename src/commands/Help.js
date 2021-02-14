@@ -42,10 +42,9 @@ module.exports = class Command extends require("../Command.js") {
 					if(category.toString().toUpperCase() !== sec) return;
 
 					// Push command to help
-					list.push(`**${prefix}${aliases[0]}**:`);
-					list.push(`${description}`);
-					list.push(`**Usage**: __${prefix}${aliases[0]}${args.map(({ required, argument }) => ` ${required ? "<":"("}${argument}${required ? ">":")"}`).join("")}__`);
-					aliases.length > 1 && list.push(`**Aliases**: ${prefix}${aliases.splice(1).join(`, ${prefix}`)}`);
+					list.push(`\`${prefix}${aliases[0]}\` • **${description}**`);
+					list.push(`**Usage**: \`${prefix}${aliases[0]}${args.map(({ required, argument }) => ` ${required ? "<":"("}${argument}${required ? ">":")"}`).join("")}\``);
+					aliases.length > 1 && list.push(`**Aliases**: \`${prefix}${aliases.splice(1).join(`\`, \`${prefix}`)}\``);
 					list.push(`\n`);
 
 				});
