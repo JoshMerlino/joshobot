@@ -31,9 +31,7 @@
         "pretty-ms": "^7.0.0",
         "request": "^2.88.2",
         "require-context": "^1.1.0",
-        "yaml": "^1.10.0",
-        "youtube-search": "^1.1.4",
-        "ytdl-core": "^3.3.0"
+        "yaml": "^1.10.0"
     },
     "engines": {
         "node": "14"

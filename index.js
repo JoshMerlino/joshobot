@@ -6,12 +6,9 @@ require("dotenv").config();
 
 // Import some modules into the global scope
 global.Discord = require("discord.js");
-global.ytdl = require("ytdl-core");
 global.ordinalize = require("ordinalize");
-global.ytsearch = require("youtube-search");
 global.YAML = require("yaml");
 global.path = require("path");
-global.request = require("request");
 global.fetch = require("node-fetch");
 global.dayjs = require("dayjs");
 global.ms = require("ms");
