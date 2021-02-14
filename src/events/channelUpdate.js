@@ -1,56 +1,63 @@
-module.exports = async function(guild, [ event, newEvent ]) {
+module.exports = async function(guild, [ before, after ]) {
 
-	const fields = [];
+	// Initialize columns
+	const bef = [];
+	const aft = [];
 
-	if(event.name !== newEvent.name) fields.push({
-		name: "Name",
-		value: `\`#${event.name}\` → \`#${newEvent.name}\``,
-		inline: true
-	})
+	// Compare channels
+	if(before.parentID !== after.parentID) {
+		bef.push(`• Category: **\`${before.parent ? before.parent.name : "none"}\`**`);
+		aft.push(`• Category: **\`${after.parent ? after.parent.name : "none"}\`**`);
+	}
 
-	if(event.viewable !== newEvent.viewable) fields.push({
-		name: "Viewable",
-		value: `${event.viewable ? "`Yes`":"`No`"} → ${newEvent.viewable ? "`Yes`":"`No`"}`,
-		inline: true
-	})
+	if(before.name !== after.name) {
+		bef.push(`• Name: **\`${before.name}\`**`);
+		aft.push(`• Name: **\`${after.name}\`**`);
+	}
 
-	if(event.nsfw !== newEvent.nsfw) fields.push({
-		name: "NSFW",
-		value: `${event.nsfw ? "`Yes`":"`No`"} → ${newEvent.nsfw ? "`Yes`":"`No`"}`,
-		inline: true
-	})
+	if(before.nsfw !== after.nsfw) {
+		bef.push(`• NSFW: **\`${before.nsfw}\`**`);
+		aft.push(`• NSFW: **\`${after.nsfw}\`**`);
+	}
 
-	if(event.topic !== newEvent.topic) fields.push({
-		name: "Topic",
-		value: `${event.topic ? `\`${event.topic}\``:`_\`NONE\`_`} → ${newEvent.topic ? `\`${newEvent.topic}\``:`_\`NONE\`_`}`,
-		inline: true
-	})
+	if(before.rateLimitPerUser !== after.rateLimitPerUser) {
+		bef.push(`• Slow mode: **\`${before.rateLimitPerUser === 0 ? "none" : cms(before.rateLimitPerUser * 1000, { verbose: true })}\`**`);
+		aft.push(`• Slow mode: **\`${after.rateLimitPerUser === 0 ? "none" : cms(after.rateLimitPerUser * 1000, { verbose: true })}\`**`);
+	}
 
-	if(event.type !== newEvent.type) fields.push({
-		name: "Type",
-		value: `${event.type} → ${newEvent.type}`,
-		inline: true
-	})
+	if(before.topic !== after.topic) {
+		bef.push(`• Topic: **\`${before.topic ? before.topic : "none"}\`**`);
+		aft.push(`• Topic: **\`${after.topic ? after.topic : "none"}\`**`);
+	}
 
-	if(event.parent.name !== newEvent.parent.name) fields.push({
-		name: "Channel Category",
-		value: `${event.parent.name ? `\`${event.parent.name}\``:`_\`NONE\`_`} → ${newEvent.parent.name ? `\`${newEvent.parent.name}\``:`_\`NONE\`_`}`,
-		inline: true
-	})
+	if(before.type !== after.type) {
+		bef.push(`• Type: **\`${before.type}\`**`);
+		aft.push(`• Type: **\`${after.type}\`**`);
+	}
 
-	if(event.permissionsLocked !== newEvent.permissionsLocked) fields.push({
-		name: "Synced Permissions",
-		value: `${event.permissionsLocked ? "`Yes`":"`No`"} → ${newEvent.permissionsLocked ? "`Yes`":"`No`"}`,
-		inline: true
-	})
+	// Make sure empty audits arent sent
+	if(bef.length === 0 || aft.length === 0) return;
 
-	if(fields.length === 0) return;
-
+	// Send audit message
 	await sendAudit(guild, {
-		fields,
+
 		color: "warn",
-		desc: newEvent.toString(),
-		title: "Channel Updated",
+		title: "Channel updated",
+		fields: [{
+
+			// Left column
+			name: "Before",
+			value: `${bef.join("\n")}\n\n${after}`,
+			inline: true
+
+		}, {
+
+			// Right column
+			name: "After",
+			value: aft.join("\n"),
+			inline: true
+
+		}]
 	})
 
 }

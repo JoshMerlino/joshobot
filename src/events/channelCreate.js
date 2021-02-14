@@ -1,55 +1,34 @@
-module.exports = async function(guild, [ event ]) {
+module.exports = async function(guild, [ channel ]) {
 
-	if(event.type === "text") {
-		const fields = [{
-			name: "Name",
-			value: `\`${event.toString()}\``,
+	// Send audit message
+	return await sendAudit(guild, {
+
+		color: "success",
+		title: `Channel created`,
+		fields: [{
+
+			// Left column
+			name: "Channel info",
+			value: [
+				`• ID: **\`${channel.id}\`**`,
+				`• Name: **\`${channel.name}\`**`,
+				`\n${channel}`
+			].join("\n"),
 			inline: true
-		}];
 
-		event.parent && fields.push({
-			name: "Category",
-			value: `\`${event.parent.name}\``,
+		}, {
+
+			// Right column
+			name: "\u200b",
+			value: [
+				`• Type: **\`${channel.type}\`**`,
+				`• Position: **\`${channel.position}\`**`,
+				`• Category: **\`${channel.parent ? channel.parent.name : "none"}\`**`
+			].join("\n"),
 			inline: true
-		})
 
-		await sendAudit(guild, {
-			fields,
-			color: "success",
-			title: "Text Channel Created",
-		})
-	}
+		}],
 
-	if(event.type === "voice") {
-		const fields = [{
-			name: "Name",
-			value: `\`${event.name}\``,
-			inline: true
-		}];
-
-		event.parent && fields.push({
-			name: "Category",
-			value: `\`${event.parent.name}\``,
-			inline: true
-		})
-
-		await sendAudit(guild, {
-			fields,
-			color: "success",
-			title: "Voice Channel Created",
-		})
-	}
-
-	if(event.type === "category") {
-		await sendAudit(guild, {
-			color: "success",
-			title: "Channel Category Created",
-			fields: [{
-				name: "Name",
-				value: `\`${event.name}\``,
-				inline: true
-			}]
-		})
-	}
+	});
 
 }

@@ -1,55 +1,32 @@
-module.exports = async function(guild, [ event ]) {
+module.exports = async function(guild, [ channel ]) {
 
-	if(event.type === "text") {
-		const fields = [{
-			name: "Name",
-			value: `\`#${event.name}\``,
+	// Send audit message
+	return await sendAudit(guild, {
+
+		color: "error",
+		title: `Channel deleted`,
+		fields: [{
+
+			// Left column
+			name: "Channel info",
+			value: [
+				`• ID: **\`${channel.id}\`**`,
+				`• Name: **\n${channel.name}\n**`,
+			].join("\n"),
 			inline: true
-		}];
 
-		event.parent && fields.push({
-			name: "Category",
-			value: `\`${event.parent.name}\``,
+		}, {
+
+			// Right column
+			name: "\u200b",
+			value: [
+				`• Type: **\n${channel.type}\n**`,
+				`• Category: **\n${channel.parent ? channel.parent.name : "none"}\n**`
+			].join("\n"),
 			inline: true
-		})
 
-		await sendAudit(guild, {
-			fields,
-			color: "error",
-			title: "Text Channel Removed",
-		})
-	}
+		}],
 
-	if(event.type === "voice") {
-		const fields = [{
-			name: "Name",
-			value: `\`${event.name}\``,
-			inline: true
-		}];
-
-		event.parent && fields.push({
-			name: "Category",
-			value: `\`${event.parent.name}\``,
-			inline: true
-		})
-
-		await sendAudit(guild, {
-			fields,
-			color: "error",
-			title: "Voice Channel Removed",
-		})
-	}
-
-	if(event.type === "category") {
-		await sendAudit(guild, {
-			color: "error",
-			title: "Channel Category Removed",
-			fields: [{
-				name: "Name",
-				value: `\`${event.name}\``,
-				inline: true
-			}]
-		})
-	}
+	});
 
 }
