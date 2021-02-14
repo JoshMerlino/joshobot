@@ -49,7 +49,7 @@ module.exports = class Command extends require("../Command.js") {
 		embed.setColor(Color.info);
 		embed.setTitle("User");
 		embed.addField("User Info", leftCol.join("\n"), true);
-		embed.addField("Server Info", rightCol.join("\n"), true);
+		embed.addField("\u200b", rightCol.join("\n"), true);
 		embed.setThumbnail(user.user.displayAvatarURL());
 		embed.setDescription(`${statusEmoji} **${user.user.tag}**${user.nickname === null ? "":` *aka* **${user.nickname}**`}${presence.length === 0 ? "":" • "}${presence.join(" • ")}`);
 
