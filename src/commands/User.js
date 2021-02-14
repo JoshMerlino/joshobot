@@ -18,91 +18,43 @@ module.exports = class Command extends require("../Command.js") {
 
 	async onCommand({ args, sender, channel, guild }) {
 
-		const member = guild.member(args[0] ? args[0].replace(/[\\<>@#&!]/g, "") : sender.id);
-		const { user } = member;
+		// Get user
+		const user = await util.user(args[0] || sender, guild);
 
-		const color = member.displayHexColor;
-		const joined = dayjs(member.joinedAt).fromNow();
-        const created = dayjs(user.createdAt).fromNow();
-        const roles = member.roles._roles
+		// Get status emoji
+		const statusEmoji = Object.values(util.parseCollection(util.parseCollection(client.guilds.cache)["635938104775278602"].emojis.cache)).filter(emoji => emoji.name === user.presence.status).toString();
 
-        let rolesText = ""
+		// Get presences
+		const presence = [];
+		for (const activity of user.presence.activities) presence.push(activity.state || activity);
 
-        roles.forEach(role => {
-            rolesText = rolesText + role.toString() + " "
-        })
+		// Get roles
+		const roles = Object.values(util.parseCollection(user.roles.cache)).filter(role => role.name !== "@everyone").sort((a, b) => b.rawPosition - a.rawPosition);
 
-        rolesText = rolesText.split("@everyone").join("")
+		// Initialize table
+		const [ leftCol, rightCol ] = [[
+			`• ID: \`${user.user.id}\``,
+			`• Created on **${util.ts(user.createdAt)}**`,
+			`\n[Jump to last message](https://discord.com/channels/${guild.id}/${user.lastMessageChannelID}/${user.lastMessageID})`
+		], [
+			`• Role${roles.length !== 1 ? `s (${roles.length})`:""}: ${roles.length === 0 ? "*none*" : roles.map(role => role.toString()).join(", ")}`,
+			`• Joined on **${util.ts(user.joinedAt)}**`,
+			`• Display color: \`${user.displayHexColor.toUpperCase()}\``,
+			`• Booster since: ${user.premiumSince === null ? "*not boosting*" : util.ts(user.premiumSince)}`
+		]];
 
-        let username = user.tag
-
-        if (username.includes("*")) {
-            username = "`" + user.tag + "`"
-        }
-
+		// Start formulating embed
 		const embed = new MessageEmbed();
 		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
+		embed.setColor(Color.info);
+		embed.setTitle("User");
+		embed.addField("User Info", leftCol.join("\n"), true);
+		embed.addField("Server Info", rightCol.join("\n"), true);
+		embed.setThumbnail(user.user.displayAvatarURL());
+		embed.setDescription(`${statusEmoji} **${user.user.tag}**${user.nickname === null ? "":` *aka* **${user.nickname}**`}${presence.length === 0 ? "":" • "}${presence.join(" • ")}`);
 
-		embed.setThumbnail(user.avatarURL({ format: "png", dynamic: true, size: 128 }))
-		embed.setColor(color)
-		embed.setTitle(user.tag)
-		embed.setDescription(user.toString())
-
-		embed.addField("Member User Info",
-		`**Username**: \`${username}\`` +
-		`\n**ID**: \`${user.id}\`` +
-		`\n**Status**: \`${{ online: "🟢 Online", idle: "🌙 Idle", dnd: "⛔ Do not disturb", offline: "⚫ Offline" }[member.presence.status]}\``, true)
-
-		embed.addField("Server User Info",
-			"**Created**: `" + created.toString().toLowerCase() + "`\n" +
-			"**Joined**: `" + joined.toString().toLowerCase() + "`\n" +
-			"**Roles**: `" + member._roles.length + "`", true)
-
-		if (member.presence.activities.length > 0) {
-            let hasStatus = false
-            let status = ""
-            let hasGame = false
-            let game = ""
-            let hasSpotify = false
-            let spotify = ""
-
-            for (const activity of user.presence.activities) {
-                if (activity.name.toLowerCase() == "custom status" && activity.state != undefined) {
-                    if (hasStatus) return
-
-                    status = "**custom status**: `" + activity.state + "`"
-                    hasStatus = true
-                }
-
-                if (activity.name.toLowerCase() == "spotify") {
-                    if (hasSpotify) return
-
-                    spotify = "**Listening to**: `" + activity.details + "` by `" + activity.state  + "`"
-                    hasSpotify = true
-                }
-
-                if (!hasGame && activity.name.toLowerCase() != "custom status" && activity.name.toLowerCase() != "spotify") {
-                    game = "**Currently Playing**: `" + activity.name + "`"
-                    hasGame = true
-                }
-            }
-
-            let status1 = ""
-            if (hasStatus) {
-                status1 += status + "\n"
-            }
-            if (hasSpotify) {
-                status1 += spotify + "\n"
-            }
-            if (hasGame) {
-                status1 += game
-            }
-            if (hasStatus || hasSpotify || hasGame) {
-                embed.addField("Activity", status1)
-            }
-        }
-
-		await channel.send(embed);
+		// Send embed
+		return await channel.send(embed);
 
 	}
 
