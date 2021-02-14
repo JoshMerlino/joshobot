@@ -1,31 +1,46 @@
-module.exports = async function(guild, [ event ]) {
+module.exports = async function(guild, [ member ]) {
 
-	// Unmute members when their time expires
-	global.config[guild.id].commands["mute"].persistance.map(async (entry, key) => {
-		if(entry.specimen === event.user.id) {
+	// Mute members that tried to mute evade
+	global.config[guild.id].commands["mute"].persistance.map(async entry => {
+		if(entry.specimen === member.user.id) {
 			const muterole = (await util.getMuteRole(guild)).id;
 			await guild.member(specimen).roles.add(muterole);
 		}
 	})
 
+	// Send audit
 	await sendAudit(guild, {
 		color: "success",
-		sender: event,
-		title: "Joined the Server",
-		thumb: event.user.displayAvatarURL(),
+		title: "Member joined",
+		thumbnail: member.displayAvatarURL(),
+		desc: member,
 		fields: [{
-			name: "Account Creation",
-			value: `\`${dayjs(event.user.createdAt).format("MM/DD/YYYY HH:mm:ss")}\` • \`${dayjs(event.user.createdAt).fromNow(true)}\``,
+
+			// Left column
+			name: "Member info",
+			value: [
+				`• Account age:`,
+				`• Bot:`,
+				`• Language:`,
+				`• Username:`,
+				`• Tag:`,
+			].join("\n"),
 			inline: true
+
 		}, {
-			name: "Username",
-			value: `\`${event.user.username}\``,
+
+			// Right column
+			name: "\u200b",
+			value: [
+				`**\`${util.ts(member.createdAt)}\`**`,
+				`**\`${member.user.bot}\`**`,
+				`**\`${member.user.local}\`**`,
+				`**\`${member.user.username}\`**`,
+				`**\`${member.user.tag}\`**`,
+			].join("\n"),
 			inline: true
-		}, {
-			name: "Tag",
-			value: `\`${event.user.tag}\``,
-			inline: true
-		}]
-	})
+
+		}],
+	});
 
 }

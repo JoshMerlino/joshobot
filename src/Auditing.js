@@ -28,7 +28,7 @@ module.exports = async function(client, guild) {
 		client.on(eventType, async function(...events) {
 
 			// Make sure the event is in the right guild so other guilds dont get audits from every guild
-			if(events[0].guild.id !== guild.id) return;
+			if(events[0].hasOwnProperty("guild") && events[0].guild.id !== guild.id) return;
 
 			// Send audit
 			require(path.join(APP_ROOT, "src", "events", `${eventType}.js`))(guild, events);

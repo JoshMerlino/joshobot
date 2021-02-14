@@ -47,7 +47,7 @@ module.exports = async function(guild, [ before, after ]) {
 
 			// Left column
 			name: "Before",
-			value: `${bef.join("\n")}\n\n${after}`,
+			value: bef.join("\n"),
 			inline: true
 
 		}, {

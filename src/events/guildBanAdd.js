@@ -8,6 +8,7 @@ module.exports = async function(guild, [, member ]) {
 		color: "severe",
 		title: "Banned member",
 		thumbnail: user.displayAvatarURL(),
+		desc: user,
 		fields: [{
 
 			// Left column

@@ -1,33 +1,65 @@
-module.exports = async function(guild, [ event, newEvent ]) {
+module.exports = async function(guild, [ before, after ]) {
 
-	const fields = [];
+	// Initialize columns
+	const bef = [];
+	const aft = [];
 
-	if(event.displayName !== newEvent.displayName) fields.push({
-		name: "Nickname",
-		value: `\`${event.displayName}\` → ${newEvent.displayName}\``,
-		inline: true
-	})
+	// Compare users
+	if(before.user.username !== after.user.username) {
+		bef.push(`• Username: **\`${before.user.username}\`**`);
+		aft.push(`• Username: **\`${after.user.username}\`**`);
+	}
 
-	if(event.user.discriminator !== newEvent.user.discriminator) fields.push({
-		name: "Discriminator",
-		value: `\`#${event.user.discriminator}\` → #${newEvent.user.discriminator}\``,
-		inline: true
-	})
+	if(before.user.tag !== after.user.tag) {
+		bef.push(`• Tag: **\`${before.user.tag}\`**`);
+		aft.push(`• Tag: **\`${after.user.tag}\`**`);
+	}
 
-	if(Object.keys(util.parseCollection(event.roles.cache)).join(";") !== Object.keys(util.parseCollection(newEvent.roles.cache)).join(";")) fields.push({
-		name: "Roles",
-		value: util.arrayDiff(Object.keys(util.parseCollection(event.roles.cache)), Object.keys(util.parseCollection(newEvent.roles.cache))).map(r => `${Object.keys(util.parseCollection(newEvent.roles.cache)).includes(r) ? "+":"-"}<@&${r}>`).join(" "),
-		inline: true
-	})
+	if(before.user.local !== after.user.local) {
+		bef.push(`• Language: **\`${before.user.local}\`**`);
+		aft.push(`• Language: **\`${after.user.local}\`**`);
+	}
 
-	if(fields.length === 0) return;
+	if(before.user.avatar !== after.user.avatar) {
+		bef.push(`• Profile Picture: **\`${before.user.displayAvatarURL()}\`**`);
+		aft.push(`• Profile Picture: **\`${after.user.displayAvatarURL()}\`**`);
+	}
 
+	if(before.displayHexColor !== after.displayHexColor) {
+		bef.push(`• Color: **\`${before.displayHexColor}\`**`);
+		aft.push(`• Color: **\`${after.displayHexColor}\`**`);
+	}
+
+	if(Object.values(util.parseCollection(before.roles.cache)).join() !== Object.values(util.parseCollection(after.roles.cache)).join()) {
+		bef.push(`• Roles: ${Object.values(util.parseCollection(before.roles.cache)).filter(role => role.name !== "@everyone").sort((a, b) => b.rawPosition - a.rawPosition).map(role => role.toString()).join(", ")}`);
+		aft.push(`• Roles: ${Object.values(util.parseCollection(after.roles.cache)).filter(role => role.name !== "@everyone").sort((a, b) => b.rawPosition - a.rawPosition).map(role => role.toString()).join(", ")}`);
+	}
+
+	// Make sure empty audits arent sent
+	if(bef.length === 0 || aft.length === 0) return;
+
+	// Send audit message
 	await sendAudit(guild, {
-		fields,
+
 		color: "warn",
-		sender: event,
-		title: "Updated Their Profile",
-		thumb: event.user.displayAvatarURL(),
+		title: "Member updated",
+		thumbnail: after.user.displayAvatarURL(),
+		desc: after,
+		fields: [{
+
+			// Left column
+			name: "Before",
+			value: bef.join("\n"),
+			inline: true
+
+		}, {
+
+			// Right column
+			name: "After",
+			value: aft.join("\n"),
+			inline: true
+
+		}]
 	})
 
 }

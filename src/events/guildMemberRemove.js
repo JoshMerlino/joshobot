@@ -1,27 +1,37 @@
-module.exports = async function(guild, [ event ]) {
+module.exports = async function(guild, [ member ]) {
 
+	// Send audit
 	await sendAudit(guild, {
 		color: "error",
-		sender: event,
-		title: "Left the Server",
-		thumb: event.user.displayAvatarURL(),
+		title: "Member left",
+		thumbnail: member.displayAvatarURL(),
 		fields: [{
-			name: "Account Creation",
-			value: `\`${dayjs(event.user.createdAt).format("MM/DD/YYYY HH:mm:ss")}\` • \`${dayjs(event.user.createdAt).fromNow(true)}\``,
+
+			// Left column
+			name: "Member info",
+			value: [
+				`• Account age:`,
+				`• Bot:`,
+				`• Member since:`,
+				`• Username:`,
+				`• Tag:`,
+			].join("\n"),
 			inline: true
+
 		}, {
-			name: "Server Member Since",
-			value: `\`${dayjs(event.joinedAt).format("MM/DD/YYYY HH:mm:ss")}\` • \`${dayjs(event.joinedAt).fromNow(true)}\``,
+
+			// Right column
+			name: "\u200b",
+			value: [
+				`**\`${util.ts(member.createdAt)}\`**`,
+				`**\`${member.user.bot}\`**`,
+				`**\`${util.ts(member.joinedAt)}\`**`,
+				`**\`${member.user.username}\`**`,
+				`**\`${member.user.tag}\`**`,
+			].join("\n"),
 			inline: true
-		}, {
-			name: "Username",
-			value: `\`${event.user.username}\``,
-			inline: true
-		}, {
-			name: "Tag",
-			value: `\`${event.user.tag}\``,
-			inline: true
-		}]
-	})
+
+		}],
+	});
 
 }
