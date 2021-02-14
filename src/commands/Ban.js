@@ -48,7 +48,7 @@ module.exports = class Command extends require("../Command.js") {
 		// Ban member
 		member.ban({ days: 7, reason: reason.join(" ") }).then(async function() {
 			embed.setColor(Color.success);
-			embed.setDescription(`Banned ${member.toString()}${reason.length > 0 ? " for ":""}${reason.join(" ")}`);
+			embed.setDescription(`Banned ${member}${reason.length === 0 ? ".":` for **${reason.join(" ")}**.`}`);
 		}).catch(async error => {
 			embed.setColor(Color.error);
 			embed.setDescription(`${member.toString()} is not able to be banned.\n${error.toString().split(":")[2]}`);

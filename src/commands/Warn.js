@@ -44,7 +44,7 @@ module.exports = class Command extends require("../Command.js") {
 		embed.setColor(Color.severe);
 		embed.setTitle("Warn");
 		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
-		embed.setDescription(`Warned ${member}${reason.length === 0 ? ".":` for **${reason.join(" ")}**.`}\nThis is their ${nth} warning in the last 24 hours!`)
+		embed.setDescription(`Warned ${member}${reason.length === 0 ? ".":` for **${reason.join(" ")}**.`}\nThis is their **${nth}** warning in the last 24 hours!`)
 
 		// Write persistance to file
 		config[guild.id].commands.warn.persistance = persistance;

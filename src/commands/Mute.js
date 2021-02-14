@@ -49,15 +49,15 @@ module.exports = class Command extends require("../Command.js") {
 		// Add role to member
 		member.roles.add(muterole).then(async function() {
 
+			// Add to embed
 			embed.setColor(Color.success);
-			embed.setDescription(`Muted ${member.toString()}${reason.length > 0 ? " for ":""}${reason.join(" ")}. Expires ${duration === null ? "never":`in ${cms(mutetime)}`}.`);
+			embed.setDescription(`Muted ${member}${reason.length === 0 ? ".":` for **${reason.join(" ")}**.`}\nMute ${duration === null ? "never expires":`expires in **${cms(mutetime, { verbose: true })}`}**.`);
 
+			// If not permenate
 			if (duration !== null) {
 
-				// Override existing mutes the user may have
+				// Override existing mutes the user may have and queue unmute
 				config[guild.id].commands.mute.persistance = config[guild.id].commands.mute.persistance.filter(({ specimen }) => specimen !== member.id);
-
-				// Queue new unmute
 				config[guild.id].commands.mute.persistance.push({ moderator: sender.id, specimen: member.id, expires: Date.now() + mutetime, channel: channel.id });
 
 				// Write config to disk
@@ -67,7 +67,7 @@ module.exports = class Command extends require("../Command.js") {
 
 		}).catch(error => {
 			embed.setColor(Color.error);
-			embed.setDescription(`${member.toString()} is not able to be muted.\n${error.toString().split(":")[2]}`);
+			embed.setDescription(`${member} is not able to be muted.\n${error.toString().split(":")[2]}`);
 		}).finally(async () =>  await channel.send(embed));
 
 	}
