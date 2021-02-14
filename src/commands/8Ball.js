@@ -21,7 +21,11 @@ module.exports = class Command extends require("../Command.js") {
 
 		// Get Q&A
 		const question = args.join(" ");
-		const answer = Texts.PROBABILITYS[Math.floor(Math.random() * Texts.PROBABILITYS.length)] + ".";
+
+		// Get answer
+		const { fortune: answer } = await fetch("https://joshm.us.to/api/v1/fortune")
+		  .then(resp => resp.json())
+		  .finally(() => channel.stopTyping());
 
 		// Formulate embed
 		const embed = new MessageEmbed();
