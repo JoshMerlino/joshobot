@@ -7,7 +7,7 @@ Invite [Josh O' Bot](https://discord.com/api/oauth2/authorize?client_id=74897123
 ℹ To run the bot run `index.js`
 
 ⚠ Be sure to create a `.env` file and replace `...` with the appropriate variables.
-```bash
+```python
 # Allow requests to own server
 NODE_TLS_REJECT_UNAUTHORIZED	= 0
 
@@ -17,7 +17,6 @@ MODE				= DEVELOPMENT # or "PRODUCTION"
 # Secret API Keys
 CLIENT_SECRET			= ...
 RAPID_API_KEY			= ...
-
 ```
 
 # Adding Commands
