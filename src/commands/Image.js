@@ -27,7 +27,6 @@ module.exports = class Command extends require("../Command.js") {
 		// Get images from bing
 		const { value } = await fetch(`https://bing-image-search1.p.rapidapi.com/images/search?q=${encodeURIComponent(term)}`, {
 		    headers: {
-		        "x-rapidapi-host": "bing-image-search1.p.rapidapi.com",
 		        "x-rapidapi-key": process.env.RAPID_API_KEY,
 		        useQueryString: true
 		    }
