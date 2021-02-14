@@ -1,44 +1,59 @@
-module.exports = async function(guild, [ event, newEvent ]) {
+module.exports = async function(guild, [ before, after ]) {
 
-	const fields = [];
+	// Initialize columns
+	const bef = [];
+	const aft = [];
 
-	if(event.name !== newEvent.name) fields.push({
-		name: "Name",
-		value: `\`${event.name}\` → \`${newEvent.name}\``,
-		inline: true
-	})
+	// Compare roles
+	if(before.hexColor !== after.hexColor) {
+		bef.push(`• Color: **\`${before.hexColor}\`**`);
+		aft.push(`• Color: **\`${after.hexColor}\`**`);
+	}
 
-	if(event.hexColor !== newEvent.hexColor) fields.push({
-		name: "Color",
-		value: `\`${event.hexColor}\` → \`${newEvent.hexColor}\``,
-		inline: true
-	})
+	if(before.hoist !== after.hoist) {
+		bef.push(`• Hoisted: **\`${before.hoist}\`**`);
+		aft.push(`• Hoisted: **\`${after.hoist}\`**`);
+	}
 
-	if(event.hoist !== newEvent.hoist) fields.push({
-		name: "Display Seperatly",
-		value: `\`${event.hoist ? "`Yes`":"`No`"} → ${newEvent.hoist ? "`Yes`":"`No`"}`,
-		inline: true
-	})
+	if(before.mentionable !== after.mentionable) {
+		bef.push(`• Mentionable: **\`${before.mentionable}\`**`);
+		aft.push(`• Mentionable: **\`${after.mentionable}\`**`);
+	}
 
-	if(event.mentionable !== newEvent.mentionable) fields.push({
-		name: "Mentionable",
-		value: `\`${event.mentionable ? "`Yes`":"`No`"} → ${newEvent.mentionable ? "`Yes`":"`No`"}`,
-		inline: true
-	})
+	if(before.name !== after.name) {
+		bef.push(`• Name: **\`${before.name}\`**`);
+		aft.push(`• Name: **\`${after.name}\`**`);
+	}
 
-	if(event.permissions.toArray().join(";") !== newEvent.permissions.toArray().join(";")) fields.push({
-		name: "Permission Changes",
-		value: util.arrayDiff(event.permissions.toArray(), newEvent.permissions.toArray()).map(r => `\`${newEvent.permissions.toArray().includes(r) ? "+":"-"}${r.toUpperCase()}\``).join(" "),
-		inline: true
-	})
+	if(before.position !== after.position) {
+		bef.push(`• Position: **\`${before.position}\`**`);
+		aft.push(`• Position: **\`${after.position}\`**`);
+	}
 
-	if(fields.length === 0) return;
+	// Make sure empty audits arent sent
+	if(bef.length === 0 || aft.length === 0) return;
 
+	// Send audit message
 	await sendAudit(guild, {
-		fields,
+
 		color: "warn",
-		desc: newEvent.toString(),
-		title: "Role Updated",
+		title: "Role updated",
+		thumbnail: after.iconURL(),
+		fields: [{
+
+			// Left column
+			name: "Before",
+			value: bef.join("\n"),
+			inline: true
+
+		}, {
+
+			// Right column
+			name: "After",
+			value: aft.join("\n"),
+			inline: true
+
+		}]
 	})
 
 }

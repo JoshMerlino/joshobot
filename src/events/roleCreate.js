@@ -1,38 +1,39 @@
-module.exports = async function(guild, [ event ]) {
+module.exports = async function(guild, [ role ]) {
 
-	const fields = [];
+	// Send audit message
+	return await sendAudit(guild, {
 
-	fields.push({
-		name: "Name",
-		value: `\`${event.name}\``,
-		inline: true
-	})
-
-	if(event.hexColor !== "#000000") fields.push({
-		name: "Color",
-		value: `\`${event.hexColor}\``,
-		inline: true
-	})
-
-	fields.push({
-		name: "Display Seperatly",
-		value: event.hoist ? "`Yes`":"`No`",
-		inline: true
-	})
-
-	fields.push({
-		name: "Mentionable",
-		value: event.mentionable ? "`Yes`":"`No`",
-		inline: true
-	})
-
-	if(fields.length === 0) return;
-
-	await sendAudit(guild, {
-		fields,
 		color: "success",
-		desc: event.toString(),
-		title: "Role Created",
-	})
+		title: `Role created`,
+		desc: role,
+		fields: [{
+
+			// Left column
+			name: "Role info",
+			value: [
+				`• Color:`,
+				`• ID:`,
+				`• Mentionable:`,
+				`• Name:`,
+				`• Position:`,
+			].join("\n"),
+			inline: true
+
+		}, {
+
+			// Right column
+			name: "\u200b",
+			value: [
+				`**\`${role.hexColor}\`**`,
+				`**\`${role.id}\`**`,
+				`**\`${role.mentionable}\`**`,
+				`**\`${role.name}\`**`,
+				`**\`${role.position}\`**`,
+			].join("\n"),
+			inline: true
+
+		}],
+
+	});
 
 }
