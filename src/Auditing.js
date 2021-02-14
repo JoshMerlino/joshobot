@@ -1,16 +1,16 @@
-global.sendAudit = async function(guild, { color, title, desc, fields, sender, thumb }) {
+global.sendAudit = async function(guild, { color, title, desc, fields, sender, thumbnail }) {
 
 	// Formulate embed
 	const message = new MessageEmbed();
-	message.setColor(Color[(color || "info")])
-	message.setFooter(`ID: ${util.uuid()}`)
-	message.setTimestamp()
+	message.setColor(Color[(color || "info")]);
+	message.setFooter(`ID: ${util.uuid()}`);
+	message.setTimestamp();
 
 	// Set details
-	title && message.setTitle(title)
-	desc && message.setDescription(desc)
-	fields && message.addFields(fields)
-	thumb && message.setThumbnail(thumb)
+	thumbnail && message.setThumbnail(thumbnail);
+	title && message.setTitle(title);
+	desc && message.setDescription(desc);
+	fields && message.addFields(fields);
 	(sender && sender.hasOwnProperty("user") && sender.user !== null) && message.setAuthor(sender.user.tag, sender.user.displayAvatarURL());
 
 	// Send audit to guild audit channel
@@ -34,7 +34,7 @@ module.exports = async function(client, guild) {
 			require(path.join(APP_ROOT, "src", "events", `${eventType}.js`))(guild, events);
 
 		});
-		
+
 	});
 
 }

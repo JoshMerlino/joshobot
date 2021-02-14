@@ -1,22 +1,33 @@
-module.exports = async function(guild, [ event ]) {
+module.exports = async function(guild, [ emoji ]) {
 
-	const fields = [];
+	// Send audit message
+	return await sendAudit(guild, {
 
-	fields.push({
-		name: "Name",
-		value: `\`:${event.name}:\``,
-		inline: true
-	})
-
-	if(fields.length === 0) return;
-
-	await sendAudit(guild, {
-		fields,
 		color: "success",
-		title: "Created an Emoji",
-		thumb: event.url,
-		desc: event.toString(),
-		sender: { user: event.author }
-	})
+		title: `Emoji created`,
+		thumbnail: `https://cdn.discordapp.com/emojis/${emoji.id}.${emoji.animated ? "gif":"png"}`,
+		fields: [{
+
+			// Left column
+			name: "Emoji info",
+			value: [
+				`• ID: **\`${emoji.id}\`**`,
+				`• Animated: **\`${emoji.animated}\`**`,
+			].join("\n"),
+			inline: true
+
+		}, {
+
+			// Right column
+			name: "\u200b",
+			value: [
+				`• Name: **\`${emoji.name}\`**`,
+				`• Uploaded by: **${await emoji.fetchAuthor()}**`,
+			].join("\n"),
+			inline: true
+
+		}],
+
+	});
 
 }
