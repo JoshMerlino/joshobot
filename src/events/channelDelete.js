@@ -10,8 +10,10 @@ module.exports = async function(guild, [ channel ]) {
 			// Left column
 			name: "Channel info",
 			value: [
-				`• ID: **\`${channel.id}\`**`,
-				`• Name: **\n${channel.name}\n**`,
+				`• Category:`,
+				`• ID:`,
+				`• Name:`,
+				`• Type:`,
 			].join("\n"),
 			inline: true
 
@@ -20,8 +22,10 @@ module.exports = async function(guild, [ channel ]) {
 			// Right column
 			name: "\u200b",
 			value: [
-				`• Type: **\n${channel.type}\n**`,
-				`• Category: **\n${channel.parent ? channel.parent.name : "none"}\n**`
+				`**\`${channel.parent ? channel.parent.name : "none"}\`**`,
+				`**\`${channel.id}\`**`,
+				`**\`${channel.name}\`**`,
+				`**\`${channel.type}\`**`,
 			].join("\n"),
 			inline: true
 

@@ -5,14 +5,17 @@ module.exports = async function(guild, [ channel ]) {
 
 		color: "success",
 		title: `Channel created`,
+		desc: channel,
 		fields: [{
 
 			// Left column
 			name: "Channel info",
 			value: [
-				`• ID: **\`${channel.id}\`**`,
-				`• Name: **\`${channel.name}\`**`,
-				`\n${channel}`
+				`• Category:`,
+				`• ID:`,
+				`• Name:`,
+				`• Position:`,
+				`• Type:`,
 			].join("\n"),
 			inline: true
 
@@ -21,9 +24,11 @@ module.exports = async function(guild, [ channel ]) {
 			// Right column
 			name: "\u200b",
 			value: [
-				`• Type: **\`${channel.type}\`**`,
-				`• Position: **\`${channel.position}\`**`,
-				`• Category: **\`${channel.parent ? channel.parent.name : "none"}\`**`
+				`**\`${channel.parent ? channel.parent.name : "none"}\`**`,
+				`**\`${channel.id}\`**`,
+				`**\`${channel.name}\`**`,
+				`**\`${channel.position}\`**`,
+				`**\`${channel.type}\`**`,
 			].join("\n"),
 			inline: true
 

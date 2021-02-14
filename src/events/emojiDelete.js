@@ -11,8 +11,9 @@ module.exports = async function(guild, [ emoji ]) {
 			// Left column
 			name: "Emoji info",
 			value: [
-				`• ID: **\`${emoji.id}\`**`,
-				`• Animated: **\`${emoji.animated}\`**`,
+				`• Animated:`,
+				`• ID:`,
+				`• Name:`,
 			].join("\n"),
 			inline: true
 
@@ -21,7 +22,9 @@ module.exports = async function(guild, [ emoji ]) {
 			// Right column
 			name: "\u200b",
 			value: [
-				`• Name: **\`${emoji.name}\`**`,
+				`**\`${emoji.animated}\`**`,
+				`**\`${emoji.id}\`**`,
+				`**\`${emoji.name}\`**`,
 			].join("\n"),
 			inline: true
 
