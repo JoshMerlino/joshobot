@@ -1,37 +1,37 @@
-module.exports = async function(guild, [ event ]) {
+module.exports = async function(guild, [ message ]) {
 
-	const fields = [];
+	// Send audit message
+	return await sendAudit(guild, {
 
-	fields.push({
-		name: "Author",
-		value: event.author.toString(),
-		inline: true
-	})
-
-	fields.push({
-		name: "Channel",
-		value: event.channel.toString(),
-		inline: true
-	})
-
-	if(Object.values(util.parseCollection(event.attachments)).length > 0) fields.push({
-		name: "Attachments",
-		value: Object.values(util.parseCollection(event.attachments)).map(e => e.url).join("\n"),
-		inline: true
-	})
-
-	fields.push({
-		name: "Message",
-		value: event.content.substr(0, 1000),
-		inline: true
-	})
-
-	if(fields.length === 0) return;
-
-	await sendAudit(guild, {
-		fields,
 		color: "severe",
-		title: "Message Deleted",
-	})
+		title: `Message deleted`,
+		desc: `>>> ${message.content}`,
+		fields: [{
+
+			// Left column
+			name: "Message info",
+			value: [
+				`• Author:`,
+				`• Channel:`,
+				`• ID:`,
+				`• Sent on:`,
+			].join("\n"),
+			inline: true
+
+		}, {
+
+			// Right column
+			name: "\u200b",
+			value: [
+				`${message.author}`,
+				`${message.channel}`,
+				`**\`${message.id}\`**`,
+				`**\`${util.ts(message.createdAt)}\`**`,
+			].join("\n"),
+			inline: true
+
+		}],
+
+	});
 
 }
