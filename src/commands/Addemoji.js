@@ -27,7 +27,7 @@ module.exports = class Command extends require("../Command.js") {
 		if(args.length === 0) return await this.sendUsage(channel);
 
 		// Get params
-		let [ name = null, link = null ] = args;
+		let [ name, link = null ] = args;
 
 		// Start formulating embed
 		const embed = new MessageEmbed();
@@ -52,7 +52,8 @@ module.exports = class Command extends require("../Command.js") {
 			// On successful emoji create
 			embed.setTitle("Emoji added");
 			embed.setColor(Color.success);
-			embed.setDescription(`Added emoji \`:${emoji.name}:\` ${emoji.toString()}`);
+			embed.setDescription(`Added emoji \\:${emoji.name}\\:`);
+			embed.setThumbnail(`https://cdn.discordapp.com/emojis/${emoji.id}.${emoji.animated ? "gif":"png"}`);
 
 		}).catch(error => {
 
