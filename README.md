@@ -16,7 +16,6 @@ MODE				= DEVELOPMENT # or "PRODUCTION"
 
 # Secret API Keys
 CLIENT_SECRET			= ...
-RAPID_API_KEY			= ...
 ```
 
 # Adding Commands
