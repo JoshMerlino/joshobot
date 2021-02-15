@@ -19,13 +19,13 @@ module.exports = async function(guild) {
 
 
 	// If disboard is in the server
-	if(util.parseCollection(guild.members.cache).hasOwnProperty("709480797781885000")) {
+	if(util.parseCollection(guild.members.cache).hasOwnProperty("302050872383242240")) {
 
 		// Schedule bump reminders
 		client.setInterval(async function() {
 
 			// Get last message channel
-			const { lastMessageChannelID } = await guild.member("709480797781885000");
+			const { lastMessageChannelID } = await guild.member("302050872383242240");
 
 			// Make sure there is a last message
 			if(lastMessageChannelID === undefined) return;
@@ -40,7 +40,7 @@ module.exports = async function(guild) {
 			messages = messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp)[0];
 
 			// If a bumps ISNT available cancel action
-			if(lastMessage.author.id === "709480797781885000") return;
+			if(lastMessage.author.id === client.user.id) return;
 			if(messages !== undefined && Date.now() < messages.createdTimestamp + 2*60*60*1000) return;
 
 			// Send bump message
