@@ -34,13 +34,13 @@ module.exports = class Command extends require("../Command.js") {
 		// Initialize table
 		const [ leftCol, rightCol ] = [[
 			`• ID: \`${user.user.id}\``,
-			`• Created on **${util.ts(user.createdAt)}**`,
+			`• Account created on: **${util.ts(user.user.createdAt)}**`,
 			`\n[Jump to last message](https://discord.com/channels/${guild.id}/${user.lastMessageChannelID}/${user.lastMessageID})`
 		], [
-			`• Role${roles.length !== 1 ? `s (${roles.length})`:""}: ${roles.length === 0 ? "*none*" : roles.map(role => role.toString()).join(", ")}`,
-			`• Joined on **${util.ts(user.joinedAt)}**`,
+			`• Role${roles.length !== 1 ? `s (${roles.length})`:""}: ${roles.length === 0 ? "***none***" : roles.map(role => role.toString()).join(", ")}`,
+			`• Joined on: **${util.ts(user.joinedAt)}**`,
 			`• Display color: \`${user.displayHexColor.toUpperCase()}\``,
-			`• Booster since: ${user.premiumSince === null ? "*not boosting*" : util.ts(user.premiumSince)}`
+			`• Booster since: ${user.premiumSince === null ? "***not boosting***" : util.ts(user.premiumSince)}`
 		]];
 
 		// Start formulating embed
