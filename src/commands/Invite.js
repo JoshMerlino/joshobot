@@ -1,5 +1,3 @@
-const link = `https://discord.com/api/oauth2/authorize?client_id=748971236276699247&permissions=8&scope=bot`;
-
 module.exports = class Command extends require("../Command.js") {
 
 	constructor() {
@@ -19,7 +17,7 @@ module.exports = class Command extends require("../Command.js") {
 		const embed = new MessageEmbed();
 		embed.setColor(Color.info);
 		embed.setTitle("Click to Invite");
-		embed.setURL(link)
+		embed.setURL(`https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot`)
 		embed.setDescription(`Invite ${client.user.toString()} to your server for epic\nmoderation tools and other fun goodies! 😎`)
 		embed.setThumbnail(client.user.displayAvatarURL());
 		embed.setFooter(sender.user.tag, sender.user.displayAvatarURL()).setTimestamp();
