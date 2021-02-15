@@ -33,7 +33,7 @@ module.exports = async function(guild) {
 			// Get channel
 			const channel = await guild.channels.resolve(lastMessageChannelID);
 
-			let messages = Object.values(parseCollection(await channel.messages.fetch({ limit: 25 })));
+			let messages = Object.values(util.parseCollection(await channel.messages.fetch({ limit: 25 })));
 			let lastMessage = messages[0];
 			messages = messages.filter(message => message.author.id === "302050872383242240");
 			messages = messages.filter(message => message.embeds[0].color === 2406327);
