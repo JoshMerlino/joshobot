@@ -12,7 +12,7 @@ Invite [Josh O' Bot](https://discord.com/api/oauth2/authorize?client_id=74897123
 NODE_TLS_REJECT_UNAUTHORIZED	= 0
 
 # Nodejs mode
-MODE				= DEVELOPMENT # or "PRODUCTION"
+MODE				= DEVELOPMENT # or PRODUCTION
 
 # Secret API Keys
 CLIENT_SECRET			= ...
