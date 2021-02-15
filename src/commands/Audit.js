@@ -41,12 +41,9 @@ module.exports = class Command extends require("../Command.js") {
 			case "enable":
 			case "en":
 			case "e":
-
-				// If no channel
-				if(target === null) return await this.sendUsage(channel);
-
+			
 				// Get channel
-				const targetChannel = util.channel(target, guild);
+				const targetChannel = util.channel(target === null ? channel : target, guild);
 
 				// Add audit to config
 				config[guild.id].audit.enabled = true;
