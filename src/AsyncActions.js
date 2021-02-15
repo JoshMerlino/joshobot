@@ -24,27 +24,33 @@ module.exports = async function(guild) {
 		// Schedule bump reminders
 		client.setInterval(async function() {
 
-			// Get last message channel
-			const { lastMessageChannelID } = await guild.member("302050872383242240");
+			// Get disboard
+			const disboard = await guild.members.fetch("302050872383242240");
 
-			// Make sure there is a last message
-			if(lastMessageChannelID === undefined) return;
+			// Iterate through channels
+			Object.values(util.parseCollection(guild.channels.cache)).map(async channel => {
+				try {
 
-			// Get channel
-			const channel = await guild.channels.resolve(lastMessageChannelID);
+					// If channel has disboard message in it
+					const messages = Object.values(util.parseCollection(await channel.messages.fetch({ limit: 100 })))
 
-			let messages = Object.values(util.parseCollection(await channel.messages.fetch({ limit: 25 })));
-			let lastMessage = messages[0];
-			messages = messages.filter(message => message.author.id === "302050872383242240");
-			messages = messages.filter(message => message.embeds[0].color === 2406327);
-			messages = messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp)[0];
+					// Get last bump
+					const bumps = messages.filter(message => message.author.id === disboard.id)
+					  .filter(message => message.embeds[0].color === 2406327)
+					  .sort((a, b) => b.createdTimestamp - a.createdTimestamp)
 
-			// If a bumps ISNT available cancel action
-			if(lastMessage.author.id === client.user.id) return;
-			if(messages !== undefined && Date.now() < messages.createdTimestamp + 2*60*60*1000) return;
+					// Make sure there is already not a bump message
+					if(bumps.length === 0) return;
+					if(messages[0].author.id === client.user.id) return;
+					if(messages !== undefined && Date.now() < messages.createdTimestamp + 2*60*60*1000) return;
 
-			// Send bump message
-			await channel.send(`A bump is now available for this server. Do \`!d bump\``);
+					// Send bump message
+					await channel.send(`A bump is now available for this server. Do \`!d bump\``);
+
+				} catch(err) {
+
+				}
+			});
 
 		}, 5000);
 
