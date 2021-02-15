@@ -42,7 +42,7 @@ module.exports = async function(guild) {
 					// Make sure there is already not a bump message
 					if(bumps.length === 0) return;
 					if(messages[0].author.id === client.user.id) return;
-					if(messages !== undefined && Date.now() < messages.createdTimestamp + 2*60*60*1000) return;
+					if(bumps[0] !== undefined && Date.now() < bumps[0].createdTimestamp + 2*60*60*1000) return;
 
 					// Send bump message
 					await channel.send(`A bump is now available for this server. Do \`!d bump\``);
