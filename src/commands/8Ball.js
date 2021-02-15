@@ -6,7 +6,7 @@ module.exports = class Command extends require("../Command.js") {
 		], ...arguments);
 		this.register(
 			"Predicts the future. 🎱",
-			HelpSection.MISCELLANEOUS,
+			HelpSection.FUN,
 			[{
 				argument: "Question",
 				required: true,

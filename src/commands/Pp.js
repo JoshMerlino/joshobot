@@ -7,8 +7,8 @@ module.exports = class Command extends require("../Command.js") {
 			"pp"
 		], ...arguments);
 		this.register(
-			"Estimates a server members PP size. 😏",
-			HelpSection.MISCELLANEOUS,
+			"Estimates a server members PP size. 🍆",
+			HelpSection.FUN,
 			[{
 				argument: "@User",
 				required: false,

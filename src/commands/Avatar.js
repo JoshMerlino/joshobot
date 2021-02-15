@@ -7,7 +7,7 @@ module.exports = class Command extends require("../Command.js") {
 		], ...arguments);
 		this.register(
 			"Displays the profile picture of a user. 🖼",
-			HelpSection.GENERAL, [{
+			HelpSection.MISCELLANEOUS, [{
 				argument: "@User",
 				required: true,
 			}]

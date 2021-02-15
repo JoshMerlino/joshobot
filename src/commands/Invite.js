@@ -7,7 +7,7 @@ module.exports = class Command extends require("../Command.js") {
 		], ...arguments);
 		this.register(
 			"Invite Josh O' Bot to your server. 😍",
-			HelpSection.GENERAL
+			HelpSection.MISCELLANEOUS
 		);
 	}
 

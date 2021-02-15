@@ -8,7 +8,7 @@ module.exports = class Command extends require("../Command.js") {
 		], ...arguments);
 		this.register(
 			"Look up a term from Urban Dictionary. 📘",
-			HelpSection.GENERAL,
+			HelpSection.FUN,
 			[{
 				argument: "Term",
 				required: true,

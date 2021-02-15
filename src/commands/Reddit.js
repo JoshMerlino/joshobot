@@ -6,7 +6,7 @@ module.exports = class Command extends require("../Command.js") {
 		], ...arguments);
 		this.register(
 			"Gets a random picture off of Reddit. 🖼",
-			HelpSection.GENERAL,
+			HelpSection.FUN,
 			[{
 				argument: "Subreddit",
 				required: true,

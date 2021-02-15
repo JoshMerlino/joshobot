@@ -7,7 +7,7 @@ module.exports = class Command extends require("../Command.js") {
 		], ...arguments);
 		this.register(
 			"Look up a Minecraft player. 🎮",
-			HelpSection.MISCELLANEOUS,
+			HelpSection.FUN,
 			[{
 				argument: "Username",
 				required: true,

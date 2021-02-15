@@ -11,7 +11,7 @@ module.exports = class Command extends require("../Command.js") {
 		], ...arguments);
 		this.register(
 			"Look up an IP Address. 📍",
-			HelpSection.MISCELLANEOUS,
+			HelpSection.FUN,
 			[{
 				argument: "IP Address",
 				required: true,

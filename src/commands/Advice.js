@@ -7,7 +7,7 @@ module.exports = class Command extends require("../Command.js") {
 		], ...arguments);
 		this.register(
 			"Gives random life advice. 👨‍🦳",
-			HelpSection.MISCELLANEOUS
+			HelpSection.FUN
 		);
 	}
 

@@ -8,9 +8,9 @@ module.exports = class Command extends require("../Command.js") {
 		], ...arguments);
 		this.register(
 			"Preview a color. 🎨",
-			HelpSection.MISCELLANEOUS,
+			HelpSection.FUN,
 			[{
-				argument: "#RRGGBB",
+				argument: "#RRGGBB | @User | Role | @Role",
 				required: false,
 			}]
 		);

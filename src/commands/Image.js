@@ -8,7 +8,7 @@ module.exports = class Command extends require("../Command.js") {
 		], ...arguments);
 		this.register(
 			"Google image search. 🖼",
-			HelpSection.GENERAL,
+			HelpSection.FUN,
 			[{
 				argument: "Search query",
 				required: true,
