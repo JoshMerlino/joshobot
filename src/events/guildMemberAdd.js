@@ -1,12 +1,7 @@
 module.exports = async function(guild, [ member ]) {
 
-	// Mute members that tried to mute evade
-	global.config[guild.id].commands["mute"].persistance.map(async entry => {
-		if(entry.specimen === member.user.id) {
-			const muterole = (await util.getMuteRole(guild)).id;
-			await guild.member(specimen).roles.add(muterole);
-		}
-	})
+	// Make sure audit gets sent to right server
+	if(member.guild.id !== guild.id) return;
 
 	// Send audit
 	await sendAudit(guild, {

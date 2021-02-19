@@ -1,5 +1,8 @@
 module.exports = async function(guild, [ before, after ]) {
 
+	// Make sure audit gets sent to right server
+	if(before.guild.id !== guild.id) return;
+
 	// Initialize columns
 	const bef = [];
 	const aft = [];
@@ -21,13 +24,14 @@ module.exports = async function(guild, [ before, after ]) {
 	}
 
 	if(before.user.avatar !== after.user.avatar) {
-		bef.push(`• Profile Picture: **\`[View](${before.user.displayAvatarURL()})\`**`);
-		aft.push(`• Profile Picture: **\`[View](${after.user.displayAvatarURL()})\`**`);
+		bef.push(`• Profile Picture: **[View](${before.user.displayAvatarURL()})**`);
+		aft.push(`• Profile Picture: **[View](${after.user.displayAvatarURL()})**`);
 	}
 
 	if(Object.values(util.parseCollection(before.roles.cache)).join() !== Object.values(util.parseCollection(after.roles.cache)).join()) {
-		bef.push(`• Roles: ${Object.values(util.parseCollection(before.roles.cache)).filter(role => role.name !== "@everyone").sort((a, b) => b.rawPosition - a.rawPosition).map(role => role.toString()).join(", ")}`);
-		aft.push(`• Roles: ${Object.values(util.parseCollection(after.roles.cache)).filter(role => role.name !== "@everyone").sort((a, b) => b.rawPosition - a.rawPosition).map(role => role.toString()).join(", ")}`);
+		const [ rbef, raft ] = [ Object.values(util.parseCollection(before.roles.cache)).filter(role => role.name !== "@everyone").sort((a, b) => b.rawPosition - a.rawPosition), Object.values(util.parseCollection(after.roles.cache)).filter(role => role.name !== "@everyone").sort((a, b) => b.rawPosition - a.rawPosition) ];
+		bef.push(`• Role${rbef.length === 1 ? "":`s (${rbef.length})`}: ${rbef.map(role => role.toString()).join(", ")}`);
+		aft.push(`• Role${raft.length === 1 ? "":`s (${raft.length})`}: ${raft.map(role => role.toString()).join(", ")}`);
 	}
 
 	// Make sure empty audits arent sent

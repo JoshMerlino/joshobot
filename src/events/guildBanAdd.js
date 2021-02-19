@@ -1,4 +1,4 @@
-module.exports = async function(guild, [, member ]) {
+module.exports = async function(_, [ guild, member ]) {
 
 	// Fetch ban
 	const { user, reason } = await guild.fetchBan(member);

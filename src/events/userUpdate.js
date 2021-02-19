@@ -19,8 +19,8 @@ module.exports = async function(guild, [ before, after ]) {
 	}
 
 	if(before.user.avatar !== after.user.avatar) {
-		bef.push(`• Profile Picture: **\`[View](${before.user.displayAvatarURL()})\`**`);
-		aft.push(`• Profile Picture: **\`[View](${after.user.displayAvatarURL()})\`**`);
+		bef.push(`• Profile Picture: **[View](${before.user.displayAvatarURL()})**`);
+		aft.push(`• Profile Picture: **[View](${after.user.displayAvatarURL()})**`);
 	}
 
 	if(before.username !== after.username) {

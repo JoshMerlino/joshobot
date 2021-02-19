@@ -1,5 +1,8 @@
 module.exports = async function(guild, [ before, after ]) {
 
+	// Make sure audit gets sent to right server
+	if(before.guild.id !== guild.id) return;
+
 	// Initialize columns
 	const bef = [];
 	const aft = [];

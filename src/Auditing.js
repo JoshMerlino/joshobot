@@ -1,8 +1,8 @@
-global.sendAudit = async function(guild, { color, title, desc, fields, sender, thumbnail }) {
+global.sendAudit = async function(guild, { color = "info", title, desc, fields, sender, thumbnail }) {
 
 	// Formulate embed
 	const message = new MessageEmbed();
-	message.setColor(Color[(color || "info")]);
+	message.setColor(Color[color]);
 	message.setFooter(`ID: ${util.uuid()}`);
 	message.setTimestamp();
 
@@ -26,9 +26,6 @@ module.exports = async function(client, guild) {
 
 		// Enable each event
 		client.on(eventType, async function(...events) {
-
-			// Make sure the event is in the right guild so other guilds dont get audits from every guild
-			if(events[0].hasOwnProperty("guild") && events[0].guild.id !== guild.id) return;
 
 			// Send audit
 			require(path.join(APP_ROOT, "src", "events", `${eventType}.js`))(guild, events);
