@@ -1,5 +1,8 @@
 module.exports = async function(guild, [ invite ]) {
 
+	// Make sure audit gets sent to right server
+	if(invite.guild.id !== guild.id) return;
+
 	// Send audit message
 	return await sendAudit(guild, {
 
