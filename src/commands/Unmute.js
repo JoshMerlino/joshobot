@@ -47,13 +47,13 @@ module.exports = class Command extends require("../Command.js") {
 
 			// Configure embed
 			embed.setColor(Color.success);
-			embed.setDescription(`${member.toString()} is no longer muted.`);
+			embed.setDescription(`${member} is no longer muted.`);
 
 		} else {
 
 			// Configure embed
 			embed.setColor(Color.error);
-			embed.setDescription(`${member.toString()} is not muted.`);
+			embed.setDescription(`${member} is not muted.`);
 
 		}
 
