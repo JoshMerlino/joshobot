@@ -15,7 +15,7 @@ module.exports = class Command extends require("../Command.js") {
 		);
 	}
 
-	async onCommand({ root, args, channel, guildConfig }) {
+	async onCommand({ root, args, channel, guildConfig, guild }) {
 
 		// Initialize help list
 		const list = [];
@@ -71,7 +71,7 @@ module.exports = class Command extends require("../Command.js") {
 		})
 
 		// Push footer to description
-		list.push(`[Support Server](https://discord.gg/5ha2Zk) • [Get Josh O' Bot](https://discord.com/api/oauth2/authorize?client_id=748971236276699247&permissions=8&scope=bot)`);
+		list.push(`[Support Server](https://discord.gg/5ha2Zk) • [Get Josh O' Bot](https://discord.com/api/oauth2/authorize?client_id=748971236276699247&permissions=8&scope=bot) • [Configure Online](https://joshmerlino.github.io/joshobot/guild/${guild.id})`);
 
 		// Formulate embed
 		const embed = new MessageEmbed();
