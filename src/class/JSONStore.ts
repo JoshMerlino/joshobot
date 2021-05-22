@@ -1,4 +1,3 @@
-import { JSONObject } from "../type/JSONObject";
 import { statSync, writeFileSync } from "fs";
 import { sync as mkdirp } from "mkdirp";
 import { resolve } from "path";
@@ -6,7 +5,7 @@ import { resolve } from "path";
 export default class JSONStore {
 
 	// Internal value of the JSONStore.
-	private __value: JSONObject = {};
+	private __value: Record<string, unknown> = {};
 
 	constructor(private path: string) {
 
@@ -28,12 +27,12 @@ export default class JSONStore {
 	}
 
 	// Getter to well get the value when called.
-	get value(): JSONObject {
+	get value(): Record<string, unknown> {
 		return this.__value;
 	}
 
 	// Setter to update the value in the store and save to the filesystem
-	set value(newValue: JSONObject) {
+	set value(newValue: Record<string, unknown>) {
 		this.__value = { ...this.__value, ...newValue };
 		writeFileSync(this.path, JSON.stringify(this.__value), "utf8");
 	}
