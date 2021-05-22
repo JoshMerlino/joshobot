@@ -1,1 +1,3 @@
-declare type APIResponse = Record<string, unknown>;
+export interface Config extends Record<string, unknown> {
+	prefix: string;
+}

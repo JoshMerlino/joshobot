@@ -96,7 +96,6 @@ rules:
   no-useless-catch: warn
   no-useless-concat: warn
   no-useless-escape: warn
-  no-useless-return: warn
   no-warning-comments: warn
   no-with: warn
   require-await: warn

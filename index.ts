@@ -7,6 +7,6 @@ import "./src/console";
 dotenv.config();
 
 // Start server with new instance of express
-server(express());
+// ; server(express());
 
 import "./src/bot/index";
