@@ -2,7 +2,7 @@
 /* eslint @typescript-eslint/no-non-null-assertion: off */
 
 import chalk from "chalk";
-import { Client, Guild, Message } from "discord.js";
+import { Client, Guild } from "discord.js";
 import path from "path";
 import { Config } from "../../../types";
 import getCommands from "../../getCommands";
@@ -58,7 +58,7 @@ export default class Runtime {
 		const commands = await getCommands("./lib/src/bot/command");
 		commands.map(command => this.commands.push(new command(this)));
 
-		this.client.on("message", (message: Message) => {
+		this.client.on("message", message => {
 
 			// Get the guild the message was sent in
 			const { guild } = message;
@@ -73,7 +73,18 @@ export default class Runtime {
 			// Make sure message starts with prefix
 			if (!message.content.startsWith(config.prefix)) return;
 
-			// TODO: iterate over commands and run `run` method if it matches the command.
+			// Get command root
+			const commandRoot = message.content.toLowerCase().split(config.prefix)[1].split(" ")[0];
+
+			// Iterate over all commands and search for commandRoot
+			const command = this.commands.filter(command => command.getAliases().includes(commandRoot));
+
+			// If command dosnt exist
+			if (command.length === 0) return;
+
+			// Run command
+			command[0].onCommand(message);
+
 
 		});
 
