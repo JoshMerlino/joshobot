@@ -17,77 +17,82 @@ export default class Runtime {
 	// Initialize Discord client
 	client = new Client;
 
+	// Initialize array of commands
 	commands: Command[] = [];
 
-	// Initialize runtime
-	constructor() {
+    initialized = false;
 
-		// Log into discord
-		this.client.login(process.env.DISCORD_SECRET);
+    // Initialize runtime
+    constructor() {
 
-		// On client logint
-		this.client.on("ready", () => {
+    	if (this.initialized === true) return;
+    	this.initialized = true;
 
-			// Log successful log in.
-			console.info("Logged into Discord as", chalk.cyan(this?.client?.user?.tag));
+    	// Log into discord
+    	this.client.login(process.env.DISCORD_SECRET);
 
-			// Run ready method on this
-			this?.ready();
+    	// On client logint
+    	this.client.on("ready", () => {
 
-		});
+    		// Log successful log in.
+    		console.info("Logged into Discord as", chalk.cyan(this?.client?.user?.tag));
 
-	}
+    		// Run ready method on this
+    		this?.ready();
 
-	// Get config manager
-	config(guild: Guild | string): JSONStore<Config> {
+    	});
 
-		// Ensure guild is the guild id
-		if (typeof guild !== "string") guild = guild.id;
+    }
 
-		// Get default config and guild config
-		const config = JSONStore.from<Config>(path.resolve(`./config/guild/${guild}.json`), require(path.resolve("./config/default.json")));
+    // Get config manager
+    config(guild: Guild | string): JSONStore<Config> {
 
-		return config;
+    	// Ensure guild is the guild id
+    	if (typeof guild !== "string") guild = guild.id;
 
-	}
+    	// Get default config and guild config
+    	const config = JSONStore.from<Config>(path.resolve(`./config/guild/${guild}.json`), require(path.resolve("./config/default.json")));
 
-	// Method that runs when the client logs into Discord
-	async ready(): Promise<void> {
+    	return config;
 
-		// Activate all commands
-		const commands = await getCommands("./lib/src/bot/command");
-		commands.map(command => this.commands.push(new command(this)));
+    }
 
-		this.client.on("message", message => {
+    // Method that runs when the client logs into Discord
+    async ready(): Promise<void> {
 
-			// Get the guild the message was sent in
-			const { guild } = message;
+    	// Activate all commands
+    	const commands = await getCommands("./lib/src/bot/command");
+    	commands.map(command => this.commands.push(new command(this)));
 
-			// If its a DM or something other than a guild message
-			if (guild === null) return;
+    	this.client.on("message", message => {
 
-			// Get config from guild
-			const configStore = this?.config(guild);
-			const config = configStore!.value;
+    		// Get the guild the message was sent in
+    		const { guild } = message;
 
-			// Make sure message starts with prefix
-			if (!message.content.startsWith(config.prefix)) return;
+    		// If its a DM or something other than a guild message
+    		if (guild === null) return;
 
-			// Get command root
-			const commandRoot = message.content.toLowerCase().split(config.prefix)[1].split(" ")[0];
+    		// Get config from guild
+    		const configStore = this?.config(guild);
+    		const config = configStore!.value;
 
-			// Iterate over all commands and search for commandRoot
-			const command = this.commands.filter(command => command.getAliases().includes(commandRoot));
+    		// Make sure message starts with prefix
+    		if (!message.content.startsWith(config.prefix)) return;
 
-			// If command dosnt exist
-			if (command.length === 0) return;
+    		// Get command root
+    		const commandRoot = message.content.toLowerCase().split(config.prefix)[1].split(" ")[0];
 
-			// Run command
-			command[0].onCommand(message);
+    		// Iterate over all commands and search for commandRoot
+    		const command = this.commands.filter(command => command.getAliases().includes(commandRoot));
 
+    		// If command dosnt exist
+    		if (command.length === 0) return;
 
-		});
+    		// Run command
+    		command[0].onCommand(message);
 
-	}
+    	});
+
+    }
 
 }

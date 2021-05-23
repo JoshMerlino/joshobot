@@ -142,6 +142,7 @@ rules:
   semi: [warn, always]
   space-unary-ops: warn
   spaced-comment: warn
+  "@typescript-eslint/no-unused-vars": off
 
 overrides:
   - files: "*.cjs"
