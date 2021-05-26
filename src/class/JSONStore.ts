@@ -33,7 +33,6 @@ export default class JSONStore<T extends Record<string, unknown> = Record<string
 
 	// Setter to update the value in the store and save to the filesystem
 	set value(newValue: T) {
-		console.log(this.path);
 		this.__value = { ...this.__value, ...newValue };
 		writeFileSync(this.path, JSON.stringify(this.__value), "utf8");
 	}
