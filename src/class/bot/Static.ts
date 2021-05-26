@@ -1,11 +1,13 @@
 export class Color {
 
-	static WARNING = "#faa61a";
+	static WARNING = 0xfaa61a;
 
-    static DANGER = "#ed4245";
+    static DANGER = 0xed4245;
 
-	static SUCCESS = "#3ba55c";
+	static SUCCESS = 0x3ba55c;
 
-	static PRIMARY = "#00b0f4";
+	static PRIMARY = 0x00b0f4;
+
+	static INACTIVE = 0x546e7a;
 
 }

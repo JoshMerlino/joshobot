@@ -52,6 +52,10 @@ export default class Command {
 
 	}
 
+	isOperable(member: GuildMember): boolean {
+		return member.roles.highest.position <= member.guild?.member(this.runtime.client.user!)!.roles.highest.position;
+	}
+
 	async noPermission(): Promise<Message> {
 		const { channel } = this.message!;
 		const embed = new MessageEmbed;
@@ -61,16 +65,13 @@ export default class Command {
 		return await channel.send(embed);
 	}
 
-	async onCommand(message: Message): Promise<void> {
+	async onCommand(message: Message): Promise<void | Message> {
 		this.message = message;
-		if (!this.isAuthorized(message.guild?.member(message.author))) {
-			await this.noPermission();
-			return;
-		}
-		await this.run();
+		if (!this.isAuthorized(message.guild?.member(message.author))) return await this.noPermission();
+		return await this.run();
 	}
 
-	run(): void | Promise<void> {
+	run(): void | Promise<void | Message> {
 		throw new Error("Method not implemented.");
 	}
 
