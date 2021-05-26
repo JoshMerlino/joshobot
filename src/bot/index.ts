@@ -1,4 +1,4 @@
-/* eslint no-new: off */
+/* eslint no-unused-expressions: off */
 
 import Runtime from "../class/bot/Runtime";
-new Runtime;
+Runtime;
