@@ -6,14 +6,8 @@ import embedTemplate from "../embedTemplate";
 
 export const category = HelpSections.GENERAL;
 export const description = "Shows this message 😎.";
-export const args = [ {
-	argument: "Help section",
-	required: false
-} ];
-export const alias = [
-	"help",
-	"h"
-];
+export const args = [ { argument: "Help section", required: false } ];
+export const alias = [ "help", "h" ];
 
 export async function handler(message: Message, command: RunnableCommand): Promise<unknown> {
 

@@ -35,7 +35,7 @@ export default async function guild(guild: Guild, client: Client): Promise<void>
 						context.module.handler(message, runnable);
 					} else {
 						const embed = embedTemplate(message, runnable);
-						embed.setColor(Color.ERROR);
+						embed.setColor(Color.RED);
 						embed.setTitle("No permission!");
 						embed.setDescription(`You are lacking the permission \`${context.module.permission}\`. Ask an administrator if you have the right roles.`);
 						message.channel.send(embed);
