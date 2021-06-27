@@ -9,3 +9,8 @@ dotenv.config();
 import express from "express";
 import server from "./server";
 server(express());
+
+// Initialize discord bot
+import bot from "./bot";
+import { Client } from "discord.js";
+bot(new Client);
