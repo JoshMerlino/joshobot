@@ -1,3 +1,4 @@
+/* eslint no-extra-parens: off */
 import asyncRequireContext from "async-require-context";
 import { Message } from "discord.js";
 import { resolve } from "path";
@@ -66,7 +67,7 @@ export async function handler(message: Message, command: RunnableCommand): Promi
 
 	// Push each command module to list
 	Object.keys(HelpSections).map(category => {
-		list.push(`**${HelpSections[category].toString()} Commands**`);
+		list.push(`**${(<Record<string, string>><unknown>HelpSections)[category].toString()} Commands**`);
 		list.push(`\`${root} ${category.toString().toLowerCase()}\``);
 		list.push("\n");
 	});
