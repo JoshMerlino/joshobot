@@ -1,43 +1,19 @@
-# ts-server
+# Josh O' Bot
+The all in one Discord bot!
+
 ### Checks
 * [![Build](https://github.com/JoshMerlino/ts-server/actions/workflows/build.yml/badge.svg)](https://github.com/JoshMerlino/ts-server/actions/workflows/build.yml)
 * [![Code Quality Analysis](https://github.com/JoshMerlino/ts-server/actions/workflows/code-quality-analysis.yml/badge.svg)](https://github.com/JoshMerlino/ts-server/actions/workflows/code-quality-analysis.yml)
 * [![Code Style Analysis](https://github.com/JoshMerlino/ts-server/actions/workflows/code-style-analysis.yml/badge.svg)](https://github.com/JoshMerlino/ts-server/actions/workflows/code-style-analysis.yml)
 * [![Test CI](https://github.com/JoshMerlino/ts-server/actions/workflows/test-ci.yml/badge.svg)](https://github.com/JoshMerlino/ts-server/actions/workflows/test-ci.yml)
 
-### Software
-* ubuntu-20.04.1lts
-* git-2.25.1
-* node-14.16.0
-* npm-6.14.11
+Invite [Josh O' Bot](https://discord.com/api/oauth2/authorize?client_id=748971236276699247&permissions=8&scope=bot) to your Discord Server!
 
-## Getting Started
+# Running the bot
+ℹ To run the bot run `index.js`
+
+⚠ Be sure to create a `.env` file and replace `...` with the appropriate variables.
 ```bash
-# Clone the repo
-git clone https://github.com/JoshMerlino/ts-server -b master --single-branch -o upstream my-server
-```
-
-Move into your new working directory.
-
-```bash
-# Install node build tools
-sudo apt-get install build-essential -y
-
-# Install node modules
-npm install
-```
-
-## Creating API Endpoints
-Create a `.ts` file in the `~/api` directory
-```typescript
-import { Request, Response } from "express";
-
-export const route = [
-	"v1/test",
-	"v1/test/**"
-];
-
-export default function api(req: Request, res: Response): void {
-	res.json({});
-}
+# Discord API Secret
+BOT_TOKEN = ...
 ```
