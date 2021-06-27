@@ -48,7 +48,6 @@ export async function handler(message: Message, command: RunnableCommand): Promi
 
 	const diff = lines
 		.map(line => {
-			console.log(line);
 			return line;
 		})
 		.flatMap(part => {
