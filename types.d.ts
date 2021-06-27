@@ -35,3 +35,5 @@ declare interface RunnableCommand extends Command {
     alias: string;
 	config: Store<GuildConfig>;
 }
+
+declare module "nested-keys";

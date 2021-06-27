@@ -109,7 +109,6 @@ rules:
   line-comment-position: [warn, { position: above }]
   linebreak-style: [warn, unix]
   lines-around-comment: warn
-  lines-between-class-members: warn
   max-statements-per-line: warn
   multiline-ternary: [warn, never]
   new-parens: [warn, never]
@@ -132,6 +131,8 @@ rules:
   spaced-comment: warn
   "@typescript-eslint/no-unused-vars": off
   "@typescript-eslint/no-non-null-assertion": off
+  "@typescript-eslint/no-explicit-any": off
+  "@typescript-eslint/explicit-module-boundary-types": off
 
 overrides:
   - files: "*.cjs"

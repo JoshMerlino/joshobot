@@ -2,7 +2,7 @@
     "ignore": [
 		"lib/insomnia-viewer-site/",
 		"cache/",
-		"docs/",
+		"guilds/",
 		"src/"
 	]
 }
