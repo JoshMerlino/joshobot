@@ -29,7 +29,7 @@
         "ordinalize": "^1.0.2",
         "pretty-ms": "^7.0.1",
         "require-context": "^1.1.0",
-        "yaml": "^1.10.0"
+        "yaml": "^2.2.2"
     },
     "engines": {
         "node": "14"
